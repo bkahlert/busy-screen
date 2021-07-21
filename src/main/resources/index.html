@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"/>
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet"/>
+    <title>{{status}}</title>
+    <style>
+        .nes-icon.coin.is-small:not(:empty) {
+            margin-right: 1px;
+            color: transparent;
+        }
+
+        .nes-icon.coin.is-small:not(:empty):before {
+            top: 2px;
+        }
+
+        .nes-octocat.is-small {
+            transform: scale(0.2);
+            transform-origin: bottom left;
+        }
+
+        .nes-avatar {
+            -webkit-mask: url(data:image/gif;base64,R0lGODlhQABAAIAAAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAABACwAAAAAQABAAAACaIxvoMvtD+NCtAaJs1a23w2GnFeJpkYm5xp27Ita8By59M0g+M73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Pr3RWW9VOxU9Tnyaf7venEij41FEAADs=);
+            -webkit-mask-size: 100%;
+        }
+
+        .nes-avatar.is-large {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+<script src="busy-screen.js"></script>
+<div id="root"></div>
+</body>
+</html>
