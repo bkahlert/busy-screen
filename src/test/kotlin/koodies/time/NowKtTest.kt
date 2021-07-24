@@ -4,9 +4,7 @@ import kotlin.js.Date
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.expect
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class NowKtTest {
 
     @Test

@@ -9,9 +9,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class DurationSerializer : KSerializer<Duration> {
 
     private val regex = Regex("P.*T(?:(?<minutes>\\d+)M)?(?:(?<seconds>\\d+)S)?")

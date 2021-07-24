@@ -7,9 +7,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlin.js.Date
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 class DateSerializer : KSerializer<Date> {
 
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", STRING)

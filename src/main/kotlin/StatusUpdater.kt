@@ -3,44 +3,38 @@ import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.serialization.ExperimentalSerializationApi
 import org.w3c.dom.url.URL
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
-@ExperimentalSerializationApi
 object StatusUpdater {
 
-    private var lastStatus = Status("???")
+    private var lastStatus: Status? = null
 
-    suspend fun poll(url: URL, callback: (Status, Boolean) -> Unit) {
+    suspend fun poll(url: URL, callback: (Status?, Throwable?) -> Unit) {
         coroutineScope {
             launch {
                 while (true) {
                     console.log("Fetching", url)
-                    val (status, online) = fetchStatus(url).let { status ->
-                        if (status != null) {
-                            lastStatus = status
-                            status to true
-                        } else {
-                            lastStatus to false
+                    kotlin.runCatching { fetchStatus(url) }.fold(
+                        {
+                            console.log("Fetched", it)
+                            lastStatus = it
+                            callback(it, null)
+                            delay(1000)
+                        },
+                        {
+                            console.error(it)
+                            callback(lastStatus, it)
+                            delay(5000)
                         }
-                    }
-                    callback(status, online)
-                    delay(1000)
+                    )
                 }
             }
         }
     }
 
-    private suspend fun fetchStatus(url: URL): Status? = window
+    private suspend fun fetchStatus(url: URL): Status = window
         .fetch(url)
-        .runCatching {
-            await()
-                .text()
-                .await()
-                .let { Status.fromJson(it) }
-        }
-        .onFailure { console.warn(it) }
-        .getOrNull()
+        .then { if (it.ok) it.text() else error(it.statusText) }
+        .then { Status.fromJson(it) }
+        .await()
 }

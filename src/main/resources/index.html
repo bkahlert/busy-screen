@@ -5,12 +5,13 @@
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"/>
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet"/>
     <title>Loading...</title>
+    <!--suppress CssUnusedSymbol -->
     <style>
         html, body, #root {
             height: 100%;
         }
 
-        .online #loading {
+        .online .loading {
             opacity: 0;
         }
 
@@ -18,48 +19,69 @@
             opacity: .2;
         }
 
-        #loading {
+        .loading {
             position: absolute;
             top: 0;
             right: 0;
             bottom: 0;
             left: 0;
             opacity: 1.0;
-            animation: heartbeat 1.5s ease-in-out infinite both;
             transition-property: opacity;
             transition-duration: 1.5s;
 
             display: flex;
             flex-wrap: nowrap;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             align-content: center;
-            justify-content: center;
+            justify-content: flex-start;
+        }
+
+        .loading > * {
+            margin-top: 3rem;
+        }
+
+        .loading__banner {
+            position: relative;
+
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            align-content: center;
+        }
+
+        .loading__banner > * {
+            margin-left: 1rem;
+        }
+
+        .loading__banner > .heart.is-half {
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: heartbeat 1.5s ease-in-out infinite both;
+        }
+
+        .loading__log {
+            margin-right: 2rem;
         }
 
         @keyframes heartbeat {
             from {
-                transform: scale(1);
-                transform-origin: center center;
-                animation-timing-function: ease-out;
+                opacity: 1;
             }
-            10% {
-                transform: scale(0.91);
-                animation-timing-function: ease-in;
+            49.999% {
+                opacity: 1;
             }
-            17% {
-                transform: scale(0.98);
-                animation-timing-function: ease-out;
+            50% {
+                opacity: 0;
             }
-            33% {
-                transform: scale(0.87);
-                animation-timing-function: ease-in;
-            }
-            45% {
-                transform: scale(1);
-                animation-timing-function: ease-out;
+            to {
+                opacity: 0;
             }
         }
+
 
         #root {
             background-color: slategray;
@@ -118,6 +140,7 @@
 
         .status__name {
             margin-bottom: 3.2rem;
+            margin-right: 1rem;
             font-size: 2rem;
         }
 
@@ -146,16 +169,22 @@
     </style>
 </head>
 <body>
-<script src="busy-screen.js"></script>
 <div id="root"></div>
+<div class="loading">
+    <div class="loading__banner">
+        <i class="nes-icon is-large is-half heart"></i>
+        <i class="nes-icon is-large is-transparent heart"></i>
+        <i class="nes-icon is-large is-transparent heart"></i>
+        <i class="nes-icon is-large is-transparent heart"></i>
+        <span>Loading...</span>
+    </div>
+    <div class="loading__log"></div>
+</div>
 <div class="author">
     <a href="https://github.com/bkahlert/busy-screen">
         <i class="nes-icon github is-small"></i> <span class="is-dark">bkahlert/busy-screen</span>
     </a>
 </div>
-<div id="loading">
-    <!--    <i class="nes-icon is-large is-half heart"></i><i class="nes-icon is-large is-transparent heart"></i><i class="nes-icon is-large is-transparent heart"></i>-->
-    <i class="nes-icon is-large is-transparent heart"></i>
-</div>
+<script src="busy-screen.js"></script>
 </body>
 </html>

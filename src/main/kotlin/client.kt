@@ -1,128 +1,79 @@
+import koodies.dom.body
 import koodies.dom.classNames
 import koodies.dom.favicon
-import koodies.dom.removeChildren
+import koodies.dom.getOrCreate
+import koodies.dom.replaceChildren
 import koodies.time.Now
-import koodies.time.minus
-import koodies.time.minutes
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.delay
+import kotlinx.dom.clear
+import kotlinx.html.a
 import kotlinx.html.div
 import kotlinx.html.dom.append
-import kotlinx.html.h1
-import kotlinx.html.img
-import kotlinx.html.progress
-import kotlinx.html.small
-import kotlinx.html.span
-import kotlinx.html.style
-import kotlinx.serialization.ExperimentalSerializationApi
-import org.w3c.dom.Node
+import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.url.URL
-import kotlin.time.ExperimentalTime
 
 // TODO use relative url
-// TODO check if / why not working on midori
 // TODO put on raspy automatically
-@ExperimentalTime
-@ExperimentalSerializationApi
 suspend fun main() {
+    var ready = false
     window.onload = {
-        document.body?.querySelector("#root")?.run {
-            addStatus(Status(
-                name = "Having Lunch",
-                task = "ABC-123",
-                duration = 25.minutes,
-                timestamp = Now - 20.minutes,
-                email = "john.doe@example.com",
-            ))
-            addStatus(Status(
-                name = "Fighting Bowser",
-                task = "Level 2-1",
-                timestamp = Now - 45.5.minutes,
-            ))
-            addStatus(Status(
-                name = "Working on dashboard and other stuff",
-                task = "MOMA-686",
-                duration = 23.minutes,
-                email = "mail@bkahlert.com",
-            ))
-            addStatus(Status(
-                name = "Developing",
-            ))
-        }
-
-
-        document.body?.append {
-
-        }
+        ready = true
+        null
     }
 
-    delay(3000)
-    StatusUpdater.poll(URL("http://192.168.16.60:1880/status")) { status, online ->
-        if (online) {
-            document.body?.let { it.classNames += "online" }
-        } else {
-            document.body?.let { it.classNames -= "online" }
-        }
+    val url = URL(
+        if (window.location.port == "8080") "http://192.168.168.168:1880/status"
+//        if (window.location.port == "8080") "http://192.168.16.60:1880/status"
+        else "http://localhost:1880/status")
 
-        document.title = status.name
-        document.favicon = status.avatar.url
-        document.body?.querySelector("#root")?.run {
-            removeChildren()
-            addStatus(status)
-        }
+    while (!ready) {
+        delay(3000)
     }
-}
 
-@ExperimentalTime
-@ExperimentalSerializationApi
-fun Node.addStatus(status: Status) {
+    document.favicon = "https://bkahlert.com/wp-content/uploads/fbrfg/favicon.ico?v=oLJdMA927d"
 
-    append {
-        div("status nes-container is-centered") {
-            h1("status__task") {
-                span {
-                    +(status.task ?: "Status")
-                }
-            }
+    document.body().run {
+        loadingLog(url)
 
-            div("status__status") {
-                div("status__name nes-balloon from-right") {
-                    if (status.done == true) {
-                        span("nes-text") { +status.name }
-                    } else {
-                        span("nes-text is-error") { +status.name }
-                    }
-                }
-                img("avatar", status.avatar.url, "status__avatar nes-bcrikko nes-avatar is-large") {
-                    style = "image-rendering: pixelated;"
-                }
-            }
+        StatusUpdater.poll(url) { status, error ->
+            updateConnectionStatus(url, error)
 
-            if (status.totalSeconds != null) {
-                status.passedSeconds?.also { passedSeconds ->
-                    if (status.totalSeconds <= passedSeconds) {
-                        progress("status__passed nes-progress is-success") {
-                            max = "1"
-                            value = "1"
-                        }
-
-                        div("status__remaining") { +"Done" }
-                    } else {
-                        progress("status__passed nes-progress is-warning") {
-                            max = status.totalSeconds.toString()
-                            value = passedSeconds.toString()
-                        }
-
-                        status.formattedRemaining?.also {
-                            div("status__remaining") {
-                                small { +"remaining" }
-                                div { +it }
-                            }
-                        }
-                    }
+            status?.run {
+                document.title = name
+                document.favicon = avatar.url
+                root().run {
+                    clear()
+                    append { append() }
                 }
             }
         }
     }
 }
+
+fun HTMLElement.root(): Element = getOrCreate({ querySelector("#root") }) {
+    document.createElement("#root").also { prepend(it) }
+}
+
+fun HTMLElement.updateConnectionStatus(url: URL, error: Throwable? = null) {
+    error?.also {
+        classNames = classNames - "online"
+        loadingLog(url, error)
+    } ?: run { classNames = classNames + "online" }
+}
+
+private fun HTMLElement.loadingLog(url: URL, error: Throwable? = null): List<Element> =
+    replaceChildren(".loading__log") {
+        div("nes-text") {
+            +Now.toLocaleTimeString()
+            +"..."
+            +" "
+            a(url.href) { +url.href }
+            error?.also {
+                div("nes-text is-error") { +it.toString() }
+                div("nes-text") { +"Retrying..." }
+            }
+        }
+    }
