@@ -16,15 +16,17 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
     implementation("com.bkahlert:koodies:1.6.0-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("com.soywiz.korlibs.krypto:krypto-js:2.2.0")
+    implementation("com.soywiz.korlibs.krypto:krypto:2.2.0")
     {
         because("MD5")
     }
 
 //    implementation(npm("nes.css", ">= 2.3.0"))
+    implementation(kotlin("stdlib-js"))
 }
 
 tasks.withType<KotlinCompile> {

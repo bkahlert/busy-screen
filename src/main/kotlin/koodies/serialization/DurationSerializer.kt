@@ -1,7 +1,9 @@
+package koodies.serialization
+
 import koodies.time.minutes
 import koodies.time.seconds
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveKind.STRING
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -14,7 +16,7 @@ class DurationSerializer : KSerializer<Duration> {
 
     private val regex = Regex("P.*T(?:(?<minutes>\\d+)M)?(?:(?<seconds>\\d+)S)?")
 
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Duration", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Duration", STRING)
 
     override fun serialize(encoder: Encoder, value: Duration) {
         TODO("Not yet implemented")

@@ -1,8 +1,14 @@
+import koodies.serialization.DateSerializer
+import koodies.serialization.DurationSerializer
+import koodies.time.Now
+import koodies.time.minus
+import koodies.time.plus
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonNames
+import kotlin.js.Date
 import kotlin.time.Duration
 import kotlin.time.DurationUnit.MINUTES
 import kotlin.time.ExperimentalTime
@@ -23,20 +29,12 @@ data class Status constructor(
      * Optional total time the status is valid.
      */
     @Serializable(DurationSerializer::class)
-    @JsonNames("total-time")
-    val totalTime: Duration? = null,
+    val duration: Duration? = null,
     /**
      * Optional time that already passed.
      */
-    @Serializable(DurationSerializer::class)
-    @JsonNames("passed-time")
-    val passedTime: Duration? = null,
-    /**
-     * Optional remaining time.
-     */
-    @Serializable(DurationSerializer::class)
-    @JsonNames("remaining-time")
-    val remainingTime: Duration? = null,
+    @Serializable(DateSerializer::class)
+    val timestamp: Date? = null,
     /**
      * Optional eMail address to get the [Gravatar] for.
      */
@@ -48,29 +46,49 @@ data class Status constructor(
         fun fromJson(json: String): Status = format.decodeFromString(json)
     }
 
-    val totalMinutes
-        get() = totalTime?.inWholeMinutes
-            ?: if (passedTime != null && remainingTime != null) (passedTime + remainingTime).inWholeMinutes else null
+    val passed: Duration? get() = timestamp?.let { Now - it }
 
-    val passedMinutes
-        get() = passedTime?.inWholeMinutes
-            ?: if (totalTime != null && remainingTime != null) (totalTime - remainingTime).inWholeMinutes else null
+    val remaining: Duration?
+        get() = if (duration != null && timestamp != null) {
+            timestamp + duration - Now
+        } else {
+            null
+        }
 
-    val remainingMinutes
-        get() = remainingTime?.inWholeMinutes
-            ?: if (totalTime != null && passedTime != null) (totalTime - passedTime).inWholeMinutes else null
+    val done: Boolean? get() = if (duration != null) passed?.let { it >= duration } else null
 
-    val formattedTotalTime
-        get() = totalTime?.format()
-            ?: if (passedTime != null && remainingTime != null) (passedTime + remainingTime).format() else null
+    @Transient
+    val totalSeconds = duration?.inWholeSeconds
+    val passedSeconds get() = passed?.inWholeSeconds
+    val remainingSeconds get() = remaining?.inWholeSeconds
 
-    val formattedPassedTime
-        get() = passedTime?.format()
-            ?: if (totalTime != null && remainingTime != null) (totalTime - remainingTime).format() else null
-
-    val formattedRemainingTime
-        get() = remainingTime?.format()
-            ?: if (totalTime != null && passedTime != null) (totalTime - passedTime).format() else null
+    val formattedTotal get() = duration?.format()
+    val formattedPassed get() = passed?.format()
+    val formattedRemaining get() = remaining?.format()
 
     val avatar: Gravatar get() = Gravatar(email)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class.js != other::class.js) return false
+
+        other as Status
+
+        if (name != other.name) return false
+        if (task != other.task) return false
+        if (duration != other.duration) return false
+        if (timestamp?.getTime() != other.timestamp?.getTime()) return false
+        if (email != other.email) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + (task?.hashCode() ?: 0)
+        result = 31 * result + (duration?.hashCode() ?: 0)
+        result = 31 * result + (timestamp?.getTime()?.hashCode() ?: 0)
+        result = 31 * result + (email?.hashCode() ?: 0)
+        return result
+    }
 }

@@ -1,4 +1,7 @@
+import koodies.time.Now
+import koodies.time.minus
 import koodies.time.minutes
+import koodies.time.plus
 import koodies.time.seconds
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlin.test.Test
@@ -11,24 +14,35 @@ class StatusTest {
 
     @Test
     fun shouldDeserialize() {
+        val timestamp = Now - 37.minutes + 9.seconds
+
         val status = Status.fromJson("""
             {
               name: "busy",
               task: "ABC-123",
-              "total-time": "PT50M",
-              "passed-time": "PT37M9S",
-              "remaining-time": "771000",
+              duration: "PT50M",
+              timestamp: "${timestamp.toISOString()}",
               email: "john.doe@example.com"
             }
         """.trimIndent())
-        
+
         assertEquals(Status(
             name = "busy",
             task = "ABC-123",
-            totalTime = 50.minutes,
-            passedTime = 37.minutes + 9.seconds,
-            remainingTime = 12.minutes + 51.seconds,
+            duration = 50.minutes,
+            timestamp = timestamp,
             email = "john.doe@example.com",
         ), status)
+    }
+
+    @Test
+    fun shouldDeserializeMinimal() {
+        val status = Status.fromJson("""
+            {
+              name: "busy"
+            }
+        """.trimIndent())
+
+        assertEquals(Status(name = "busy"), status)
     }
 } 
