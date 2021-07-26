@@ -2,7 +2,9 @@ import koodies.serialization.DateSerializer
 import koodies.serialization.DurationSerializer
 import koodies.time.Now
 import koodies.time.minus
+import koodies.time.minutes
 import koodies.time.plus
+import koodies.time.seconds
 import kotlinx.html.TagConsumer
 import kotlinx.html.div
 import kotlinx.html.dom.append
@@ -19,6 +21,7 @@ import org.w3c.dom.Node
 import kotlin.js.Date
 import kotlin.time.Duration
 import kotlin.time.DurationUnit.MINUTES
+import kotlin.time.DurationUnit.SECONDS
 
 @Serializable
 data class Status(
@@ -100,7 +103,11 @@ data class Status(
                         remaining?.also {
                             div("status__remaining") {
                                 small { +"remaining" }
-                                div { +it.toString(MINUTES) }
+                                if (it >= 1.minutes) {
+                                    div { +(it + 30.seconds).toString(MINUTES) }
+                                } else {
+                                    div { +it.toString(SECONDS) }
+                                }
                             }
                         }
                     }

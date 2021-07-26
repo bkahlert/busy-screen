@@ -66,7 +66,7 @@ class StatusTest {
                 <progress class="status__passed nes-progress is-warning" max="3000" value="2211"></progress>
                 <div class="status__remaining">
                     <small>remaining</small>
-                    <div>13m</div>
+                    <div>14m</div>
                 </div>
             </div>
         """.trimIndent()
@@ -92,6 +92,22 @@ class StatusTest {
         createStatus(
             task = null,
         ).rendered.shouldContain("""<span>Status</span>""")
+    }
+
+    @Test
+    fun shouldRoundUpMinutes() {
+        createStatus(
+            duration = 61.seconds,
+            timestamp = Now,
+        ).rendered.shouldContain("""<div>2m</div>""")
+    }
+
+    @Test
+    fun shouldShowSecondsIfLessOrEqualToOneMinute() {
+        createStatus(
+            duration = 1.minutes,
+            timestamp = Now,
+        ).rendered.shouldContain("""<div>60s</div>""")
     }
 
     @Test

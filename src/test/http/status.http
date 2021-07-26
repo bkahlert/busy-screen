@@ -7,6 +7,17 @@ GET http://{{host}}:1880/status
 %}
 
 
+### sample status instructions
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "curl -X PUT --location \"http://{{host}}:1880/status\" -H \"Content-Type: application/json; charset=utf-8\" -d '{ \"name\": \"sample status\" }'",
+  "task": "GETTING STARTED"
+}
+
+
 ### complete status
 
 PUT http://{{host}}:1880/status
@@ -15,12 +26,11 @@ Content-Type: application/json; charset=utf-8
 {
   "name": "working",
   "task": "TICKET-123",
-  "duration": "PT30M",
-  "email": "john.doe@example.com"
+  "duration": "PT30M"
 }
 
 
-### about to complete
+### complete in 5s
 
 PUT http://{{host}}:1880/status
 Content-Type: application/json; charset=utf-8
@@ -28,8 +38,19 @@ Content-Type: application/json; charset=utf-8
 {
   "name": "finished",
   "task": "TICKET-123",
-  "duration": "PT5S",
-  "email": "john.doe@example.com"
+  "duration": "PT5S"
+}
+
+
+### complete in 2min
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "finished",
+  "task": "TICKET-123",
+  "duration": "PT2M"
 }
 
 
@@ -51,6 +72,6 @@ Content-Type: application/json; charset=utf-8
 {
   "name": "working",
   "task": "TICKET-123",
-  "duration": "PT30M",
-  "email": "bill.gates@microsoft.com"
+  "duration": "PT50M",
+  "email": "john.doe@example.com"
 }
