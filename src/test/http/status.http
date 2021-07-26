@@ -1,0 +1,77 @@
+GET http://{{host}}:1880/status
+
+> {%
+  client.test("should receive status", function () {
+    client.assert(response.status === 200)
+  })
+%}
+
+
+### sample status instructions
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "curl -X PUT --location \"http://{{host}}:1880/status\" -H \"Content-Type: application/json; charset=utf-8\" -d '{ \"name\": \"sample status\" }'",
+  "task": "GETTING STARTED"
+}
+
+
+### complete status
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "working",
+  "task": "TICKET-123",
+  "duration": "PT30M"
+}
+
+
+### complete in 5s
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "finished",
+  "task": "TICKET-123",
+  "duration": "PT5S"
+}
+
+
+### complete in 2min
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "finished",
+  "task": "TICKET-123",
+  "duration": "PT2M"
+}
+
+
+### minimal status
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "having a break"
+}
+
+
+###
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "working",
+  "task": "TICKET-123",
+  "duration": "PT50M",
+  "email": "john.doe@example.com"
+}
