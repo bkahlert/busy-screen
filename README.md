@@ -1,5 +1,12 @@
 # Busy Screen
 
+## Architecture
+
+- ImgCstmzr
+    - bkahlert/libguestfs
+        - pi / copy-out
+    - Koodies
+
 ## Useful Commands
 
 `yarn upgrade-interactive` to upgrade dependencies
