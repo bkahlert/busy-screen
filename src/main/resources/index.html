@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet"/>
     <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet"/>
+    <link href="dialog-polyfill.css" rel="stylesheet"/>
     <title>Loading...</title>
     <!--suppress CssUnusedSymbol -->
     <style>
@@ -180,6 +181,20 @@
             text-align: right;
         }
 
+        dialog {
+            position: fixed;
+            top: 50%;
+            transform: translate(0, -50%);
+        }
+
+        dialog::backdrop { /* native */
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        dialog + .backdrop { /* polyfill */
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
         .author {
             position: absolute;
             bottom: .55rem;
@@ -233,5 +248,10 @@ curl -X PUT --location "http://192.168.168.168:1880/status" \
     </a>
 </div>
 <script src="busy-screen.js"></script>
+<script src="dialog-polyfill.js"></script>
+<script>
+  const dialog = document.querySelector('dialog')
+  dialogPolyfill.registerDialog(dialog)
+</script>
 </body>
 </html>

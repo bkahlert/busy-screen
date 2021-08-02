@@ -1,10 +1,13 @@
 #!/bin/sh
 
+./gradlew build -x test
 BUILD_DIR="build/image"
 
 mkdir -p "${BUILD_DIR}"
 cp build/distributions/busy-screen.js "${BUILD_DIR}"
 cp build/distributions/index.html "${BUILD_DIR}"
+cp build/distributions/dialog-polyfill.css "${BUILD_DIR}"
+cp build/distributions/dialog-polyfill.js "${BUILD_DIR}"
 cp busy-screen.conf "${BUILD_DIR}"
 cp busy-screen.flow "${BUILD_DIR}"
 cp .env "${BUILD_DIR}"
@@ -17,8 +20,4 @@ docker run \
   -v /tmp/koodies:/tmp/koodies \
   -v "$(pwd)":"$(pwd)" \
   -w "$(pwd)" \
-  -e TERM="$TERM" \
-  -e TERM_PROGRAM="$TERM_PROGRAM" \
-  -e COLORTERM="$COLORTERM" \
-  imgcstmzr \
-  --config-file busy-screen.conf
+  bkahlert/kustomize --config-file busy-screen.conf --jaeger-hostname host.docker.internal

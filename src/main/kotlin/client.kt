@@ -16,6 +16,7 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.url.URL
 
 // TODO use relative url
+// TODO scale on small screens
 // TODO put on raspy automatically
 suspend fun main() {
     var ready = false
@@ -26,14 +27,12 @@ suspend fun main() {
 
     val url = URL(
         if (window.location.port == "8080") "http://192.168.168.168:1880/status"
-//        if (window.location.port == "8080") "http://192.168.16.60:1880/status"
+//        if (window.location.port == "8080") "http://192.168.16.69:1880/status"
         else "http://localhost:1880/status")
 
     while (!ready) {
         delay(3000)
     }
-
-    document.favicon = "https://bkahlert.com/wp-content/uploads/fbrfg/favicon.ico?v=oLJdMA927d"
 
     document.body().run {
         loadingLog(url)

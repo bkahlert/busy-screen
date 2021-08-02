@@ -73,5 +73,16 @@ Content-Type: application/json; charset=utf-8
   "name": "working",
   "task": "TICKET-123",
   "duration": "PT50M",
-  "email": "john.doe@example.com"
+  "email": "mail@bkahlert.com"
+}
+
+###
+
+PUT http://{{host}}:1880/status
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "in a meeting",
+  "duration": "PT1M",
+  "email": "mail@bkahlert.com"
 }
