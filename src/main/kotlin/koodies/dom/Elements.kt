@@ -1,10 +1,8 @@
 package koodies.dom
 
-import koodies.text.takeUnlessBlank
 import kotlinx.html.head
 import kotlinx.html.link
 import org.w3c.dom.Document
-import org.w3c.dom.Element
 import org.w3c.dom.HTMLBodyElement
 import org.w3c.dom.HTMLHeadElement
 import org.w3c.dom.HTMLLinkElement
@@ -34,13 +32,4 @@ var Document.favicon: String?
         head().getOrCreate({ querySelector("link[rel='shortcut icon']") as? HTMLLinkElement }) {
             link(value, "shortcut icon")
         }.href = value ?: ""
-    }
-
-/**
- * Provides the class names of this [Element] as a [Set].
- */
-var Element.classNames: Set<String>
-    get() = className.takeUnlessBlank()?.split(' ')?.toSet() ?: emptySet()
-    set(value) {
-        className = value.joinToString(" ")
     }

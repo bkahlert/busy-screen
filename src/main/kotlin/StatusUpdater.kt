@@ -4,12 +4,13 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.url.URL
+import kotlin.time.Duration
 
 object StatusUpdater {
 
     private var lastStatus: Status? = null
 
-    suspend fun poll(url: URL, callback: (Status?, Throwable?) -> Unit) {
+    suspend fun poll(url: URL, refreshRate: Duration, callback: (Status?, Throwable?) -> Unit) {
         coroutineScope {
             launch {
                 while (true) {
@@ -19,12 +20,12 @@ object StatusUpdater {
                             console.log("Fetched", it)
                             lastStatus = it
                             callback(it, null)
-                            delay(1000)
+                            delay(refreshRate)
                         },
                         {
                             console.error(it)
                             callback(lastStatus, it)
-                            delay(5000)
+                            delay(refreshRate * 5)
                         }
                     )
                 }

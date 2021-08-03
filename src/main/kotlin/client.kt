@@ -1,19 +1,21 @@
 import koodies.dom.body
-import koodies.dom.classNames
 import koodies.dom.favicon
-import koodies.dom.getOrCreate
 import koodies.dom.replaceChildren
+import koodies.dom.searchParams
+import koodies.parse
 import koodies.time.Now
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.delay
-import kotlinx.dom.clear
+import kotlinx.dom.addClass
+import kotlinx.dom.removeClass
 import kotlinx.html.a
 import kotlinx.html.div
-import kotlinx.html.dom.append
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
 import org.w3c.dom.url.URL
+import kotlin.time.Duration
 
 // TODO use relative url
 // TODO scale on small screens
@@ -25,10 +27,17 @@ suspend fun main() {
         null
     }
 
-    val url = URL(
-        if (window.location.port == "8080") "http://192.168.168.168:1880/status"
-//        if (window.location.port == "8080") "http://192.168.16.69:1880/status"
-        else "http://localhost:1880/status")
+    if (!window.location.searchParams.has("location")) {
+        window.location.href += "?location=http://localhost:1880/status"
+    }
+
+    val url = URL(window.location.searchParams.get("location") ?: error("location missing"))
+
+    if (!window.location.searchParams.has("refresh-rate")) {
+        window.location.href += "&refresh-rate=PT1S"
+    }
+
+    val refreshRate = Duration.parse(window.location.searchParams.get("refresh-rate") ?: error("location missing"))
 
     while (!ready) {
         delay(3000)
@@ -37,30 +46,30 @@ suspend fun main() {
     document.body().run {
         loadingLog(url)
 
-        StatusUpdater.poll(url) { status, error ->
+        StatusUpdater.poll(url, refreshRate) { status, error ->
             updateConnectionStatus(url, error)
 
-            status?.run {
-                document.title = name
-                document.favicon = avatar.url
-                root().run {
-                    clear()
-                    append { append() }
+            if (status != null) {
+                removeClass("init")
+                document.title = status.name
+                document.favicon = status.avatar.url
+                querySelectorAll(".status").asList().mapNotNull { it as HTMLElement }.forEach {
+                    status.update(it)
                 }
             }
         }
     }
 }
 
-fun HTMLElement.root(): Element = getOrCreate({ querySelector("#root") }) {
-    document.createElement("#root").also { prepend(it) }
-}
-
 fun HTMLElement.updateConnectionStatus(url: URL, error: Throwable? = null) {
     error?.also {
-        classNames = classNames - "online"
+        removeClass("online")
+        addClass("offline")
         loadingLog(url, error)
-    } ?: run { classNames = classNames + "online" }
+    } ?: run {
+        removeClass("offline")
+        addClass("online")
+    }
 }
 
 private fun HTMLElement.loadingLog(url: URL, error: Throwable? = null): List<Element> =

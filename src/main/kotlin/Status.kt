@@ -5,19 +5,15 @@ import koodies.time.minus
 import koodies.time.minutes
 import koodies.time.plus
 import koodies.time.seconds
-import kotlinx.html.TagConsumer
-import kotlinx.html.div
-import kotlinx.html.dom.append
-import kotlinx.html.h1
-import kotlinx.html.img
-import kotlinx.html.progress
-import kotlinx.html.small
-import kotlinx.html.span
+import kotlinx.dom.addClass
+import kotlinx.dom.removeClass
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.Node
+import org.w3c.dom.HTMLImageElement
+import org.w3c.dom.HTMLProgressElement
+import org.w3c.dom.asList
 import kotlin.js.Date
 import kotlin.time.Duration
 import kotlin.time.DurationUnit.MINUTES
@@ -66,56 +62,54 @@ data class Status(
 
     val avatar: Gravatar get() = Gravatar(email)
 
-    fun TagConsumer<HTMLElement>.append(): HTMLElement =
-        div("status nes-container is-centered") {
-            h1("status__task") {
-                span {
-                    +(task ?: "Status")
-                }
+    fun update(element: HTMLElement): HTMLElement {
+        when (done) {
+            true -> {
+                element.removeClass("status--busy")
+                element.addClass("status--done")
             }
-
-            div("status__status") {
-                div("status__name nes-balloon from-right") {
-                    if (done == true) {
-                        span("nes-text") { +name }
-                    } else {
-                        span("nes-text is-error") { +name }
-                    }
-                }
-                img("avatar", avatar.url, "status__avatar nes-avatar is-large")
+            false -> {
+                element.addClass("status--busy")
+                element.removeClass("status--done")
             }
-
-            duration?.inWholeSeconds?.let { totalSeconds ->
-                passed?.inWholeSeconds?.also { passedSeconds ->
-                    if (totalSeconds <= passedSeconds) {
-                        progress("status__passed nes-progress is-success") {
-                            max = "1"
-                            value = "1"
-                        }
-
-                        div("status__remaining") { +"Done" }
-                    } else {
-                        progress("status__passed nes-progress is-warning") {
-                            max = totalSeconds.toString()
-                            value = passedSeconds.toString()
-                        }
-
-                        remaining?.also {
-                            div("status__remaining") {
-                                small { +"remaining" }
-                                if (it >= 1.minutes) {
-                                    div { +(it + 30.seconds).toString(MINUTES) }
-                                } else {
-                                    div { +it.toString(SECONDS) }
-                                }
-                            }
-                        }
-                    }
-                }
+            else -> {
+                element.removeClass("status--busy")
+                element.removeClass("status--done")
             }
         }
 
-    fun appendTo(node: Node): List<HTMLElement> = node.append { append() }
+        element.querySelectorAll(".status__task").asList().forEach {
+            it.textContent = task ?: "Status"
+        }
+
+        element.querySelectorAll(".status__avatar").asList().mapNotNull { it as? HTMLImageElement }.forEach {
+            it.alt = avatar.email?.let { "Avatar for $it" } ?: "Default avatar"
+            it.src = avatar.url
+        }
+
+        element.querySelectorAll(".status__name .nes-text").asList().forEach {
+            it.textContent = name
+        }
+
+        element.querySelectorAll(".status__passed").asList().mapNotNull { it as? HTMLProgressElement }.forEach {
+            it.max = duration?.inWholeSeconds?.toDouble() ?: 0.0
+            it.value = passed?.inWholeSeconds?.toDouble() ?: 0.0
+        }
+
+        element.querySelectorAll(".status__remaining").asList().forEach {
+            remaining?.let { remaining ->
+                if (remaining >= 1.minutes || remaining <= (-1).minutes) {
+                    it.textContent = (remaining + 30.seconds).toString(MINUTES)
+                } else {
+                    it.textContent = remaining.toString(SECONDS)
+                }
+            } ?: run {
+                it.textContent = "-"
+            }
+        }
+
+        return element
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -134,10 +128,10 @@ data class Status(
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + (task?.hashCode() ?: 0)
-        result = 31 * result + (duration?.hashCode() ?: 0)
-        result = 31 * result + (timestamp?.getTime()?.hashCode() ?: 0)
-        result = 31 * result + (email?.hashCode() ?: 0)
+        result = 31 * result + task.hashCode()
+        result = 31 * result + duration.hashCode()
+        result = 31 * result + timestamp?.getTime().hashCode()
+        result = 31 * result + email.hashCode()
         return result
     }
 }
