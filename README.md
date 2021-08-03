@@ -1,9 +1,6 @@
 # Busy Screen
 
-Busy Screen is an application to display one's current status to colleagues, family, friends or whoever might disturb your focus.
-
-![loading screen on small device](docs/loading-small.gif)  
-**Loading screen on small device**
+Turns your Raspberry Pi into a status screen to show your colleagues, family, friends, or whoever might disturb you if you're busy or not.
 
 ```shell
 PUT http://192.168.168.168:1880/status
@@ -24,7 +21,16 @@ Content-Type: application/json; charset=utf-8
 ![no more being busy](docs/done.gif)  
 **No more being busy**
 
+## Installation
+
+ssss
+
+TODO screenshot of kustomize + link
+
 ## Responsiveness
+
+![loading screen on small device](docs/loading-small.gif)  
+**Loading screen on small device**
 
 ![loading screen on large device](docs/loading-large.gif)  
 **Loading screen on large device**

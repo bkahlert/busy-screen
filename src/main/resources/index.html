@@ -37,6 +37,10 @@
     <style>
         html, body {
             height: 100%;
+
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
 
         body.init {
@@ -68,6 +72,8 @@
 
         .loading__progress {
             position: relative;
+            color: #444444;
+            font-size: 5vmin;
 
             display: flex;
             flex-wrap: wrap;
@@ -78,13 +84,21 @@
         }
 
         .loading__progress > * {
-            margin-left: 1rem;
+            margin-left: 3vmin;
         }
 
-        .loading__progress .heart.is-half {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .loading__progress > :last-child {
+            margin-top: 3vmin;
+        }
+
+        .loading__heart {
+            width: 14vmin;
+            height: 14vmin;
+            background: url("data:image/gif;base64,R0lGODlhDwAOAPAAAERERAAAACH5BAEAAAEALAAAAAAPAA4AAAIgTICmCOvW4FEyLvtoovz2v33aJEomyGHZyKKn2KjwVwAAOw==") left center / 14vmin auto no-repeat;
+        }
+
+        .loading__heart--animated {
+            background-image: url("data:image/gif;base64,R0lGODlhDwAOAPIBAERERIQjAPIkJv///wAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFZAABACwAAAAADwAOAAACIEyApgjr1uBRMi77aKL89r992iRKJshh2ciip9io8FcAACH5BAVkAAAALAEAAQAHAAwAAAIUhA4pM2h9hIm0WmQVTdNpyU1hEhQAOw==")
         }
 
         .offline .loading__progress .heart.is-half {
@@ -131,12 +145,12 @@
             justify-content: center;
         }
 
-        .init .status {
-            opacity: 0;
-        }
-
         .offline .status {
             opacity: .2;
+        }
+
+        .init .status {
+            opacity: 0;
         }
 
         .status.status--busy {
@@ -176,9 +190,6 @@
             /*noinspection LongLine*/
             -webkit-mask: url(data:image/gif;base64,R0lGODlhQABAAIAAAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAABACwAAAAAQABAAAACaIxvoMvtD+NCtAaJs1a23w2GnFeJpkYm5xp27Ita8By59M0g+M73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Pr3RWW9VOxU9Tnyaf7venEij41FEAADs=);
             -webkit-mask-size: 100%;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
             width: 30vmin;
             height: auto;
         }
@@ -260,8 +271,8 @@
 
         .help {
             position: absolute;
-            bottom: 1.4vh;
-            left: 1.4vw;
+            bottom: 1.4vmin;
+            left: 1.4vmin;
             text-align: left;
             font-size: 3.4vmin;
         }
@@ -333,12 +344,9 @@
 
 <div class="loading">
     <div class="loading__progress">
-        <i style="position: relative;">
-            <i class="nes-icon is-large is-half heart"></i>
-            <i class="nes-icon is-large is-transparent heart"></i>
-        </i>
-        <i class="nes-icon is-large is-transparent heart"></i>
-        <i class="nes-icon is-large is-transparent heart"></i>
+        <i class="loading__heart loading__heart--animated"></i>
+        <i class="loading__heart"></i>
+        <i class="loading__heart"></i>
         <span>Loading...</span>
     </div>
     <div class="loading__log"></div>
