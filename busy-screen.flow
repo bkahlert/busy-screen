@@ -302,7 +302,7 @@
     "name": "",
     "statusCode": "200",
     "headers": {},
-    "x": 1640,
+    "x": 1620,
     "y": 700,
     "wires": []
   },
@@ -318,7 +318,7 @@
     "y": 640,
     "wires": [
       [
-        "e70660c7.026038"
+        "64db3985.3b4ec8"
       ]
     ]
   },
@@ -332,12 +332,12 @@
     "createDir": true,
     "overwriteFile": "true",
     "encoding": "utf8",
-    "x": 1030,
+    "x": 1330,
     "y": 640,
     "wires": [
       [
-        "596f7bdc.8d6284",
-        "9eb81e11.b5a25"
+        "9eb81e11.b5a25",
+        "e8b81718.5a35f"
       ]
     ]
   },
@@ -368,7 +368,7 @@
     "z": "d3d3a738.50ff6",
     "name": "",
     "env": [],
-    "x": 1350,
+    "x": 1310,
     "y": 460,
     "wires": []
   },
@@ -418,8 +418,8 @@
     "z": "d3d3a738.50ff6",
     "name": "",
     "env": [],
-    "x": 1350,
-    "y": 500,
+    "x": 1310,
+    "y": 520,
     "wires": []
   },
   {
@@ -640,7 +640,7 @@
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 780,
+    "x": 640,
     "y": 760,
     "wires": [
       [
@@ -799,16 +799,6 @@
     "wires": [
       []
     ]
-  },
-  {
-    "id": "54e86030.b9acb8",
-    "type": "comment",
-    "z": "d3d3a738.50ff6",
-    "name": "README",
-    "info": "# Useful Links\n\n## Show Your Status\nhttp://192.168.16.57:1880/status\n\n## Change Your Status\nhttp://192.168.16.57:1880/status",
-    "x": 1080,
-    "y": 240,
-    "wires": []
   },
   {
     "id": "34891022.13219",
@@ -982,11 +972,12 @@
     "property": "payload",
     "action": "obj",
     "pretty": false,
-    "x": 990,
+    "x": 1090,
     "y": 580,
     "wires": [
       [
-        "2efd4943.f8c5f6"
+        "3381a67b.9f5e9a",
+        "292396af.90e33a"
       ]
     ]
   },
@@ -998,25 +989,7 @@
     "property": "payload",
     "action": "obj",
     "pretty": false,
-    "x": 990,
-    "y": 700,
-    "wires": [
-      [
-        "596f7bdc.8d6284"
-      ]
-    ]
-  },
-  {
-    "id": "596f7bdc.8d6284",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "set timestamp",
-    "func": "const Fs=global.get('fs');\n\nfunction lastUpdated(file) {  \n  const { mtime, ctime } = Fs.statSync(file)\n  return mtime\n}\n\nmsg.payload = msg.payload || {}\nmsg.payload.timestamp = lastUpdated(\"/data/status.json\")\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload.timestamp});\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "x": 1300,
+    "x": 1090,
     "y": 700,
     "wires": [
       [
@@ -1034,30 +1007,11 @@
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 1300,
+    "x": 1060,
     "y": 760,
     "wires": [
       [
         "b2b5b199.ad922"
-      ]
-    ]
-  },
-  {
-    "id": "2efd4943.f8c5f6",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "set timestamp",
-    "func": "const Fs=global.get('fs');\n\nfunction lastUpdated(file) {  \n  const { mtime, ctime } = Fs.statSync(file)\n  return mtime\n}\n\nmsg.payload = msg.payload || {}\nmsg.payload.timestamp = lastUpdated(\"/data/status.json\")\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload.timestamp});\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "x": 1300,
-    "y": 580,
-    "wires": [
-      [
-        "292396af.90e33a",
-        "3381a67b.9f5e9a"
       ]
     ]
   },
@@ -1068,7 +1022,7 @@
     "name": "",
     "statusCode": "500",
     "headers": {},
-    "x": 1640,
+    "x": 1620,
     "y": 760,
     "wires": []
   },
@@ -1080,7 +1034,7 @@
     "property": "payload",
     "action": "obj",
     "pretty": false,
-    "x": 990,
+    "x": 770,
     "y": 760,
     "wires": [
       [
@@ -1104,7 +1058,7 @@
     "randomLast": "5",
     "randomUnits": "seconds",
     "drop": false,
-    "x": 1480,
+    "x": 1780,
     "y": 640,
     "wires": [
       [
@@ -1122,7 +1076,7 @@
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 1280,
+    "x": 1620,
     "y": 640,
     "wires": [
       [
@@ -1142,10 +1096,28 @@
     "url": "",
     "persist": false,
     "authType": "",
-    "x": 1730,
+    "x": 1930,
     "y": 640,
     "wires": [
       []
+    ]
+  },
+  {
+    "id": "64db3985.3b4ec8",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "set timestamp",
+    "func": "function parseIso8601(date) {\n    var numericKeys = [ 1, 4, 5, 6, 7, 10, 11 ];\n    var timestamp, struct, minutesOffset = 0;\n\n    // ES5 §15.9.4.2 states that the string should attempt to be parsed as a Date Time String Format string\n    // before falling back to any implementation-specific date parsing, so that’s what we do, even if native\n    // implementations could be faster\n    //              1 YYYY                2 MM       3 DD           4 HH    5 mm       6 ss        7 msec        8 Z 9 ±    10 tzHH    11 tzmm\n    if ((struct = /^(\\d{4}|[+\\-]\\d{6})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:T(\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.(\\d{3}))?)?(?:(Z)|([+\\-])(\\d{2})(?::(\\d{2}))?)?)?$/.exec(date))) {\n        // avoid NaN timestamps caused by “undefined” values being passed to Date.UTC\n        for (var i = 0, k; (k = numericKeys[i]); ++i) {\n            struct[k] = +struct[k] || 0;\n        }\n\n        // allow undefined days and months\n        struct[2] = (+struct[2] || 1) - 1;\n        struct[3] = +struct[3] || 1;\n\n        if (struct[8] !== 'Z' && struct[9] !== undefined) {\n            minutesOffset = struct[10] * 60 + struct[11];\n\n            if (struct[9] === '+') {\n                minutesOffset = 0 - minutesOffset;\n            }\n        }\n\n        timestamp = new Date(struct[1], struct[2], struct[3], struct[4], struct[5] + minutesOffset, struct[6], struct[7]);\n    } else {\n        timestamp = Date.parse ? Date.parse(date) : NaN;\n    }\n\n    return timestamp;\n}\n\nmsg.payload = msg.payload || {}\ntry {\n    msg.payload.timestamp = parseIso8601(msg.payload.timestamp)\n    node.status({fill:\"green\",shape:\"dot\",text:msg.payload.timestamp})\n} catch(e) {\n    msg.payload.timestamp = Date()\n    node.status({fill:\"yellow\",shape:\"dot\",text:e.message});\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 1060,
+    "y": 640,
+    "wires": [
+      [
+        "e70660c7.026038"
+      ]
     ]
   }
 ]
