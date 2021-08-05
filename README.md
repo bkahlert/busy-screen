@@ -84,6 +84,8 @@ You can either connect your device via:
 Avahi is installed on your Raspberry Pi with all relevant services advertised in your network. You can use any zeroconf / mDNS / Bonjour client to discover your
 device.
 
+![iNet Network Scanner](docs/bonjour.png)
+
 Alternatively you can login to your router and find out what new devices received a dynamic IP addresss from it.
 
 ### Install Manually / Locally
