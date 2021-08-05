@@ -1,3 +1,5 @@
+![Two Kaomoji shouting "Busy?!"](docs/banner.svg)
+
 # Busy Screen
 
 Turns your Raspberry Pi into a status screen to show your colleagues, family, friends, or whoever might disturb you if you're busy or not.
@@ -73,7 +75,7 @@ You can either connect your device via:
     - You can provide the corresponding WPA supplicant file with [busy-screen.conf](busy-screen.conf).
 - USB
     - [busy-screen.conf](busy-screen.conf) configures the Raspberry Pi to provide ethernet access.
-    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `busy-{{username}}` with
+    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen of {{username}}` with
       IP `192.168.168.167/28`.
     - The IP of your Raspberry Pi is `192.168.168.168`.
 
