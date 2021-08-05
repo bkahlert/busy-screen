@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./gradlew build -x test
+env ORG_GRADLE_PROJECT_isProduction=true ./gradlew build -x test
 BUILD_DIR="build/image"
 
 mkdir -p "${BUILD_DIR}"
