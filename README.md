@@ -23,7 +23,7 @@ Content-Type: application/json; charset=utf-8
 
 ## Installation
 
-This application consists of backend implemented as a [Node RED flow](busy-screen.flow) and a frontend implemented with Kotlin JS.
+This application consists of a backend implemented as a [Node RED flow](busy-screen.flow) and a frontend implemented with Kotlin JS.
 
 Consequently, you'll need a Node RED installation and a webserver to provide access to the frontend.
 
@@ -50,6 +50,40 @@ After 1-2 automatic reboots the loading screen shows up.
 ![loading screen](docs/loading-small.gif)  
 **Loading screen**
 
+A few moments later the backend can receive status updates, like this one:
+
+```shell
+curl -X PUT --location "http://192.168.168.168:1880/status" \
+     -H "Content-Type: application/json; charset=utf-8" \
+     -d "{
+           \"name\": \"finishing soon\",
+           \"task\": \"TICKET-123\",
+           \"duration\": \"PT2M\"
+         }"
+```
+
+You can find further examples in [busy-screen.status.http](busy-screen.status.http).
+
+#### Connectivity
+
+You can either connect your device via:
+
+- Ethernet
+- Wifi
+    - You can provide the corresponding WPA supplicant file with [busy-screen.conf](busy-screen.conf).
+- USB
+    - [busy-screen.conf](busy-screen.conf) configures the Raspberry Pi to provide ethernet access.
+    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `busy-{{username}}` with
+      IP `192.168.168.167/28`.
+    - The IP of your Raspberry Pi is `192.168.168.168`.
+
+#### Discovery
+
+Avahi is installed on your Raspberry Pi with all relevant services advertised in your network. You can use any zeroconf / mDNS / Bonjour client to discover your
+device.
+
+Alternatively you can login to your router and find out what new devices received a dynamic IP addresss from it.
+
 ### Install Manually / Locally
 
 The manual installation consists of the following steps:
@@ -61,6 +95,16 @@ The manual installation consists of the following steps:
 5) open the published frontend  
    (automatically opened if you use the `npx` command above)
 6) change the `location` query parameter in the URL to the one of your Node RED installation
+
+## Customization
+
+Busy Screen can be customized / extended in three ways:
+
+1) The frontend is located at [src/main/kotlin](src/main/kotlin). You can make any changes you like to it and run the [installation](#installation) afterwards.
+2) The Node RED flow can be freely changed as you like. In order to customize it, just edit it inside of Node RED. If you followed
+   the [installation](#installation) steps above, you already have a running installation.
+3) You can customize the way your Raspberry Pi image is created. The image creation is done with the image customization
+   tool [Kustomize](https://github.com/bkahlert/kustomize). The actual configuration is stored in [busy-screen.conf](busy-screen.conf).
 
 ## Responsive Design
 
@@ -77,17 +121,6 @@ The manual installation consists of the following steps:
 
 ![loading screen with error](docs/loading-error.gif)  
 **Loading screen with error message**
-
-## Architecture
-
-- ImgCstmzr
-    - bkahlert/libguestfs
-        - pi / copy-out
-    - Koodies
-
-## Useful Commands
-
-`yarn upgrade-interactive` to upgrade dependencies
 
 ## To-Dos
 
