@@ -49,8 +49,7 @@ The installation consists of the following steps:
 
 After 1-2 automatic reboots the loading screen shows up.
 
-![loading screen](docs/loading-small.gif)  
-**Loading screen**
+![Loading screen on Raspberry Pi](docs/raspberry-loading.jpg)
 
 A few moments later the backend can receive status updates, like this one:
 
@@ -59,10 +58,11 @@ curl -X PUT --location "http://192.168.168.168:1880/status" \
      -H "Content-Type: application/json; charset=utf-8" \
      -d "{
            \"name\": \"finishing soon\",
-           \"task\": \"TICKET-123\",
            \"duration\": \"PT2M\"
          }"
 ```
+
+![Busy screen on Raspberry Pi](docs/raspberry-busy.jpg)
 
 You can find further examples in [busy-screen.status.http](busy-screen.status.http).
 
@@ -109,6 +109,9 @@ Busy Screen can be customized / extended in three ways:
    tool [Kustomize](https://github.com/bkahlert/kustomize). The actual configuration is stored in [busy-screen.conf](busy-screen.conf).
 
 ## Responsive Design
+
+![loading screen on small device](docs/loading-small.gif)  
+**Loading screen on small device**
 
 ![loading screen on large device](docs/loading-large.gif)  
 **Loading screen on large device**
