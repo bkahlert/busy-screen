@@ -20,7 +20,7 @@ dependencies {
 //    testImplementation("io.kotest:kotest-framework-engine-js:4.6.1")
 //    testImplementation("io.kotest:kotest-assertions-core-js:4.6.1")
 
-    implementation("com.bkahlert.koodies:koodies:1.9.6")
+    implementation("com.bkahlert.koodies:koodies:1.9.7")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
@@ -28,6 +28,7 @@ dependencies {
         because("MD5")
     }
 
+    implementation(npm("dialog-polyfill", ">= 0.5.6"))
 //    implementation(npm("nes.css", ">= 2.3.0"))
 }
 

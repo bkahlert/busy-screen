@@ -23,14 +23,46 @@ Content-Type: application/json; charset=utf-8
 
 ## Installation
 
-ssss
+This application consists of backend implemented as a [Node RED flow](busy-screen.flow) and a frontend implemented with Kotlin JS.
 
-TODO screenshot of kustomize + link
+Consequently, you'll need a Node RED installation and a webserver to provide access to the frontend.
 
-## Responsiveness
+### Install on a Raspberry Pi
 
-![loading screen on small device](docs/loading-small.gif)  
-**Loading screen on small device**
+The Raspberry Pi is the recommended way to run Busy Screen which has been successfully tested on a:
+
+- Raspberry Pi 1 Model B+
+- Raspberry Pi Zero / W / WH
+- Raspberry Pi 4
+
+The installation consists of the following steps:
+
+1) Create an image using `./busy-screen.build.sh`  
+   ![Creation of the image](docs/installation.png)
+2) Flash your memory card with the just created image
+3) Boot your Raspberry Pi with the memory card **and a working internet connection**
+    - Some steps such as the Docker installation must be done on the actual device.
+    - Therefore, an internet connection is needed on first boot.
+    - The easiest way to provide internet access is using an ethernet cable.
+
+After 1-2 automatic reboots the loading screen shows up.
+
+![loading screen](docs/loading-small.gif)  
+**Loading screen**
+
+### Install Manually / Locally
+
+The manual installation consists of the following steps:
+
+1) [Install Node RED](https://nodered.org/docs/getting-started/)
+2) Import [busy-screen.flow](busy-screen.flow) to Node RED
+3) Build the frontend with `./gradlew build -x test`
+4) Set up an HTTP server to publish the [just built frontend](build/distributions), e.g. using `npx http-server -c -p 80`
+5) open the published frontend  
+   (automatically opened if you use the `npx` command above)
+6) change the `location` query parameter in the URL to the one of your Node RED installation
+
+## Responsive Design
 
 ![loading screen on large device](docs/loading-large.gif)  
 **Loading screen on large device**

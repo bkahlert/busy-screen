@@ -7,14 +7,11 @@ cp demo.conf "${BUILD_DIR}"
 
 cd "${BUILD_DIR}" || exit 1
 
-docker run \
-  --rm -it \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /tmp/koodies:/tmp/koodies \
-  -v "$(pwd)":"$(pwd)" \
-  -w "$(pwd)" \
-  -e TERM="$TERM" \
-  -e TERM_PROGRAM="$TERM_PROGRAM" \
-  -e COLORTERM="$COLORTERM" \
-  imgcstmzr \
-  --config-file demo.conf
+docker run --rm -it \
+           -v /var/run/docker.sock:/var/run/docker.sock \
+           -v /tmp/koodies:/tmp/koodies \
+           -v "$(pwd)":"$(pwd)" \
+           -w "$(pwd)" \
+           bkahlert/kustomize \
+           --config-file demo.conf \
+           --jaeger-hostname host.docker.internal
