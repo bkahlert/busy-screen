@@ -3,14 +3,13 @@
 env ORG_GRADLE_PROJECT_isProduction=true ./gradlew build -x test
 BUILD_DIR="build/image"
 
-mkdir -p "${BUILD_DIR}"
-cp build/distributions/busy-screen.js "${BUILD_DIR}"
-cp build/distributions/index.html "${BUILD_DIR}"
-cp build/distributions/dialog-polyfill.css "${BUILD_DIR}"
-cp build/distributions/dialog-polyfill.js "${BUILD_DIR}"
-cp busy-screen.conf "${BUILD_DIR}"
-cp busy-screen.flow "${BUILD_DIR}"
-cp .env "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}" \
+ && cp busy-screen.conf "${BUILD_DIR}" \
+ && cp .env "${BUILD_DIR}" \
+ && cp -r build/distributions/ "${BUILD_DIR}/public"
+
+mkdir -p "${BUILD_DIR}/node-red" \
+ && cp busy-screen.flow "${BUILD_DIR}/node-red/flows.json"
 
 cd "${BUILD_DIR}" || exit 1
 
