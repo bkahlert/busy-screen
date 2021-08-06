@@ -16,12 +16,12 @@
     justify-content: center;
 }
 
-.offline .status {
-    opacity: .2;
+.online .status {
+    opacity: 1;
 }
 
-.init .status {
-    opacity: 0;
+.offline .status {
+    opacity: .2;
 }
 
 .status.status--busy {
@@ -81,6 +81,14 @@
 
 .status__passed {
     margin: 4vh 0 0 0;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 1.5s;
+}
+
+.status--busy .status__passed,
+.status--done .status__passed {
+    opacity: 1;
 }
 
 .status__passed::-webkit-progress-value {

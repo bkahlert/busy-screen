@@ -8,9 +8,13 @@
         html:not(.ready) {
             opacity: 0;
         }
+
+        .init .status {
+            opacity: 0 !important;
+        }
     </style>
 </head>
-<body class="init">
+<body class="init" style="margin-bottom: 0 !important;">
 <div class="status nes-container is-centered">
     <h1>
         <span class="status__task">${task}</span>

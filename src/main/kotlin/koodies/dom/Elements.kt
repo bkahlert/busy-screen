@@ -37,7 +37,6 @@ fun Document.head(): HTMLHeadElement = getOrCreate({ head }) {
  */
 fun HTMLHeadElement.appendCss(block: CSSBuilder.() -> Unit) {
     val css = CSSBuilder().apply(block).toString()
-    console.info(css)
     append {
         style { +css }
     }

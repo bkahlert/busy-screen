@@ -1,6 +1,7 @@
 import dependencies.appendNEScss
 import dependencies.appendPressStart2P
 import dependencies.dialog.appendDialogPolyfill
+import io.ktor.http.Url
 import koodies.dom.body
 import koodies.dom.favicon
 import koodies.dom.replaceChildren
@@ -18,7 +19,6 @@ import kotlinx.html.div
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
-import org.w3c.dom.url.URL
 import status.StatusUpdater
 import kotlin.time.Duration
 
@@ -43,7 +43,7 @@ suspend fun main() {
         window.location.href += "?location=http://localhost:1880/status"
     }
 
-    val url = URL(window.location.searchParams.get("location") ?: error("location missing"))
+    val url = Url(window.location.searchParams.get("location") ?: error("location missing"))
 
     if (!window.location.searchParams.has("refresh-rate")) {
         window.location.href += "&refresh-rate=PT1S"
@@ -58,22 +58,22 @@ suspend fun main() {
     document.body().run {
         loadingLog(url)
 
-        StatusUpdater.poll(url, refreshRate) { status, error ->
+        StatusUpdater(url, refreshRate) { status, error ->
             updateConnectionStatus(url, error)
 
             if (status != null) {
                 removeClass("init")
                 document.title = status.name
                 document.favicon = status.avatar.url
-                querySelectorAll(".status").asList().mapNotNull { it as HTMLElement }.forEach {
+                querySelectorAll(".status").asList().mapNotNull { it as? HTMLElement }.forEach {
                     status.update(it)
                 }
             }
-        }
+        }.poll()
     }
 }
 
-fun HTMLElement.updateConnectionStatus(url: URL, error: Throwable? = null) {
+fun HTMLElement.updateConnectionStatus(url: Url, error: Throwable? = null) {
     error?.also {
         removeClass("online")
         addClass("offline")
@@ -84,13 +84,13 @@ fun HTMLElement.updateConnectionStatus(url: URL, error: Throwable? = null) {
     }
 }
 
-private fun HTMLElement.loadingLog(url: URL, error: Throwable? = null): List<Element> =
+private fun HTMLElement.loadingLog(url: Url, error: Throwable? = null): List<Element> =
     replaceChildren(".loading__log") {
         div("nes-text") {
             +Now.toLocaleTimeString()
             +"..."
             +" "
-            a(url.href) { +url.href }
+            a(url.toString()) { +url.toString() }
             error?.also {
                 div("nes-text is-error") { +it.toString() }
                 div("nes-text") { +"Retrying..." }

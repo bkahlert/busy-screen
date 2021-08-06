@@ -94,20 +94,23 @@ data class Status(
         }
 
         element.querySelectorAll(".status__passed").asList().mapNotNull { it as? HTMLProgressElement }.forEach {
-            it.max = duration?.inWholeSeconds?.toDouble() ?: 0.0
-            it.value = passed?.inWholeSeconds?.toDouble() ?: 0.0
+            val max = duration?.inWholeSeconds?.toDouble() ?: 0.0
+            val value = passed?.inWholeSeconds?.toDouble() ?: 0.0
+            it.max = max
+            it.value = value.coerceAtMost(max)
         }
 
         element.querySelectorAll(".status__remaining").asList().forEach {
-            remaining?.let { remaining ->
+            val content = remaining?.let { remaining ->
                 if (remaining >= 1.minutes || remaining <= (-1).minutes) {
-                    it.textContent = (remaining + 30.seconds).toString(MINUTES)
+                    (remaining + 30.seconds).toString(MINUTES)
                 } else {
-                    it.textContent = remaining.toString(SECONDS)
+                    remaining.toString(SECONDS)
                 }
             } ?: run {
-                it.textContent = "-"
+                "-"
             }
+            if (it.textContent != content) it.textContent = content
         }
 
         return element
