@@ -20,16 +20,21 @@ dependencies {
 //    testImplementation("io.kotest:kotest-framework-engine-js:4.6.1")
 //    testImplementation("io.kotest:kotest-assertions-core-js:4.6.1")
 
-    implementation("com.bkahlert.koodies:koodies:1.9.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
-    implementation("com.soywiz.korlibs.krypto:krypto:2.2.0") {
-        because("MD5")
-    }
+    // https://github.com/JetBrains/kotlin-wrappers
+    fun kotlinWrapper(target: String): String = "org.jetbrains.kotlin-wrappers:kotlin-$target"
+    val kotlinWrappersVersion = "0.0.1-pre.222-kotlin-1.5.21"
+    implementation(enforcedPlatform(kotlinWrapper("wrappers-bom:${kotlinWrappersVersion}")))
+    implementation(kotlinWrapper("extensions")) { because("require") }
+    implementation(kotlinWrapper("css")) { because("CSSBuilder") }
 
-    implementation(npm("dialog-polyfill", ">= 0.5.6"))
-//    implementation(npm("nes.css", ">= 2.3.0"))
+    implementation("com.bkahlert.koodies:koodies:1.9.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3") { because("HTML builder") }
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1") { because("backend polling") }
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") { because("Status deserialization") }
+    implementation("com.soywiz.korlibs.krypto:krypto:2.3.1") { because("MD5") }
+
+    implementation(npm("nes.css", ">= 2.3.0")) { because("retro CSS") }
+    implementation(npm("dialog-polyfill", ">= 0.5.6")) { because("help dialog") }
 }
 
 tasks.withType<Kotlin2JsCompile> {
@@ -42,15 +47,14 @@ tasks.withType<Kotlin2JsCompile> {
     }
 }
 
-tasks {
-    // Tests
-    withType<Test> {
-        useJUnitPlatform()
-    }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 kotlin {
     js(IR) {
+        moduleName = "busy-screen"
         binaries.executable()
         browser {
             commonWebpackConfig {

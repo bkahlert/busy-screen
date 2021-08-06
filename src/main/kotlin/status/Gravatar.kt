@@ -1,3 +1,5 @@
+package status
+
 import com.soywiz.krypto.md5
 
 data class Gravatar(

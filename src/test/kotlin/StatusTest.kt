@@ -3,6 +3,7 @@ import koodies.time.minus
 import koodies.time.minutes
 import koodies.time.plus
 import koodies.time.seconds
+import status.Status
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

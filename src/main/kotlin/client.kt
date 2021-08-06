@@ -1,9 +1,13 @@
+import dependencies.appendNEScss
+import dependencies.appendPressStart2P
+import dependencies.dialog.appendDialogPolyfill
 import koodies.dom.body
 import koodies.dom.favicon
 import koodies.dom.replaceChildren
 import koodies.dom.searchParams
 import koodies.parse
 import koodies.time.Now
+import kotlinext.js.require
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.delay
@@ -15,15 +19,23 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import org.w3c.dom.url.URL
+import status.StatusUpdater
 import kotlin.time.Duration
 
 // TODO use relative url
-// TODO scale on small screens
 // TODO put on raspy automatically
 suspend fun main() {
+    document.appendPressStart2P()
+    document.appendNEScss()
+    document.appendDialogPolyfill()
+    require("./styles/base.css")
+    require("./styles/loading.css")
+    require("./styles/status.css")
+
     var ready = false
     window.onload = {
         ready = true
+        document.documentElement?.addClass("ready")
         null
     }
 

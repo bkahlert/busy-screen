@@ -1,3 +1,5 @@
+package status
+
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope

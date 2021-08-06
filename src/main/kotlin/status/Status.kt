@@ -1,3 +1,5 @@
+package status
+
 import koodies.serialization.DateSerializer
 import koodies.serialization.DurationSerializer
 import koodies.time.Now
