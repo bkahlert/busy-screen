@@ -9,14 +9,14 @@
   {
     "id": "86cf6ae1.86e16",
     "type": "tab",
-    "label": "Flow 1",
-    "disabled": false,
+    "label": "Playground",
+    "disabled": true,
     "info": ""
   },
   {
     "id": "160680de.88ba5f",
     "type": "tab",
-    "label": "Flow 1",
+    "label": "Hue",
     "disabled": true,
     "info": ""
   },
@@ -327,12 +327,12 @@
     "type": "file",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "filename": "/data/status.json",
+    "filename": "busy-screen/status.json",
     "appendNewline": true,
     "createDir": true,
     "overwriteFile": "true",
     "encoding": "utf8",
-    "x": 1330,
+    "x": 1350,
     "y": 640,
     "wires": [
       [
@@ -918,9 +918,9 @@
     "type": "watch",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "files": "/data/status.json",
+    "files": "busy-screen/status.json",
     "recursive": "",
-    "x": 520,
+    "x": 540,
     "y": 580,
     "wires": [
       [
@@ -933,12 +933,13 @@
     "type": "file in",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "filename": "/data/status.json",
+    "filename": "busy-screen/status.json",
     "format": "utf8",
     "chunk": false,
     "sendError": false,
     "encoding": "none",
-    "x": 810,
+    "allProps": false,
+    "x": 830,
     "y": 700,
     "wires": [
       [
@@ -1117,6 +1118,68 @@
     "wires": [
       [
         "e70660c7.026038"
+      ]
+    ]
+  },
+  {
+    "id": "c94ccf9a.601d48",
+    "type": "http response",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "statusCode": "200",
+    "headers": {},
+    "x": 1620,
+    "y": 980,
+    "wires": []
+  },
+  {
+    "id": "64bbe43.868cf9c",
+    "type": "http in",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "url": "/addresses",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 520,
+    "y": 980,
+    "wires": [
+      [
+        "5057bd04.ae31e4"
+      ]
+    ]
+  },
+  {
+    "id": "76de94c8.591b7c",
+    "type": "json",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "property": "payload",
+    "action": "obj",
+    "pretty": false,
+    "x": 1090,
+    "y": 980,
+    "wires": [
+      [
+        "c94ccf9a.601d48"
+      ]
+    ]
+  },
+  {
+    "id": "5057bd04.ae31e4",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "func": "msg.payload = {\n    \"addresses\": [\"http://192.168.16.68:1880\",\"http://192.168.16.69:1880\",\"http://192.168.16.72:1880\"]\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 780,
+    "y": 980,
+    "wires": [
+      [
+        "76de94c8.591b7c"
       ]
     ]
   }

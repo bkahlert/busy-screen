@@ -6,7 +6,7 @@ BUILD_DIR="build/image"
 mkdir -p "${BUILD_DIR}" \
  && cp busy-screen.conf "${BUILD_DIR}" \
  && cp .env "${BUILD_DIR}" \
- && cp -r build/distributions/ "${BUILD_DIR}/public"
+ && cp -r build/distributions/ "${BUILD_DIR}/public_html"
 
 mkdir -p "${BUILD_DIR}/node-red" \
  && cp busy-screen.flow "${BUILD_DIR}/node-red/flows.json"

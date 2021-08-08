@@ -6,6 +6,7 @@ import io.ktor.client.features.websocket.DefaultClientWebSocketSession
 import io.ktor.client.features.websocket.WebSockets
 import io.ktor.client.features.websocket.webSocket
 import io.ktor.http.HttpMethod
+import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.readText
@@ -19,15 +20,16 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration
 
 class StatusUpdater(
-    private val url: Url,
+    url: Url,
     private val refreshRate: Duration,
     private val callback: (Status?, Throwable?) -> Unit,
 ) {
+    private val url = URLBuilder(url).apply { path("status") }.build()
 
     private var lastStatus: Status? = null
     private var lastError: Throwable? = null
 
-    suspend fun poll() {
+    suspend fun start() {
         while (true) {
             coroutineScope {
                 pollForStatusUpdate()

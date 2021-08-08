@@ -42,13 +42,9 @@ The installation consists of the following steps:
 1) Create an image using `./busy-screen.build.sh`  
    ![Creation of the image](docs/installation.png)
 2) Flash your memory card with the just created image
-3) Boot your Raspberry Pi with the memory card **and a working internet connection**
-    - Some steps such as the Docker installation must be done on the actual device.
-    - Therefore, an internet connection is needed on first boot.
-    - The easiest way to provide internet access is using an ethernet cable.
+3) Boot your Raspberry Pi with the memory card
 
 After 1-2 automatic reboots the loading screen shows up.
-
 ![Loading screen on Raspberry Pi](docs/raspberry-loading.jpg)
 
 A few moments later the backend can receive status updates, like this one:

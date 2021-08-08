@@ -29,7 +29,6 @@ Content-Type: application/json; charset=utf-8
   "duration": "PT30M"
 }
 
-
 ### complete in 5s
 
 PUT http://{{host}}:1880/status

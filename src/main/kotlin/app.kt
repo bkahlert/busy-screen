@@ -2,10 +2,13 @@ import dependencies.appendNEScss
 import dependencies.appendPressStart2P
 import dependencies.dialog.appendDialogPolyfill
 import io.ktor.http.Url
+import koodies.Addresses
 import koodies.dom.body
 import koodies.dom.favicon
+import koodies.dom.hashParams
+import koodies.dom.params
+import koodies.dom.queryParams
 import koodies.dom.replaceChildren
-import koodies.dom.searchParams
 import koodies.parse
 import koodies.time.Now
 import kotlinext.js.require
@@ -25,6 +28,23 @@ import kotlin.time.Duration
 // TODO use relative url
 // TODO put on raspy automatically
 suspend fun main() {
+    window.location.params.toMutableMap().also { params ->
+        val hashParams = window.location.hashParams.toMutableMap()
+        if (!params.containsKey("location")) {
+            params["location"] = "http://localhost:1880"
+        }
+        hashParams.remove("location")
+        if (!params.containsKey("refresh-rate")) {
+            params["refresh-rate"] = "PT1S"
+        }
+        hashParams.remove("refresh-rate")
+        window.location.hashParams = hashParams
+        window.location.queryParams = params
+    }
+
+    var url = Url(window.location.params["location"] ?: error("location missing"))
+    val refreshRate = Duration.parse(window.location.params["refresh-rate"] ?: error("refresh-rate missing"))
+
     document.appendPressStart2P()
     document.appendNEScss()
     document.appendDialogPolyfill()
@@ -39,24 +59,13 @@ suspend fun main() {
         null
     }
 
-    if (!window.location.searchParams.has("location")) {
-        window.location.href += "?location=http://localhost:1880/status"
-    }
-
-    val url = Url(window.location.searchParams.get("location") ?: error("location missing"))
-
-    if (!window.location.searchParams.has("refresh-rate")) {
-        window.location.href += "&refresh-rate=PT1S"
-    }
-
-    val refreshRate = Duration.parse(window.location.searchParams.get("refresh-rate") ?: error("location missing"))
-
-    while (!ready) {
-        delay(3000)
-    }
+    while (!ready) delay(3000)
 
     document.body().run {
         loadingLog(url)
+
+        val addresses = Addresses.resolve(url)
+        console.warn(addresses.addresses)
 
         StatusUpdater(url, refreshRate) { status, error ->
             updateConnectionStatus(url, error)
@@ -69,7 +78,7 @@ suspend fun main() {
                     status.update(it)
                 }
             }
-        }.poll()
+        }.start()
     }
 }
 
