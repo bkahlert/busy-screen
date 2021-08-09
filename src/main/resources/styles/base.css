@@ -10,6 +10,83 @@ body.init {
     background-color: darkgray;
 }
 
+.device {
+    position: absolute;
+    top: 1.4vmin;
+    left: 1.4vmin;
+    bottom: 8vmin;
+    font-size: 3.4vmin;
+    writing-mode: vertical-rl;
+    opacity: .15;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .device {
+        display: none;
+    }
+}
+
+.addresses {
+    position: absolute;
+    top: 1.4vmin;
+    right: 1.4vmin;
+    bottom: 8vmin;
+    text-align: right;
+    font-size: 1.8vmin;
+    writing-mode: vertical-rl;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.addresses__address {
+    margin-bottom: 3vmin;
+    transform: rotate(0deg);
+    text-align: center;
+}
+
+.addresses__address-link {
+    color: white !important;
+    opacity: .15;
+}
+
+
+.addresses__address--checking {
+    animation: blink-animation 2s steps(10, start) infinite;
+}
+
+.addresses__address--ok .addresses__address-link {
+    opacity: .3;
+}
+
+.addresses__address--ok .addresses__address-link:hover {
+    opacity: 1;
+    text-decoration: none;
+}
+
+.addresses__address--fail .addresses__address-link {
+    opacity: .15;
+    text-decoration: line-through;
+}
+
+.addresses__address--fail .addresses__address-link:hover {
+    opacity: 1;
+    text-decoration: none;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .addresses {
+        display: none;
+    }
+}
+
+
 .help {
     position: absolute;
     bottom: 1.4vmin;

@@ -53,27 +53,6 @@
     "color": "#DDAA99"
   },
   {
-    "id": "2a640a44.501106",
-    "type": "group",
-    "z": "d3d3a738.50ff6",
-    "style": {
-      "stroke": "#999999",
-      "stroke-opacity": "1",
-      "fill": "none",
-      "fill-opacity": "1",
-      "label": true,
-      "label-position": "nw",
-      "color": "#a4a4a4"
-    },
-    "nodes": [
-      "a33692ff.42565"
-    ],
-    "x": 1074,
-    "y": 1179,
-    "w": 152,
-    "h": 82
-  },
-  {
     "id": "ed608b58.9ef53",
     "type": "websocket-listener",
     "path": "/status",
@@ -105,25 +84,17 @@
     "id": "4d149ab7.912cb4",
     "type": "ui_group",
     "name": "Default",
-    "tab": "be8560a0.836a",
+    "tab": "",
     "order": 1,
     "disp": true,
     "width": "6",
     "collapse": false
   },
   {
-    "id": "be8560a0.836a",
-    "type": "ui_tab",
-    "name": "Home",
-    "icon": "dashboard",
-    "disabled": false,
-    "hidden": false
-  },
-  {
     "id": "98039b67.028e38",
     "type": "ui_base",
     "theme": {
-      "name": "theme-light",
+      "name": "theme-dark",
       "lightTheme": {
         "default": "#0094CE",
         "baseColor": "#0094CE",
@@ -135,7 +106,8 @@
         "default": "#097479",
         "baseColor": "#097479",
         "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-        "edited": false
+        "edited": true,
+        "reset": false
       },
       "customTheme": {
         "name": "Untitled Theme 1",
@@ -145,44 +117,44 @@
       },
       "themeState": {
         "base-color": {
-          "default": "#0094CE",
-          "value": "#0094CE",
-          "edited": false
+          "default": "#097479",
+          "value": "#097479",
+          "edited": true
         },
         "page-titlebar-backgroundColor": {
-          "value": "#0094CE",
+          "value": "#097479",
           "edited": false
         },
         "page-backgroundColor": {
-          "value": "#fafafa",
-          "edited": false
-        },
-        "page-sidebar-backgroundColor": {
-          "value": "#ffffff",
-          "edited": false
-        },
-        "group-textColor": {
-          "value": "#1bbfff",
-          "edited": false
-        },
-        "group-borderColor": {
-          "value": "#ffffff",
-          "edited": false
-        },
-        "group-backgroundColor": {
-          "value": "#ffffff",
-          "edited": false
-        },
-        "widget-textColor": {
           "value": "#111111",
           "edited": false
         },
+        "page-sidebar-backgroundColor": {
+          "value": "#333333",
+          "edited": false
+        },
+        "group-textColor": {
+          "value": "#0eb8c0",
+          "edited": false
+        },
+        "group-borderColor": {
+          "value": "#555555",
+          "edited": false
+        },
+        "group-backgroundColor": {
+          "value": "#333333",
+          "edited": false
+        },
+        "widget-textColor": {
+          "value": "#eeeeee",
+          "edited": false
+        },
         "widget-backgroundColor": {
-          "value": "#0094ce",
+          "value": "#097479",
           "edited": false
         },
         "widget-borderColor": {
-          "value": "#ffffff",
+          "value": "#333333",
           "edited": false
         },
         "base-font": {
@@ -198,7 +170,7 @@
       }
     },
     "site": {
-      "name": "Node-RED Dashboard",
+      "name": "┴┬┴┤´Ｏ´)ﾉ  Busy?!  Σ(‘Д’⁕)",
       "hideToolbar": "false",
       "allowSwipe": "false",
       "lockMenu": "false",
@@ -215,6 +187,26 @@
         "py": 0
       }
     }
+  },
+  {
+    "id": "081d7d18ddeca32d",
+    "type": "ui_spacer",
+    "z": "d3d3a738.50ff6",
+    "name": "spacer",
+    "group": "4d149ab7.912cb4",
+    "order": 3,
+    "width": 6,
+    "height": 1
+  },
+  {
+    "id": "3b18adf42989dacc",
+    "type": "ui_spacer",
+    "z": "d3d3a738.50ff6",
+    "name": "spacer",
+    "group": "4d149ab7.912cb4",
+    "order": 4,
+    "width": 6,
+    "height": 1
   },
   {
     "id": "9b205eaf.7add",
@@ -634,13 +626,14 @@
     "id": "457c3d6b.08524c",
     "type": "function",
     "z": "d3d3a738.50ff6",
-    "name": "",
+    "name": "show exception",
     "func": "msg.payload = JSON.stringify(msg.error);\nnode.status({fill:\"red\",shape:\"ring\",text:msg.error.message});\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 640,
+    "libs": [],
+    "x": 660,
     "y": 760,
     "wires": [
       [
@@ -848,72 +841,6 @@
     ]
   },
   {
-    "id": "23b199d0.91e116",
-    "type": "ui_webcam",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "group": "4d149ab7.912cb4",
-    "order": 0,
-    "width": 0,
-    "height": 5,
-    "countdown": false,
-    "autoStart": true,
-    "hideCaptureButton": false,
-    "showImage": "2",
-    "mirror": true,
-    "format": "png",
-    "x": 1620,
-    "y": 1280,
-    "wires": [
-      []
-    ]
-  },
-  {
-    "id": "11c853f8.6888bc",
-    "type": "ui_text",
-    "z": "d3d3a738.50ff6",
-    "group": "4d149ab7.912cb4",
-    "order": 1,
-    "width": 0,
-    "height": 0,
-    "name": "",
-    "label": "text",
-    "format": "{{msg.payload}}",
-    "layout": "row-left",
-    "x": 1540,
-    "y": 1120,
-    "wires": []
-  },
-  {
-    "id": "a33692ff.42565",
-    "type": "ui_button",
-    "z": "d3d3a738.50ff6",
-    "g": "2a640a44.501106",
-    "name": "",
-    "group": "4d149ab7.912cb4",
-    "order": 0,
-    "width": 0,
-    "height": 0,
-    "passthru": false,
-    "label": "button",
-    "tooltip": "",
-    "color": "",
-    "bgcolor": "",
-    "icon": "",
-    "payload": "",
-    "payloadType": "str",
-    "topic": "topic",
-    "topicType": "msg",
-    "x": 1150,
-    "y": 1220,
-    "wires": [
-      [
-        "11c853f8.6888bc",
-        "23b199d0.91e116"
-      ]
-    ]
-  },
-  {
     "id": "95fbdc17.9256a",
     "type": "watch",
     "z": "d3d3a738.50ff6",
@@ -1008,6 +935,7 @@
     "noerr": 0,
     "initialize": "",
     "finalize": "",
+    "libs": [],
     "x": 1060,
     "y": 760,
     "wires": [
@@ -1035,7 +963,7 @@
     "property": "payload",
     "action": "obj",
     "pretty": false,
-    "x": 770,
+    "x": 890,
     "y": 760,
     "wires": [
       [
@@ -1137,15 +1065,15 @@
     "type": "http in",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "url": "/addresses",
+    "url": "/info",
     "method": "get",
     "upload": false,
     "swaggerDoc": "",
-    "x": 520,
+    "x": 500,
     "y": 980,
     "wires": [
       [
-        "5057bd04.ae31e4"
+        "bd2e5c2f25346c4f"
       ]
     ]
   },
@@ -1157,29 +1085,141 @@
     "property": "payload",
     "action": "obj",
     "pretty": false,
-    "x": 1090,
+    "x": 1270,
     "y": 980,
     "wires": [
       [
-        "c94ccf9a.601d48"
+        "c94ccf9a.601d48",
+        "5c4418a6466a0bfd"
       ]
     ]
   },
   {
-    "id": "5057bd04.ae31e4",
-    "type": "function",
+    "id": "1c0850832bac3857",
+    "type": "ip",
+    "z": "d3d3a738.50ff6",
+    "name": "ip",
+    "https": false,
+    "timeout": "5000",
+    "internalIPv4": true,
+    "internalIPv6": true,
+    "publicIPv4": false,
+    "publicIPv6": true,
+    "x": 750,
+    "y": 1060,
+    "wires": [
+      [
+        "7313fa5041551f80"
+      ]
+    ]
+  },
+  {
+    "id": "5c4418a6466a0bfd",
+    "type": "debug",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "func": "msg.payload = {\n    \"addresses\": [\"http://192.168.16.68:1880\",\"http://192.168.16.69:1880\",\"http://192.168.16.72:1880\"]\n}\nreturn msg;",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1610,
+    "y": 940,
+    "wires": []
+  },
+  {
+    "id": "293c1f95b8c22f6b",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "addresses",
+    "func": "msg.payload.addresses = flow.get(\"addresses\")\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload.addresses})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 780,
+    "libs": [],
+    "x": 1070,
     "y": 980,
     "wires": [
       [
         "76de94c8.591b7c"
+      ]
+    ]
+  },
+  {
+    "id": "bd2e5c2f25346c4f",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "hostname",
+    "func": "const { execSync } = global.get(\"child_process\")\n\nconst result = execSync(\"hostname\", (error, stdout, stderr) => {\n    if (error) {\n        node.status({fill:\"red\",shape:\"dot\",text:error.message})\n        node.error(`error: ${error.message}`);\n        return;\n    }\n    if (stderr) {\n        node.status({fill:\"yellow\",shape:\"dot\",text:`stderr: ${stderr}`})\n        node.error(`stderr: ${stderr}`);\n        return;\n    }\n    node.status({fill:\"green\",shape:\"dot\",text:`stdout: ${stdout}`})\n    node.info(`stdout: ${stdout}`);\n});\n\nmsg.payload.hostname = result.toString(\"utf8\").trim()\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload.hostname}`})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 740,
+    "y": 980,
+    "wires": [
+      [
+        "5bc54cf3183daf90"
+      ]
+    ]
+  },
+  {
+    "id": "5bc54cf3183daf90",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "username",
+    "func": "const { execSync } = global.get(\"child_process\")\n\nconst result = execSync(\"whoami\", (error, stdout, stderr) => {\n    if (error) {\n        node.status({fill:\"red\",shape:\"dot\",text:error.message})\n        node.error(`error: ${error.message}`);\n        return;\n    }\n    if (stderr) {\n        node.status({fill:\"yellow\",shape:\"dot\",text:`stderr: ${stderr}`})\n        node.error(`stderr: ${stderr}`);\n        return;\n    }\n    node.status({fill:\"green\",shape:\"dot\",text:`stdout: ${stdout}`})\n    node.info(`stdout: ${stdout}`);\n});\n\nmsg.payload.username = result.toString(\"utf8\").trim()\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload.username}`})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 900,
+    "y": 980,
+    "wires": [
+      [
+        "293c1f95b8c22f6b"
+      ]
+    ]
+  },
+  {
+    "id": "7313fa5041551f80",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "addresses > flow",
+    "func": "const URL = global.get(\"url\").URL\nconst req = msg.req || {}\nconst headers = req.headers || {}\nconst url = headers.origin || `http://${headers.host || \"localhost:1880\"}`\nnode.status({fill:\"yellow\",shape:\"dot\",text:url})\nconst origin = new URL(url)\n\nconst addresses = []\nif(msg.payload.internalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.internalIPv4}:${origin.port}`)\n}\nif(msg.payload.globalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.globalIPv4}:${origin.port}`)\n}\nif(msg.payload.internalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.internalIPv6}]:${origin.port}`)\n}\nif(msg.payload.globalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.globalIPv6}]:${origin.port}`)\n}\n\nflow.set(\"addresses\", addresses)\nnode.status({fill:\"green\",shape:\"dot\",text:flow.get(\"addresses\")})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1050,
+    "y": 1060,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "2725ab22096ff475",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "init",
+    "func": "",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "node.send({},false);",
+    "finalize": "",
+    "libs": [],
+    "x": 510,
+    "y": 1060,
+    "wires": [
+      [
+        "1c0850832bac3857"
       ]
     ]
   }

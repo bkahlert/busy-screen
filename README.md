@@ -1,5 +1,8 @@
 ![Two Kaomoji shouting "Busy?!"](docs/banner.svg)
 
+TODO: document discovery self   
+TODO: document discovery others
+
 # Busy Screen
 
 Turns your Raspberry Pi into a status screen to show your colleagues, family, friends, or whoever might disturb you if you're busy or not.

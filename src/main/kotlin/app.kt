@@ -1,13 +1,14 @@
 import dependencies.appendNEScss
 import dependencies.appendPressStart2P
 import dependencies.dialog.appendDialogPolyfill
+import io.ktor.http.Parameters
 import io.ktor.http.Url
-import koodies.Addresses
+import koodies.Info
+import koodies.dom.allParameters
 import koodies.dom.body
 import koodies.dom.favicon
-import koodies.dom.hashParams
-import koodies.dom.params
-import koodies.dom.queryParams
+import koodies.dom.hashParameters
+import koodies.dom.parameters
 import koodies.dom.replaceChildren
 import koodies.parse
 import koodies.time.Now
@@ -28,27 +29,23 @@ import kotlin.time.Duration
 // TODO use relative url
 // TODO put on raspy automatically
 suspend fun main() {
-    window.location.params.toMutableMap().also { params ->
-        val hashParams = window.location.hashParams.toMutableMap()
-        if (!params.containsKey("location")) {
-            params["location"] = "http://localhost:1880"
+    window.location.allParameters.also { params ->
+        Parameters.build {
+            append("location", params["location"] ?: "http://localhost:1880")
+            append("refresh-rate", params["refresh-rate"] ?: "PT1S")
         }
-        hashParams.remove("location")
-        if (!params.containsKey("refresh-rate")) {
-            params["refresh-rate"] = "PT1S"
-        }
-        hashParams.remove("refresh-rate")
-        window.location.hashParams = hashParams
-        window.location.queryParams = params
+        window.location.hashParameters = Parameters.Empty
+        window.location.parameters = params
     }
 
-    var url = Url(window.location.params["location"] ?: error("location missing"))
-    val refreshRate = Duration.parse(window.location.params["refresh-rate"] ?: error("refresh-rate missing"))
+    val url = Url(window.location.allParameters["location"] ?: error("location missing"))
+    val refreshRate = Duration.parse(window.location.allParameters["refresh-rate"] ?: error("refresh-rate missing"))
 
     document.appendPressStart2P()
     document.appendNEScss()
     document.appendDialogPolyfill()
     require("./styles/base.css")
+    require("./styles/animations.css")
     require("./styles/loading.css")
     require("./styles/status.css")
 
@@ -64,8 +61,7 @@ suspend fun main() {
     document.body().run {
         loadingLog(url)
 
-        val addresses = Addresses.resolve(url)
-        console.warn(addresses.addresses)
+        Info.resolve(url).update(this)
 
         StatusUpdater(url, refreshRate) { status, error ->
             updateConnectionStatus(url, error)
