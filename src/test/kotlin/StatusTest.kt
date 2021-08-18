@@ -19,7 +19,10 @@ class StatusTest {
               task: "ABC-123",
               duration: "PT50M",
               timestamp: "${timestamp.toISOString()}",
-              email: "john.doe@example.com"
+              email: "john.doe@example.com",
+              on: {
+                finish: {}
+              }
             }
         """.trimIndent())
 

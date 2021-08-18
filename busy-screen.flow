@@ -28,13 +28,6 @@
     "info": ""
   },
   {
-    "id": "e9f16578ec7b2ee2",
-    "type": "tab",
-    "label": "/say",
-    "disabled": false,
-    "info": "Endpoint that \"says\" everything posted to it"
-  },
-  {
     "id": "86cf6ae1.86e16",
     "type": "tab",
     "label": "Playground",
@@ -1096,8 +1089,8 @@
     "persist": false,
     "proxy": "",
     "authType": "",
-    "x": 1650,
-    "y": 280,
+    "x": 1350,
+    "y": 260,
     "wires": [
       []
     ]
@@ -2021,56 +2014,6 @@
         "e8b81718.5a35f",
         "3381a67b.9f5e9a",
         "4b98d6d2df8b42d2",
-        "9d0231b41c09d282"
-      ]
-    ]
-  },
-  {
-    "id": "9d0231b41c09d282",
-    "type": "switch",
-    "z": "d3d3a738.50ff6",
-    "name": "if has duration",
-    "property": "payload",
-    "propertyType": "msg",
-    "rules": [
-      {
-        "t": "hask",
-        "v": "duration",
-        "vt": "str"
-      }
-    ],
-    "checkall": "true",
-    "repair": false,
-    "outputs": 1,
-    "x": 980,
-    "y": 300,
-    "wires": [
-      [
-        "1db1cb801ab9c408"
-      ]
-    ]
-  },
-  {
-    "id": "1db1cb801ab9c408",
-    "type": "switch",
-    "z": "d3d3a738.50ff6",
-    "name": "if has on.finish",
-    "property": "payload.on",
-    "propertyType": "msg",
-    "rules": [
-      {
-        "t": "hask",
-        "v": "finish",
-        "vt": "str"
-      }
-    ],
-    "checkall": "true",
-    "repair": false,
-    "outputs": 1,
-    "x": 1160,
-    "y": 300,
-    "wires": [
-      [
         "770b95baf52b75ea"
       ]
     ]
@@ -2079,14 +2022,14 @@
     "id": "770b95baf52b75ea",
     "type": "function",
     "z": "d3d3a738.50ff6",
-    "name": "hold message back for msg.duration",
-    "func": "const outdatedTimeoutId = context.get(\"timeoutId\")\nif (outdatedTimeoutId) {\n    context.set(\"timeoutId\", null);\n    clearTimeout(outdatedTimeoutId)\n}\ncontext.set(\"timeoutId\", setTimeout(() => {\n    node.send(msg.payload.on.finish, false)\n    node.status({ fill: \"green\", shape: \"dot\", text: JSON.stringify(msg.payload.on.finish) })\n}, msg.payload.duration))\nnode.status({ fill: \"yellow\", shape: \"dot\", text: `${msg.payload.duration} -> ${JSON.stringify(msg.payload.on.finish)}` })\nreturn",
+    "name": "hold message back for payload.duration",
+    "func": "function deleteCurrentTimeout() {\n    const outdatedTimeoutId = context.get(\"timeoutId\")\n    if (outdatedTimeoutId) {\n        context.set(\"timeoutId\", null);\n        clearTimeout(outdatedTimeoutId)\n        node.status({ fill: \"red\", shape: \"dot\", text: `timeout cleared` })\n    }\n}\n\ndeleteCurrentTimeout()\n\nconst duration = msg.payload.duration\nconst on = msg.payload.on || {}\nconst finish = on.finish || null\n\nif(duration && finish) {\n    context.set(\"timeoutId\", setTimeout(() => {\n        node.send(finish, false)\n        node.status({ fill: \"green\", shape: \"dot\", text: JSON.stringify(finish) })\n    }, msg.payload.duration))\n    node.status({ fill: \"yellow\", shape: \"dot\", text: `timeout set: ${duration} -> ${JSON.stringify(finish)}` })\n}\n\nreturn",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 1410,
+    "x": 1100,
     "y": 300,
     "wires": [
       [
@@ -2095,30 +2038,30 @@
     ]
   },
   {
-    "id": "7d7ca9f67eeb1275",
+    "id": "61029b1660e36c2b",
     "type": "http in",
-    "z": "e9f16578ec7b2ee2",
+    "z": "d3d3a738.50ff6",
     "name": "",
     "url": "/say",
     "method": "post",
     "upload": false,
     "swaggerDoc": "",
-    "x": 660,
-    "y": 320,
+    "x": 1560,
+    "y": 300,
     "wires": [
       [
-        "38250944620d2eea"
+        "e54f8da1e2d8de5c"
       ]
     ]
   },
   {
-    "id": "38250944620d2eea",
+    "id": "e54f8da1e2d8de5c",
     "type": "play audio",
-    "z": "e9f16578ec7b2ee2",
+    "z": "d3d3a738.50ff6",
     "name": "",
     "voice": "10",
-    "x": 850,
-    "y": 320,
+    "x": 1750,
+    "y": 300,
     "wires": []
   }
 ]
