@@ -1,8 +1,8 @@
-import koodies.time.Now
-import koodies.time.minus
-import koodies.time.minutes
-import koodies.time.plus
-import koodies.time.seconds
+import com.bkahlert.kommons.time.Now
+import com.bkahlert.kommons.time.minus
+import com.bkahlert.kommons.time.minutes
+import com.bkahlert.kommons.time.plus
+import com.bkahlert.kommons.time.seconds
 import status.Status
 import kotlin.test.Test
 import kotlin.test.assertEquals

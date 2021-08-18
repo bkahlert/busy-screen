@@ -1,4 +1,4 @@
-package koodies.dom
+package com.bkahlert.kommons.dom
 
 import org.w3c.dom.events.Event
 

@@ -1,8 +1,8 @@
 package dependencies
 
-import koodies.dom.appendCss
-import koodies.dom.head
-import koodies.text.singleQuoted
+import com.bkahlert.kommons.dom.appendCss
+import com.bkahlert.kommons.dom.head
+import com.bkahlert.kommons.text.singleQuoted
 import kotlinx.css.FontStyle.Companion.normal
 import kotlinx.css.FontWeight.Companion.w400
 import kotlinx.css.fontFamily

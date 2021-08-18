@@ -1,6 +1,6 @@
-package koodies.serialization
+package com.bkahlert.kommons.serialization
 
-import koodies.parse
+import com.bkahlert.kommons.parse
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind.STRING
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor

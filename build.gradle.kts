@@ -31,7 +31,7 @@ dependencies {
     implementation(kotlinWrapper("extensions")) { because("require") }
     implementation(kotlinWrapper("css")) { because("CSSBuilder") }
 
-    implementation("com.bkahlert.koodies:koodies:1.9.7")
+    implementation("com.bkahlert.kommons:kommons:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3") { because("HTML builder") }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1") { because("backend polling") }
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") { because("Status deserialization") }

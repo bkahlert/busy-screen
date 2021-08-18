@@ -1,5 +1,6 @@
 package status
 
+import com.bkahlert.kommons.dom.forEachInstance
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
 import io.ktor.client.features.websocket.DefaultClientWebSocketSession
@@ -9,7 +10,6 @@ import io.ktor.http.Url
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.readText
 import io.ktor.http.fullPath
-import koodies.dom.forEachInstance
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay

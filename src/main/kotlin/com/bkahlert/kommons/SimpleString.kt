@@ -1,4 +1,4 @@
-package koodies
+package com.bkahlert.kommons
 
 import io.ktor.http.Url
 

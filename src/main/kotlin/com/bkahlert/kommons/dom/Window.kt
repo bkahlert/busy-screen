@@ -1,10 +1,10 @@
-package koodies.dom
+package com.bkahlert.kommons.dom
 
+import com.bkahlert.kommons.text.withPrefix
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.Url
 import io.ktor.util.toMap
-import koodies.text.withPrefix
 import org.w3c.dom.Location
 
 private fun CharSequence.deserialize(): Parameters =

@@ -1,4 +1,4 @@
-package koodies.serialization
+package com.bkahlert.kommons.serialization
 
 import io.ktor.http.Url
 import kotlinx.serialization.KSerializer

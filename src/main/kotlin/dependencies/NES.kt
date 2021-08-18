@@ -1,7 +1,7 @@
 package dependencies
 
-import koodies.dom.appendCss
-import koodies.dom.head
+import com.bkahlert.kommons.dom.appendCss
+import com.bkahlert.kommons.dom.head
 import kotlinext.js.require
 import kotlinx.css.Display.none
 import kotlinx.css.TextAlign.right

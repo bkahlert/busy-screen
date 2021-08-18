@@ -1,16 +1,16 @@
 package status
 
+import com.bkahlert.kommons.dom.forEach
+import com.bkahlert.kommons.dom.forEachInstance
+import com.bkahlert.kommons.serialization.DateSerializer
+import com.bkahlert.kommons.serialization.DurationSerializer
+import com.bkahlert.kommons.serialization.UrlSerializer
+import com.bkahlert.kommons.time.Now
+import com.bkahlert.kommons.time.minus
+import com.bkahlert.kommons.time.minutes
+import com.bkahlert.kommons.time.plus
+import com.bkahlert.kommons.time.seconds
 import io.ktor.http.Url
-import koodies.dom.forEach
-import koodies.dom.forEachInstance
-import koodies.serialization.DateSerializer
-import koodies.serialization.DurationSerializer
-import koodies.serialization.UrlSerializer
-import koodies.time.Now
-import koodies.time.minus
-import koodies.time.minutes
-import koodies.time.plus
-import koodies.time.seconds
 import kotlinx.dom.addClass
 import kotlinx.dom.removeClass
 import kotlinx.serialization.Serializable

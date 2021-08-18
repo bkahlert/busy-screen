@@ -1,8 +1,8 @@
-package koodies
+package com.bkahlert.kommons
 
-import koodies.time.hours
-import koodies.time.minutes
-import koodies.time.seconds
+import com.bkahlert.kommons.time.hours
+import com.bkahlert.kommons.time.minutes
+import com.bkahlert.kommons.time.seconds
 import kotlin.time.Duration
 
 private val regex = Regex("P.*T" +

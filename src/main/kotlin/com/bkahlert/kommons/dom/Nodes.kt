@@ -1,4 +1,4 @@
-package koodies.dom
+package com.bkahlert.kommons.dom
 
 import kotlinx.dom.clear
 import kotlinx.html.TagConsumer

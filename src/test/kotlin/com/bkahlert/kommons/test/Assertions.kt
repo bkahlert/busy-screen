@@ -1,4 +1,4 @@
-package koodies.test
+package com.bkahlert.kommons.test
 
 import org.w3c.dom.Element
 import kotlin.test.assertContains

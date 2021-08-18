@@ -1,11 +1,11 @@
+import com.bkahlert.kommons.dom.allParameters
+import com.bkahlert.kommons.dom.copy
+import com.bkahlert.kommons.dom.hashParameters
+import com.bkahlert.kommons.dom.parameters
+import com.bkahlert.kommons.parse
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.Url
-import koodies.dom.allParameters
-import koodies.dom.copy
-import koodies.dom.hashParameters
-import koodies.dom.parameters
-import koodies.parse
 import kotlinx.browser.window
 import kotlin.time.Duration
 

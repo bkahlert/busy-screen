@@ -1,4 +1,4 @@
-package koodies.dom
+package com.bkahlert.kommons.dom
 
 import io.ktor.http.Url
 import kotlinx.css.CSSBuilder

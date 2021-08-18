@@ -9,7 +9,7 @@ cd "${BUILD_DIR}" || exit 1
 
 docker run --rm -it \
            -v /var/run/docker.sock:/var/run/docker.sock \
-           -v /tmp/koodies:/tmp/koodies \
+           -v /tmp/kommons:/tmp/kommons \
            -v "$(pwd)":"$(pwd)" \
            -w "$(pwd)" \
            bkahlert/kustomize \

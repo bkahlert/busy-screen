@@ -1,8 +1,8 @@
 package dependencies.dialog
 
-import koodies.dom.appendCss
-import koodies.dom.forEachInstance
-import koodies.dom.head
+import com.bkahlert.kommons.dom.appendCss
+import com.bkahlert.kommons.dom.forEachInstance
+import com.bkahlert.kommons.dom.head
 import kotlinext.js.require
 import kotlinx.css.Position.fixed
 import kotlinx.css.backgroundColor
