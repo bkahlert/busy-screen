@@ -18,7 +18,7 @@ Content-Type: application/json; charset=utf-8
 }
 
 
-### complete status
+### full example
 
 PUT http://{{host}}:1880/status
 Content-Type: application/json; charset=utf-8
@@ -26,7 +26,15 @@ Content-Type: application/json; charset=utf-8
 {
   "name": "working",
   "task": "TICKET-123",
-  "duration": "PT30M"
+  "duration": "PT10S",
+  "email": "john.joe@example.com",
+  "on": {
+    "finish": {
+      "method": "post",
+      "url": "http://{{host}}:1880/say",
+      "payload": "finished working"
+    }
+  }
 }
 
 ### complete in 5s
@@ -59,7 +67,7 @@ PUT http://{{host}}:1880/status
 Content-Type: application/json; charset=utf-8
 
 {
-  "name": "having a break"
+  "name": "working"
 }
 
 

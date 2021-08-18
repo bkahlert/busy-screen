@@ -1,7 +1,11 @@
 package status
 
+import io.ktor.http.Url
+import koodies.dom.forEach
+import koodies.dom.forEachInstance
 import koodies.serialization.DateSerializer
 import koodies.serialization.DurationSerializer
+import koodies.serialization.UrlSerializer
 import koodies.time.Now
 import koodies.time.minus
 import koodies.time.minutes
@@ -15,7 +19,6 @@ import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLProgressElement
-import org.w3c.dom.asList
 import kotlin.js.Date
 import kotlin.time.Duration
 import kotlin.time.DurationUnit.MINUTES
@@ -45,9 +48,18 @@ data class Status(
      * Optional eMail address to get the [Gravatar] for.
      */
     val email: String? = null,
+    /**
+     * Optional URL to load the avatar from.
+     */
+    @Serializable(UrlSerializer::class)
+    val avatar: Url? = null,
 ) {
     companion object {
-        private val format = Json { isLenient = true }
+        private val format = Json {
+            isLenient = true
+            ignoreUnknownKeys = true
+        }
+
         fun fromJson(json: String): Status = format.decodeFromString(json)
     }
 
@@ -62,7 +74,7 @@ data class Status(
 
     val done: Boolean? get() = if (duration != null) passed?.let { it >= duration } else null
 
-    val avatar: Gravatar get() = Gravatar(email)
+    val image: Url get() = avatar ?: Gravatar(email).url
 
     fun update(element: HTMLElement): HTMLElement {
         when (done) {
@@ -80,36 +92,37 @@ data class Status(
             }
         }
 
-        element.querySelectorAll(".status__task").asList().forEach {
-            it.textContent = task ?: "Status"
+        element.forEach(".status__task") {
+            val text = task ?: "Status"
+            if (it.textContent != text) it.textContent = text
         }
 
-        element.querySelectorAll(".status__avatar").asList().mapNotNull { it as? HTMLImageElement }.forEach {
-            it.alt = avatar.email?.let { "Avatar for $it" } ?: "Default avatar"
-            it.src = avatar.url
+        element.forEachInstance<HTMLImageElement>(".status__avatar img") {
+            it.alt = "Avatar"
+            it.src = image.toString()
         }
 
-        element.querySelectorAll(".status__name .nes-text").asList().forEach {
+        element.forEach(".status__name .nes-text") {
             it.textContent = name
         }
 
-        element.querySelectorAll(".status__passed").asList().mapNotNull { it as? HTMLProgressElement }.forEach {
+        element.forEachInstance<HTMLProgressElement>(".status__passed") {
             val max = duration?.inWholeSeconds?.toDouble() ?: 0.0
             val value = passed?.inWholeSeconds?.toDouble() ?: 0.0
             it.max = max
             it.value = value.coerceAtMost(max)
         }
 
-        element.querySelectorAll(".status__remaining").asList().forEach {
+        element.forEach(".status__remaining") {
             val content = remaining?.let { remaining ->
-                if (remaining >= 1.minutes || remaining <= (-1).minutes) {
+                if (remaining <= .5.seconds) {
+                    "Done"
+                } else if (remaining.absoluteValue >= 1.minutes) {
                     (remaining + 30.seconds).toString(MINUTES)
                 } else {
                     remaining.toString(SECONDS)
                 }
-            } ?: run {
-                "-"
-            }
+            } ?: ""
             if (it.textContent != content) it.textContent = content
         }
 

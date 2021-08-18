@@ -1,6 +1,7 @@
 package dependencies.dialog
 
 import koodies.dom.appendCss
+import koodies.dom.forEachInstance
 import koodies.dom.head
 import kotlinext.js.require
 import kotlinx.css.Position.fixed
@@ -15,7 +16,6 @@ import kotlinx.css.rgba
 import kotlinx.css.top
 import org.w3c.dom.Document
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.asList
 
 fun Document.appendDialogPolyfill() {
 
@@ -42,8 +42,5 @@ fun Document.appendDialogPolyfill() {
         }
     }
 
-    querySelectorAll("dialog")
-        .asList()
-        .filterIsInstance<HTMLElement>()
-        .forEach { dialogPolyfill.registerDialog(it) }
+    forEachInstance<HTMLElement>("dialog") { dialogPolyfill.registerDialog(it) }
 }

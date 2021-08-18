@@ -1,0 +1,22 @@
+.nearby {
+    display: flex;
+    align-items: stretch;
+}
+
+.nearby--disabled {
+    display: none;
+}
+
+.nearby select,
+.nearby button {
+    background-color: transparent;
+}
+
+.nearby > * {
+    white-space: nowrap;
+    font-size: 1.7vmin;
+}
+
+.nearby > * + * {
+    margin-left: 3vmin;
+}

@@ -32,22 +32,27 @@
     border-color: #92cc41;
 }
 
-.status > h1 {
+.status__header {
     position: absolute;
-    top: -8vmin;
+    top: -8.1vmin;
     left: 0;
     right: 0;
-    font-size: 4.9vmin;
+    display: flex;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .status__task {
     display: inline-block;
+    margin-bottom: 0;
     padding: 1vh 4vw 0 4vw;
+    font-size: 4.9vmin;
     border-top: 0;
     background-color: white;
 }
 
-.status__avatar_name {
+.status__body {
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
@@ -57,12 +62,20 @@
 }
 
 /*noinspection CssBrowserCompatibilityForProperties*/
-.status__avatar {
+.status__avatar img {
     /*noinspection LongLine*/
     -webkit-mask: url(data:image/gif;base64,R0lGODlhQABAAIAAAAAAAP///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFAAABACwAAAAAQABAAAACaIxvoMvtD+NCtAaJs1a23w2GnFeJpkYm5xp27Ita8By59M0g+M73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Pr3RWW9VOxU9Tnyaf7venEij41FEAADs=);
     -webkit-mask-size: 100%;
     width: 30vmin;
     height: auto;
+}
+
+.status__avatar figcaption {
+    margin-top: 1vh;
+}
+
+.status__avatar + * {
+    margin-top: 4vh;
 }
 
 .status__name {
@@ -150,7 +163,7 @@
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-    .status__avatar {
+    .status__identity {
         display: none;
     }
 

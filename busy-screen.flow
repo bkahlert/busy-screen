@@ -7,6 +7,34 @@
     "info": ""
   },
   {
+    "id": "cf98990a23245750",
+    "type": "tab",
+    "label": "refresh global.addresses",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "90dc5f4163afbe49",
+    "type": "tab",
+    "label": "refresh global.nearby",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "44cf99770533579a",
+    "type": "tab",
+    "label": "refresh global.status",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "e9f16578ec7b2ee2",
+    "type": "tab",
+    "label": "/say",
+    "disabled": false,
+    "info": "Endpoint that \"says\" everything posted to it"
+  },
+  {
     "id": "86cf6ae1.86e16",
     "type": "tab",
     "label": "Playground",
@@ -21,17 +49,6 @@
     "info": ""
   },
   {
-    "id": "6a5dd260.098bbc",
-    "type": "subflow",
-    "name": "speak errors",
-    "info": "",
-    "category": "",
-    "in": [],
-    "out": [],
-    "env": [],
-    "color": "#DDAA99"
-  },
-  {
     "id": "686fa107.2f1818",
     "type": "subflow",
     "name": "speak status",
@@ -39,8 +56,8 @@
     "category": "",
     "in": [
       {
-        "x": 50,
-        "y": 30,
+        "x": 200,
+        "y": 280,
         "wires": [
           {
             "id": "9de1781d.c3793"
@@ -50,12 +67,396 @@
     ],
     "out": [],
     "env": [],
-    "color": "#DDAA99"
+    "meta": {},
+    "color": "#87A980",
+    "icon": "font-awesome/fa-volume-up"
+  },
+  {
+    "id": "e268071b434a4a05",
+    "type": "subflow",
+    "name": "compose info",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 60,
+        "y": 200,
+        "wires": [
+          {
+            "id": "293c1f95b8c22f6b"
+          },
+          {
+            "id": "f357e4ecb89a680a"
+          },
+          {
+            "id": "3ccc68c88b722855"
+          },
+          {
+            "id": "1b6c8b73e03202f0"
+          },
+          {
+            "id": "59c9988e0b843e16"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 900,
+        "y": 200,
+        "wires": [
+          {
+            "id": "459f6e3c6d46fcf6",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "icon": "font-awesome/fa-info",
+    "status": {
+      "x": 900,
+      "y": 260,
+      "wires": [
+        {
+          "id": "459f6e3c6d46fcf6",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "6a822a9c1319811c",
+    "type": "subflow",
+    "name": "set timestamp",
+    "info": "Sets payload.timestamp if it does not already exist.",
+    "category": "",
+    "in": [
+      {
+        "x": 160,
+        "y": 120,
+        "wires": [
+          {
+            "id": "14eaca7a99556bed"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 520,
+        "y": 120,
+        "wires": [
+          {
+            "id": "14eaca7a99556bed",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "icon": "font-awesome/fa-clock-o",
+    "status": {
+      "x": 520,
+      "y": 200,
+      "wires": [
+        {
+          "id": "14eaca7a99556bed",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "e1effc2d22e3136d",
+    "type": "subflow",
+    "name": "nearby updated",
+    "info": "",
+    "category": "",
+    "in": [],
+    "out": [
+      {
+        "x": 740,
+        "y": 200,
+        "wires": [
+          {
+            "id": "66c82c0e187e9979",
+            "port": 0
+          }
+        ]
+      },
+      {
+        "x": 740,
+        "y": 200,
+        "wires": [
+          {
+            "id": "66c82c0e187e9979",
+            "port": 1
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "outputLabels": [
+      "busy screen",
+      "other"
+    ],
+    "icon": "node-red/bridge.svg",
+    "status": {
+      "x": 940,
+      "y": 120,
+      "wires": [
+        {
+          "id": "f621d7bd9148a1ad",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "08e1bdd8996589b6",
+    "type": "subflow",
+    "name": "init",
+    "info": "Sends an empty message on start.",
+    "category": "",
+    "in": [],
+    "out": [
+      {
+        "x": 560,
+        "y": 320,
+        "wires": [
+          {
+            "id": "a871ebb783ded8f5",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "icon": "font-awesome/fa-angle-right"
+  },
+  {
+    "id": "305486fc7a8f284b",
+    "type": "subflow",
+    "name": "trim",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 220,
+        "y": 260,
+        "wires": [
+          {
+            "id": "1c8f14700c680424"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 580,
+        "y": 260,
+        "wires": [
+          {
+            "id": "1c8f14700c680424",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#E2D96E",
+    "icon": "font-awesome/fa-random"
+  },
+  {
+    "id": "fae67dfd44064085",
+    "type": "subflow",
+    "name": "hostname",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 60,
+        "y": 100,
+        "wires": [
+          {
+            "id": "fcd4121bed27d1ce"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 480,
+        "y": 80,
+        "wires": [
+          {
+            "id": "87db43369aa21f58",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#E9967A",
+    "icon": "font-awesome/fa-gear",
+    "status": {
+      "x": 480,
+      "y": 140,
+      "wires": [
+        {
+          "id": "87db43369aa21f58",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "6c31a8500cd2af4a",
+    "type": "subflow",
+    "name": "whoami",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 60,
+        "y": 80,
+        "wires": [
+          {
+            "id": "f60f2fba236286c6"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 500,
+        "y": 80,
+        "wires": [
+          {
+            "id": "c2f662eea1f1abf3",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#E9967A",
+    "icon": "font-awesome/fa-gear",
+    "status": {
+      "x": 500,
+      "y": 140,
+      "wires": [
+        {
+          "id": "c2f662eea1f1abf3",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "2280cc9c3efeb2e2",
+    "type": "subflow",
+    "name": "set duration",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 280,
+        "y": 220,
+        "wires": [
+          {
+            "id": "eee197ea38dbe9ee"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 600,
+        "y": 200,
+        "wires": [
+          {
+            "id": "eee197ea38dbe9ee",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "icon": "font-awesome/fa-clock-o",
+    "status": {
+      "x": 600,
+      "y": 260,
+      "wires": [
+        {
+          "id": "eee197ea38dbe9ee",
+          "port": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "85f0531b8e23f10e",
+    "type": "subflow",
+    "name": "sanitize status",
+    "info": "",
+    "category": "",
+    "in": [
+      {
+        "x": 60,
+        "y": 80,
+        "wires": [
+          {
+            "id": "4072fcc87c6958ed"
+          }
+        ]
+      }
+    ],
+    "out": [
+      {
+        "x": 760,
+        "y": 80,
+        "wires": [
+          {
+            "id": "634d0d63206c8a19",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [],
+    "meta": {},
+    "color": "#3FADB5",
+    "icon": "node-red/comment.svg",
+    "status": {
+      "x": 760,
+      "y": 140,
+      "wires": [
+        {
+          "id": "634d0d63206c8a19",
+          "port": 0
+        }
+      ]
+    }
   },
   {
     "id": "ed608b58.9ef53",
     "type": "websocket-listener",
-    "path": "/status",
+    "path": "/info",
     "wholemsg": "false"
   },
   {
@@ -209,65 +610,13 @@
     "height": 1
   },
   {
-    "id": "9b205eaf.7add",
-    "type": "catch",
-    "z": "6a5dd260.098bbc",
-    "name": "",
-    "scope": null,
-    "uncaught": true,
-    "x": 200,
-    "y": 80,
-    "wires": [
-      [
-        "ed6e3983.59cc78"
-      ]
-    ]
-  },
-  {
-    "id": "1ba67e34.d8fc72",
-    "type": "play audio",
-    "z": "6a5dd260.098bbc",
-    "name": "",
-    "voice": "9",
-    "x": 590,
-    "y": 80,
-    "wires": []
-  },
-  {
-    "id": "ed6e3983.59cc78",
-    "type": "change",
-    "z": "6a5dd260.098bbc",
-    "name": "",
-    "rules": [
-      {
-        "t": "set",
-        "p": "payload",
-        "pt": "msg",
-        "to": "message",
-        "tot": "msg"
-      }
-    ],
-    "action": "",
-    "property": "",
-    "from": "",
-    "to": "",
-    "reg": false,
-    "x": 400,
-    "y": 80,
-    "wires": [
-      [
-        "1ba67e34.d8fc72"
-      ]
-    ]
-  },
-  {
     "id": "28a5c0a5.3c5c2",
     "type": "play audio",
     "z": "686fa107.2f1818",
     "name": "",
     "voice": "10",
-    "x": 450,
-    "y": 80,
+    "x": 610,
+    "y": 280,
     "wires": []
   },
   {
@@ -279,11 +628,11 @@
     "method": "put",
     "upload": false,
     "swaggerDoc": "",
-    "x": 510,
-    "y": 640,
+    "x": 370,
+    "y": 380,
     "wires": [
       [
-        "5caee2cf.6be6ec"
+        "a6a78c5caf26d2d8"
       ]
     ]
   },
@@ -294,57 +643,23 @@
     "name": "",
     "statusCode": "200",
     "headers": {},
-    "x": 1620,
-    "y": 700,
+    "x": 960,
+    "y": 380,
     "wires": []
-  },
-  {
-    "id": "5caee2cf.6be6ec",
-    "type": "json",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "property": "payload",
-    "action": "obj",
-    "pretty": false,
-    "x": 770,
-    "y": 640,
-    "wires": [
-      [
-        "64db3985.3b4ec8"
-      ]
-    ]
-  },
-  {
-    "id": "e70660c7.026038",
-    "type": "file",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "filename": "busy-screen/status.json",
-    "appendNewline": true,
-    "createDir": true,
-    "overwriteFile": "true",
-    "encoding": "utf8",
-    "x": 1350,
-    "y": 640,
-    "wires": [
-      [
-        "9eb81e11.b5a25",
-        "e8b81718.5a35f"
-      ]
-    ]
   },
   {
     "id": "9de1781d.c3793",
     "type": "function",
     "z": "686fa107.2f1818",
     "name": "",
-    "func": "const clone = RED.util.cloneMessage(msg);\nclone.payload = `New status: ${msg.payload[\"name\"]}`;\nreturn clone;",
+    "func": "const clone = RED.util.cloneMessage(msg)\nclone.payload = `New status: ${clone.payload.name}`\nreturn clone",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "x": 220,
-    "y": 80,
+    "libs": [],
+    "x": 380,
+    "y": 280,
     "wires": [
       [
         "28a5c0a5.3c5c2"
@@ -353,27 +668,6 @@
     "inputLabels": [
       "x"
     ]
-  },
-  {
-    "id": "13d33836.673f4",
-    "type": "subflow:6a5dd260.098bbc",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "env": [],
-    "x": 1310,
-    "y": 460,
-    "wires": []
-  },
-  {
-    "id": "292396af.90e33a",
-    "type": "websocket out",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "server": "ed608b58.9ef53",
-    "client": "",
-    "x": 1630,
-    "y": 580,
-    "wires": []
   },
   {
     "id": "d3714b99.088ba8",
@@ -396,11 +690,11 @@
     "topic": "",
     "payload": "{\"name\": \"test\"}",
     "payloadType": "str",
-    "x": 340,
-    "y": 640,
+    "x": 360,
+    "y": 320,
     "wires": [
       [
-        "5caee2cf.6be6ec"
+        "a6a78c5caf26d2d8"
       ]
     ]
   },
@@ -410,8 +704,8 @@
     "z": "d3d3a738.50ff6",
     "name": "",
     "env": [],
-    "x": 1310,
-    "y": 520,
+    "x": 970,
+    "y": 420,
     "wires": []
   },
   {
@@ -589,57 +883,6 @@
     "x": 1060,
     "y": 480,
     "wires": []
-  },
-  {
-    "id": "9ea08b2a.42219",
-    "type": "http in",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "url": "/status",
-    "method": "get",
-    "upload": false,
-    "swaggerDoc": "",
-    "x": 510,
-    "y": 700,
-    "wires": [
-      [
-        "3e26311a.7877de"
-      ]
-    ]
-  },
-  {
-    "id": "3a37b473.48b3ac",
-    "type": "catch",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "scope": null,
-    "uncaught": false,
-    "x": 500,
-    "y": 760,
-    "wires": [
-      [
-        "457c3d6b.08524c"
-      ]
-    ]
-  },
-  {
-    "id": "457c3d6b.08524c",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "show exception",
-    "func": "msg.payload = JSON.stringify(msg.error);\nnode.status({fill:\"red\",shape:\"ring\",text:msg.error.message});\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 660,
-    "y": 760,
-    "wires": [
-      [
-        "d31b93bf.0da19"
-      ]
-    ]
   },
   {
     "id": "bf6a9fbc.40dcb8",
@@ -841,212 +1084,22 @@
     ]
   },
   {
-    "id": "95fbdc17.9256a",
-    "type": "watch",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "files": "busy-screen/status.json",
-    "recursive": "",
-    "x": 540,
-    "y": 580,
-    "wires": [
-      [
-        "247aab71.c6b624"
-      ]
-    ]
-  },
-  {
-    "id": "3e26311a.7877de",
-    "type": "file in",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "filename": "busy-screen/status.json",
-    "format": "utf8",
-    "chunk": false,
-    "sendError": false,
-    "encoding": "none",
-    "allProps": false,
-    "x": 830,
-    "y": 700,
-    "wires": [
-      [
-        "5cb1e5b8.6b595c"
-      ]
-    ]
-  },
-  {
-    "id": "247aab71.c6b624",
-    "type": "file in",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "filename": "",
-    "format": "utf8",
-    "chunk": false,
-    "sendError": false,
-    "encoding": "none",
-    "x": 770,
-    "y": 580,
-    "wires": [
-      [
-        "6be20d95.6f2374"
-      ]
-    ]
-  },
-  {
-    "id": "6be20d95.6f2374",
-    "type": "json",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "property": "payload",
-    "action": "obj",
-    "pretty": false,
-    "x": 1090,
-    "y": 580,
-    "wires": [
-      [
-        "3381a67b.9f5e9a",
-        "292396af.90e33a"
-      ]
-    ]
-  },
-  {
-    "id": "5cb1e5b8.6b595c",
-    "type": "json",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "property": "payload",
-    "action": "obj",
-    "pretty": false,
-    "x": 1090,
-    "y": 700,
-    "wires": [
-      [
-        "e8b81718.5a35f"
-      ]
-    ]
-  },
-  {
-    "id": "12d08ed4.43cf01",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "set timestamp",
-    "func": "msg.payload = msg.payload || {}\nmsg.payload.timestamp = Date()\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload.timestamp});\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 1060,
-    "y": 760,
-    "wires": [
-      [
-        "b2b5b199.ad922"
-      ]
-    ]
-  },
-  {
-    "id": "b2b5b199.ad922",
-    "type": "http response",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "statusCode": "500",
-    "headers": {},
-    "x": 1620,
-    "y": 760,
-    "wires": []
-  },
-  {
-    "id": "d31b93bf.0da19",
-    "type": "json",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "property": "payload",
-    "action": "obj",
-    "pretty": false,
-    "x": 890,
-    "y": 760,
-    "wires": [
-      [
-        "12d08ed4.43cf01"
-      ]
-    ]
-  },
-  {
-    "id": "80833d10.d644b",
-    "type": "delay",
-    "z": "d3d3a738.50ff6",
-    "d": true,
-    "name": "",
-    "pauseType": "delayv",
-    "timeout": "5",
-    "timeoutUnits": "seconds",
-    "rate": "1",
-    "nbRateUnits": "1",
-    "rateUnits": "second",
-    "randomFirst": "1",
-    "randomLast": "5",
-    "randomUnits": "seconds",
-    "drop": false,
-    "x": 1780,
-    "y": 640,
-    "wires": [
-      [
-        "99674449.7690e8"
-      ]
-    ]
-  },
-  {
-    "id": "9eb81e11.b5a25",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "func": "if(msg.duration){\n    msg.delay=msg.duration\n}\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "x": 1620,
-    "y": 640,
-    "wires": [
-      [
-        "80833d10.d644b"
-      ]
-    ]
-  },
-  {
     "id": "99674449.7690e8",
     "type": "http request",
     "z": "d3d3a738.50ff6",
-    "d": true,
     "name": "",
-    "method": "GET",
+    "method": "use",
     "ret": "txt",
-    "paytoqs": false,
+    "paytoqs": "body",
     "url": "",
+    "tls": "",
     "persist": false,
+    "proxy": "",
     "authType": "",
-    "x": 1930,
-    "y": 640,
+    "x": 1650,
+    "y": 280,
     "wires": [
       []
-    ]
-  },
-  {
-    "id": "64db3985.3b4ec8",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "set timestamp",
-    "func": "function parseIso8601(date) {\n    var numericKeys = [ 1, 4, 5, 6, 7, 10, 11 ];\n    var timestamp, struct, minutesOffset = 0;\n\n    // ES5 §15.9.4.2 states that the string should attempt to be parsed as a Date Time String Format string\n    // before falling back to any implementation-specific date parsing, so that’s what we do, even if native\n    // implementations could be faster\n    //              1 YYYY                2 MM       3 DD           4 HH    5 mm       6 ss        7 msec        8 Z 9 ±    10 tzHH    11 tzmm\n    if ((struct = /^(\\d{4}|[+\\-]\\d{6})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:T(\\d{2}):(\\d{2})(?::(\\d{2})(?:\\.(\\d{3}))?)?(?:(Z)|([+\\-])(\\d{2})(?::(\\d{2}))?)?)?$/.exec(date))) {\n        // avoid NaN timestamps caused by “undefined” values being passed to Date.UTC\n        for (var i = 0, k; (k = numericKeys[i]); ++i) {\n            struct[k] = +struct[k] || 0;\n        }\n\n        // allow undefined days and months\n        struct[2] = (+struct[2] || 1) - 1;\n        struct[3] = +struct[3] || 1;\n\n        if (struct[8] !== 'Z' && struct[9] !== undefined) {\n            minutesOffset = struct[10] * 60 + struct[11];\n\n            if (struct[9] === '+') {\n                minutesOffset = 0 - minutesOffset;\n            }\n        }\n\n        timestamp = new Date(struct[1], struct[2], struct[3], struct[4], struct[5] + minutesOffset, struct[6], struct[7]);\n    } else {\n        timestamp = Date.parse ? Date.parse(date) : NaN;\n    }\n\n    return timestamp;\n}\n\nmsg.payload = msg.payload || {}\ntry {\n    msg.payload.timestamp = parseIso8601(msg.payload.timestamp)\n    node.status({fill:\"green\",shape:\"dot\",text:msg.payload.timestamp})\n} catch(e) {\n    node.status({fill:\"yellow\",shape:\"dot\",text:e.message});\n}\nmsg.payload.timestamp = msg.payload.timestamp || Date()\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "x": 1060,
-    "y": 640,
-    "wires": [
-      [
-        "e70660c7.026038"
-      ]
     ]
   },
   {
@@ -1056,8 +1109,8 @@
     "name": "",
     "statusCode": "200",
     "headers": {},
-    "x": 1620,
-    "y": 980,
+    "x": 960,
+    "y": 180,
     "wires": []
   },
   {
@@ -1069,47 +1122,11 @@
     "method": "get",
     "upload": false,
     "swaggerDoc": "",
-    "x": 500,
-    "y": 980,
+    "x": 360,
+    "y": 180,
     "wires": [
       [
-        "bd2e5c2f25346c4f"
-      ]
-    ]
-  },
-  {
-    "id": "76de94c8.591b7c",
-    "type": "json",
-    "z": "d3d3a738.50ff6",
-    "name": "",
-    "property": "payload",
-    "action": "obj",
-    "pretty": false,
-    "x": 1270,
-    "y": 980,
-    "wires": [
-      [
-        "c94ccf9a.601d48",
-        "5c4418a6466a0bfd"
-      ]
-    ]
-  },
-  {
-    "id": "1c0850832bac3857",
-    "type": "ip",
-    "z": "d3d3a738.50ff6",
-    "name": "ip",
-    "https": false,
-    "timeout": "5000",
-    "internalIPv4": true,
-    "internalIPv6": true,
-    "publicIPv4": false,
-    "publicIPv6": true,
-    "x": 750,
-    "y": 1060,
-    "wires": [
-      [
-        "7313fa5041551f80"
+        "351e2727ab535ec9"
       ]
     ]
   },
@@ -1118,96 +1135,560 @@
     "type": "debug",
     "z": "d3d3a738.50ff6",
     "name": "",
-    "active": true,
+    "active": false,
     "tosidebar": true,
     "console": false,
-    "tostatus": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "statusVal": "",
+    "tostatus": true,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "payload",
     "statusType": "auto",
-    "x": 1610,
-    "y": 940,
+    "x": 950,
+    "y": 220,
     "wires": []
   },
   {
     "id": "293c1f95b8c22f6b",
     "type": "function",
-    "z": "d3d3a738.50ff6",
+    "z": "e268071b434a4a05",
     "name": "addresses",
-    "func": "msg.payload.addresses = flow.get(\"addresses\")\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload.addresses})\n\nreturn msg;",
+    "func": "msg.topic = \"addresses\"\nmsg.payload = global.get(\"addresses\")\nnode.status({fill:\"green\",shape:\"dot\",text:msg.payload})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 1070,
-    "y": 980,
+    "x": 470,
+    "y": 200,
     "wires": [
       [
-        "76de94c8.591b7c"
+        "459f6e3c6d46fcf6"
       ]
     ]
   },
   {
     "id": "bd2e5c2f25346c4f",
     "type": "function",
-    "z": "d3d3a738.50ff6",
+    "z": "e268071b434a4a05",
     "name": "hostname",
-    "func": "const { execSync } = global.get(\"child_process\")\n\nconst result = execSync(\"hostname\", (error, stdout, stderr) => {\n    if (error) {\n        node.status({fill:\"red\",shape:\"dot\",text:error.message})\n        node.error(`error: ${error.message}`);\n        return;\n    }\n    if (stderr) {\n        node.status({fill:\"yellow\",shape:\"dot\",text:`stderr: ${stderr}`})\n        node.error(`stderr: ${stderr}`);\n        return;\n    }\n    node.status({fill:\"green\",shape:\"dot\",text:`stdout: ${stdout}`})\n    node.info(`stdout: ${stdout}`);\n});\n\nmsg.payload.hostname = result.toString(\"utf8\").trim()\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload.hostname}`})\n\nreturn msg;",
+    "func": "msg.topic = \"hostname\"\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload}`})\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "libs": [],
-    "x": 740,
-    "y": 980,
+    "libs": [
+      {
+        "var": "childProcess",
+        "module": "child_process"
+      }
+    ],
+    "x": 460,
+    "y": 80,
     "wires": [
       [
-        "5bc54cf3183daf90"
+        "459f6e3c6d46fcf6"
       ]
     ]
   },
   {
     "id": "5bc54cf3183daf90",
     "type": "function",
-    "z": "d3d3a738.50ff6",
+    "z": "e268071b434a4a05",
     "name": "username",
-    "func": "const { execSync } = global.get(\"child_process\")\n\nconst result = execSync(\"whoami\", (error, stdout, stderr) => {\n    if (error) {\n        node.status({fill:\"red\",shape:\"dot\",text:error.message})\n        node.error(`error: ${error.message}`);\n        return;\n    }\n    if (stderr) {\n        node.status({fill:\"yellow\",shape:\"dot\",text:`stderr: ${stderr}`})\n        node.error(`stderr: ${stderr}`);\n        return;\n    }\n    node.status({fill:\"green\",shape:\"dot\",text:`stdout: ${stdout}`})\n    node.info(`stdout: ${stdout}`);\n});\n\nmsg.payload.username = result.toString(\"utf8\").trim()\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload.username}`})\n\nreturn msg;",
+    "func": "msg.topic = \"username\"\nnode.status({fill:\"green\",shape:\"dot\",text:`${msg.payload}`})\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "libs": [],
-    "x": 900,
-    "y": 980,
+    "libs": [
+      {
+        "var": "childProcess",
+        "module": "child_process"
+      }
+    ],
+    "x": 460,
+    "y": 140,
     "wires": [
       [
-        "293c1f95b8c22f6b"
+        "459f6e3c6d46fcf6"
       ]
     ]
   },
   {
-    "id": "7313fa5041551f80",
-    "type": "function",
-    "z": "d3d3a738.50ff6",
-    "name": "addresses > flow",
-    "func": "const URL = global.get(\"url\").URL\nconst req = msg.req || {}\nconst headers = req.headers || {}\nconst url = headers.origin || `http://${headers.host || \"localhost:1880\"}`\nnode.status({fill:\"yellow\",shape:\"dot\",text:url})\nconst origin = new URL(url)\n\nconst addresses = []\nif(msg.payload.internalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.internalIPv4}:${origin.port}`)\n}\nif(msg.payload.globalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.globalIPv4}:${origin.port}`)\n}\nif(msg.payload.internalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.internalIPv6}]:${origin.port}`)\n}\nif(msg.payload.globalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.globalIPv6}]:${origin.port}`)\n}\n\nflow.set(\"addresses\", addresses)\nnode.status({fill:\"green\",shape:\"dot\",text:flow.get(\"addresses\")})\n\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 1050,
-    "y": 1060,
+    "id": "459f6e3c6d46fcf6",
+    "type": "join",
+    "z": "e268071b434a4a05",
+    "name": "",
+    "mode": "custom",
+    "build": "object",
+    "property": "payload",
+    "propertyType": "msg",
+    "key": "topic",
+    "joiner": "\\n",
+    "joinerType": "str",
+    "accumulate": false,
+    "timeout": "",
+    "count": "5",
+    "reduceRight": false,
+    "reduceExp": "",
+    "reduceInit": "",
+    "reduceInitType": "",
+    "reduceFixup": "",
+    "x": 710,
+    "y": 200,
     "wires": [
       []
     ]
   },
   {
-    "id": "2725ab22096ff475",
+    "id": "3ccc68c88b722855",
     "type": "function",
+    "z": "e268071b434a4a05",
+    "name": "status",
+    "func": "msg.topic = \"status\"\nmsg.payload = msg.payload.status || global.get(\"status\")\nnode.status({fill:\"green\",shape:\"dot\",text:`${JSON.stringify(msg.payload)}`})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 450,
+    "y": 320,
+    "wires": [
+      [
+        "459f6e3c6d46fcf6"
+      ]
+    ]
+  },
+  {
+    "id": "f357e4ecb89a680a",
+    "type": "function",
+    "z": "e268071b434a4a05",
+    "name": "nearby",
+    "func": "msg.topic = \"nearby\"\nmsg.payload = global.get(\"nearby\")\nnode.status({fill:\"green\",shape:\"dot\",text:JSON.stringify(msg.payload)})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 450,
+    "y": 260,
+    "wires": [
+      [
+        "459f6e3c6d46fcf6"
+      ]
+    ]
+  },
+  {
+    "id": "4916930f282e31d6",
+    "type": "websocket out",
     "z": "d3d3a738.50ff6",
+    "name": "",
+    "server": "ed608b58.9ef53",
+    "client": "",
+    "x": 1700,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "5f439a5dafd4399e",
+    "type": "discovery",
+    "z": "e1effc2d22e3136d",
+    "name": "",
+    "topic": "",
+    "service": "_http._tcp",
+    "x": 240,
+    "y": 200,
+    "wires": [
+      [
+        "66c82c0e187e9979"
+      ]
+    ]
+  },
+  {
+    "id": "42473ca9bb5abd09",
+    "type": "function",
+    "z": "90dc5f4163afbe49",
+    "name": "nearby > global",
+    "func": "function arrived(address, user) {\n    const nearby = flow.get(\"nearby\") || {}\n    nearby[address] = user\n    global.set(\"nearby\", nearby)\n    node.log(`Service arrived: ${address} -> ${user}`)\n    node.status({fill:\"green\",shape:\"dot\",text:`${address} -> ${user}`})\n}\n\nfunction gone(address, user) {\n    const nearby = flow.get(\"nearby\") || {}\n    nearby.delete(address)\n    global.set(\"nearby\", nearby)\n    node.log(`Service gone: ${address}`)\n    node.status({fill:\"red\",shape:\"ring\",text:`${address} -> ${user}`})\n}\n\nconst txtRecords = msg.payload.txtRecord || {}\nconst addresses = msg.payload.addresses || []\nnode.log(JSON.stringify(txtRecords));\naddresses.forEach(address => {\n    const host = address.includes(\":\") ? `[${address}]` : address\n    const url = `http://${host}:${txtRecords.port || \"1880\"}`\n        \n    if (msg.payload.state) arrived(url, txtRecords.user)\n    else gone(url)\n})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "global.set(\"nearby\", {})",
+    "finalize": "",
+    "libs": [],
+    "x": 840,
+    "y": 100,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "56404e92c05a7cb5",
+    "type": "ip",
+    "z": "cf98990a23245750",
+    "name": "ip",
+    "https": false,
+    "timeout": "5000",
+    "internalIPv4": true,
+    "internalIPv6": true,
+    "publicIPv4": false,
+    "publicIPv6": false,
+    "x": 550,
+    "y": 400,
+    "wires": [
+      [
+        "a7f4e9006e378aaa",
+        "b70f8e25798454ba"
+      ]
+    ]
+  },
+  {
+    "id": "a7f4e9006e378aaa",
+    "type": "function",
+    "z": "cf98990a23245750",
+    "name": "addresses > global",
+    "func": "const URL = url.URL\nconst req = msg.req || {}\nconst headers = req.headers || {}\nconst address = headers.origin || `http://${headers.host || \"localhost:1880\"}`\nnode.status({fill:\"yellow\",shape:\"dot\",text:address})\nconst origin = new URL(address)\n\nconst addresses = []\nif(msg.payload.internalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.internalIPv4}:${origin.port}`)\n}\nif(msg.payload.globalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.globalIPv4}:${origin.port}`)\n}\nif(msg.payload.internalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.internalIPv6}]:${origin.port}`)\n}\nif(msg.payload.globalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.globalIPv6}]:${origin.port}`)\n}\n\nglobal.set(\"addresses\", addresses)\nnode.status({fill:\"green\",shape:\"dot\",text:global.get(\"addresses\")})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "global.set(\"addresses\", [])",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "url",
+        "module": "url"
+      }
+    ],
+    "x": 770,
+    "y": 400,
+    "wires": [
+      [
+        "c93a6596813a26c4"
+      ]
+    ]
+  },
+  {
+    "id": "c93a6596813a26c4",
+    "type": "delay",
+    "z": "cf98990a23245750",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "10",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 650,
+    "y": 520,
+    "wires": [
+      [
+        "56404e92c05a7cb5"
+      ]
+    ]
+  },
+  {
+    "id": "b70f8e25798454ba",
+    "type": "debug",
+    "z": "cf98990a23245750",
+    "name": "",
+    "active": false,
+    "tosidebar": false,
+    "console": false,
+    "tostatus": true,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "payload",
+    "statusType": "auto",
+    "x": 750,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "351e2727ab535ec9",
+    "type": "subflow:e268071b434a4a05",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "env": [],
+    "x": 660,
+    "y": 180,
+    "wires": [
+      [
+        "c94ccf9a.601d48",
+        "5c4418a6466a0bfd"
+      ]
+    ]
+  },
+  {
+    "id": "4072fcc87c6958ed",
+    "type": "json",
+    "z": "85f0531b8e23f10e",
+    "name": "",
+    "property": "payload",
+    "action": "obj",
+    "pretty": false,
+    "x": 190,
+    "y": 80,
+    "wires": [
+      [
+        "5758f80ec08053f2"
+      ]
+    ]
+  },
+  {
+    "id": "97d94673a14c771b",
+    "type": "function",
+    "z": "44cf99770533579a",
+    "name": "status > global",
+    "func": "global.set(\"status\", msg.payload)\nnode.status({fill:\"green\",shape:\"dot\",text:JSON.stringify(global.get(\"status\"))})\n\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "global.set(\"addresses\", [])",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "url",
+        "module": "url"
+      }
+    ],
+    "x": 1100,
+    "y": 500,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "5758f80ec08053f2",
+    "type": "subflow:6a822a9c1319811c",
+    "z": "85f0531b8e23f10e",
+    "name": "",
+    "env": [],
+    "x": 400,
+    "y": 80,
+    "wires": [
+      [
+        "634d0d63206c8a19"
+      ]
+    ]
+  },
+  {
+    "id": "ae5389dbf5b5c166",
+    "type": "catch",
+    "z": "44cf99770533579a",
+    "name": "",
+    "scope": null,
+    "uncaught": false,
+    "x": 560,
+    "y": 580,
+    "wires": [
+      [
+        "9532b18799ce38de"
+      ]
+    ]
+  },
+  {
+    "id": "9532b18799ce38de",
+    "type": "function",
+    "z": "44cf99770533579a",
+    "name": "null",
+    "func": "msg.payload = null\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 850,
+    "y": 580,
+    "wires": [
+      [
+        "97d94673a14c771b"
+      ]
+    ]
+  },
+  {
+    "id": "0f665db3dad9b0aa",
+    "type": "subflow:e268071b434a4a05",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "env": [],
+    "x": 1480,
+    "y": 540,
+    "wires": [
+      [
+        "4916930f282e31d6",
+        "dc74926cc3638da9"
+      ]
+    ]
+  },
+  {
+    "id": "66c82c0e187e9979",
+    "type": "switch",
+    "z": "e1effc2d22e3136d",
+    "name": "filter busy-screen",
+    "property": "payload.txtRecord",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "hask",
+        "v": "user",
+        "vt": "str"
+      },
+      {
+        "t": "else"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 2,
+    "x": 510,
+    "y": 200,
+    "wires": [
+      [
+        "f621d7bd9148a1ad"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "dec2514d23c29320",
+    "type": "debug",
+    "z": "90dc5f4163afbe49",
+    "name": "",
+    "active": true,
+    "tosidebar": false,
+    "console": false,
+    "tostatus": true,
+    "complete": "payload.name",
+    "targetType": "msg",
+    "statusVal": "payload",
+    "statusType": "auto",
+    "x": 850,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "2abb478f160ce898",
+    "type": "subflow:e1effc2d22e3136d",
+    "z": "90dc5f4163afbe49",
+    "name": "",
+    "env": [],
+    "x": 600,
+    "y": 140,
+    "wires": [
+      [
+        "42473ca9bb5abd09"
+      ],
+      [
+        "dec2514d23c29320"
+      ]
+    ]
+  },
+  {
+    "id": "c831f2b82172d0bf",
+    "type": "subflow:e1effc2d22e3136d",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "env": [],
+    "x": 660,
+    "y": 540,
+    "wires": [
+      [
+        "1a3cf396a07e6a10"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "e7cea05613e27843",
+    "type": "delay",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "pauseType": "rate",
+    "timeout": "2",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": true,
+    "allowrate": false,
+    "x": 1270,
+    "y": 540,
+    "wires": [
+      [
+        "0f665db3dad9b0aa"
+      ]
+    ]
+  },
+  {
+    "id": "dc74926cc3638da9",
+    "type": "debug",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": true,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "payload",
+    "statusType": "auto",
+    "x": 1690,
+    "y": 600,
+    "wires": []
+  },
+  {
+    "id": "f621d7bd9148a1ad",
+    "type": "change",
+    "z": "e1effc2d22e3136d",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "payload.txtRecord",
+        "tot": "msg"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 740,
+    "y": 120,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "18b0490b35e4a38f",
+    "type": "file in",
+    "z": "44cf99770533579a",
+    "name": "",
+    "filename": "busy-screen/status.json",
+    "format": "utf8",
+    "chunk": false,
+    "sendError": false,
+    "encoding": "none",
+    "allProps": false,
+    "x": 610,
+    "y": 440,
+    "wires": [
+      [
+        "906b28e0616985e0"
+      ]
+    ]
+  },
+  {
+    "id": "a871ebb783ded8f5",
+    "type": "function",
+    "z": "08e1bdd8996589b6",
     "name": "init",
     "func": "",
     "outputs": 1,
@@ -1215,12 +1696,429 @@
     "initialize": "node.send({},false);",
     "finalize": "",
     "libs": [],
-    "x": 510,
-    "y": 1060,
+    "x": 430,
+    "y": 320,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "5c6bec3c3423df97",
+    "type": "subflow:08e1bdd8996589b6",
+    "z": "cf98990a23245750",
+    "name": "",
+    "x": 350,
+    "y": 400,
     "wires": [
       [
-        "1c0850832bac3857"
+        "56404e92c05a7cb5"
       ]
     ]
+  },
+  {
+    "id": "48b303ec47c15b43",
+    "type": "subflow:08e1bdd8996589b6",
+    "z": "44cf99770533579a",
+    "name": "",
+    "x": 310,
+    "y": 440,
+    "wires": [
+      [
+        "18b0490b35e4a38f"
+      ]
+    ]
+  },
+  {
+    "id": "14eaca7a99556bed",
+    "type": "function",
+    "z": "6a822a9c1319811c",
+    "name": "",
+    "func": "msg.payload.timestamp = msg.payload.timestamp ? moment(msg.payload.timestamp) : moment()\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "moment",
+        "module": "moment"
+      }
+    ],
+    "x": 340,
+    "y": 120,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fcd4121bed27d1ce",
+    "type": "exec",
+    "z": "fae67dfd44064085",
+    "command": "hostname",
+    "addpay": "",
+    "append": "",
+    "useSpawn": "false",
+    "timer": "2",
+    "winHide": false,
+    "oldrc": false,
+    "name": "",
+    "x": 200,
+    "y": 100,
+    "wires": [
+      [
+        "87db43369aa21f58"
+      ],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "1c8f14700c680424",
+    "type": "change",
+    "z": "305486fc7a8f284b",
+    "name": "",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "$trim(payload)",
+        "tot": "jsonata"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 400,
+    "y": 260,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "87db43369aa21f58",
+    "type": "subflow:305486fc7a8f284b",
+    "z": "fae67dfd44064085",
+    "name": "",
+    "env": [],
+    "x": 350,
+    "y": 80,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "1b6c8b73e03202f0",
+    "type": "subflow:fae67dfd44064085",
+    "z": "e268071b434a4a05",
+    "name": "",
+    "env": [],
+    "x": 320,
+    "y": 80,
+    "wires": [
+      [
+        "bd2e5c2f25346c4f"
+      ]
+    ]
+  },
+  {
+    "id": "f60f2fba236286c6",
+    "type": "exec",
+    "z": "6c31a8500cd2af4a",
+    "command": "whoami",
+    "addpay": "",
+    "append": "",
+    "useSpawn": "false",
+    "timer": "2",
+    "winHide": false,
+    "oldrc": false,
+    "name": "",
+    "x": 200,
+    "y": 80,
+    "wires": [
+      [
+        "c2f662eea1f1abf3"
+      ],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "c2f662eea1f1abf3",
+    "type": "subflow:305486fc7a8f284b",
+    "z": "6c31a8500cd2af4a",
+    "name": "",
+    "x": 370,
+    "y": 80,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "59c9988e0b843e16",
+    "type": "subflow:6c31a8500cd2af4a",
+    "z": "e268071b434a4a05",
+    "name": "",
+    "env": [],
+    "x": 310,
+    "y": 140,
+    "wires": [
+      [
+        "5bc54cf3183daf90"
+      ]
+    ]
+  },
+  {
+    "id": "63e4a4593ca6c7fa",
+    "type": "link out",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "links": [
+      "0d361b50f3c2c999"
+    ],
+    "x": 915,
+    "y": 340,
+    "wires": []
+  },
+  {
+    "id": "a5bd622049768a66",
+    "type": "file",
+    "z": "44cf99770533579a",
+    "name": "",
+    "filename": "busy-screen/status.json",
+    "appendNewline": true,
+    "createDir": true,
+    "overwriteFile": "true",
+    "encoding": "utf8",
+    "x": 610,
+    "y": 500,
+    "wires": [
+      [
+        "906b28e0616985e0"
+      ]
+    ]
+  },
+  {
+    "id": "0d361b50f3c2c999",
+    "type": "link in",
+    "z": "44cf99770533579a",
+    "name": "",
+    "links": [
+      "63e4a4593ca6c7fa"
+    ],
+    "x": 275,
+    "y": 500,
+    "wires": [
+      [
+        "a5bd622049768a66"
+      ]
+    ]
+  },
+  {
+    "id": "4b98d6d2df8b42d2",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "payload.* > payload.status.*",
+    "func": "msg.payload = {\n    \"status\": msg.payload\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1020,
+    "y": 500,
+    "wires": [
+      [
+        "e7cea05613e27843"
+      ]
+    ]
+  },
+  {
+    "id": "1a3cf396a07e6a10",
+    "type": "delay",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "pauseType": "delay",
+    "timeout": "5",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 960,
+    "y": 540,
+    "wires": [
+      [
+        "e7cea05613e27843"
+      ]
+    ]
+  },
+  {
+    "id": "eee197ea38dbe9ee",
+    "type": "function",
+    "z": "2280cc9c3efeb2e2",
+    "name": "",
+    "func": "msg.payload.duration = msg.payload.duration ? moment.duration(msg.payload.duration).asMilliseconds() : null\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [
+      {
+        "var": "moment",
+        "module": "moment"
+      }
+    ],
+    "x": 440,
+    "y": 220,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "634d0d63206c8a19",
+    "type": "subflow:2280cc9c3efeb2e2",
+    "z": "85f0531b8e23f10e",
+    "name": "",
+    "env": [],
+    "x": 590,
+    "y": 80,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "906b28e0616985e0",
+    "type": "subflow:85f0531b8e23f10e",
+    "z": "44cf99770533579a",
+    "name": "",
+    "env": [],
+    "x": 860,
+    "y": 500,
+    "wires": [
+      [
+        "97d94673a14c771b"
+      ]
+    ]
+  },
+  {
+    "id": "a6a78c5caf26d2d8",
+    "type": "subflow:85f0531b8e23f10e",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "env": [],
+    "x": 660,
+    "y": 380,
+    "wires": [
+      [
+        "63e4a4593ca6c7fa",
+        "e8b81718.5a35f",
+        "3381a67b.9f5e9a",
+        "4b98d6d2df8b42d2",
+        "9d0231b41c09d282"
+      ]
+    ]
+  },
+  {
+    "id": "9d0231b41c09d282",
+    "type": "switch",
+    "z": "d3d3a738.50ff6",
+    "name": "if has duration",
+    "property": "payload",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "hask",
+        "v": "duration",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 980,
+    "y": 300,
+    "wires": [
+      [
+        "1db1cb801ab9c408"
+      ]
+    ]
+  },
+  {
+    "id": "1db1cb801ab9c408",
+    "type": "switch",
+    "z": "d3d3a738.50ff6",
+    "name": "if has on.finish",
+    "property": "payload.on",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "hask",
+        "v": "finish",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 1160,
+    "y": 300,
+    "wires": [
+      [
+        "770b95baf52b75ea"
+      ]
+    ]
+  },
+  {
+    "id": "770b95baf52b75ea",
+    "type": "function",
+    "z": "d3d3a738.50ff6",
+    "name": "hold message back for msg.duration",
+    "func": "const outdatedTimeoutId = context.get(\"timeoutId\")\nif (outdatedTimeoutId) {\n    context.set(\"timeoutId\", null);\n    clearTimeout(outdatedTimeoutId)\n}\ncontext.set(\"timeoutId\", setTimeout(() => {\n    node.send(msg.payload.on.finish, false)\n    node.status({ fill: \"green\", shape: \"dot\", text: JSON.stringify(msg.payload.on.finish) })\n}, msg.payload.duration))\nnode.status({ fill: \"yellow\", shape: \"dot\", text: `${msg.payload.duration} -> ${JSON.stringify(msg.payload.on.finish)}` })\nreturn",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 1410,
+    "y": 300,
+    "wires": [
+      [
+        "99674449.7690e8"
+      ]
+    ]
+  },
+  {
+    "id": "7d7ca9f67eeb1275",
+    "type": "http in",
+    "z": "e9f16578ec7b2ee2",
+    "name": "",
+    "url": "/say",
+    "method": "post",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 660,
+    "y": 320,
+    "wires": [
+      [
+        "38250944620d2eea"
+      ]
+    ]
+  },
+  {
+    "id": "38250944620d2eea",
+    "type": "play audio",
+    "z": "e9f16578ec7b2ee2",
+    "name": "",
+    "voice": "10",
+    "x": 850,
+    "y": 320,
+    "wires": []
   }
 ]

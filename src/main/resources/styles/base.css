@@ -12,11 +12,13 @@ body.init {
 
 .device {
     position: absolute;
-    top: 1.4vmin;
+    top: 9.4vmin;
     left: 1.4vmin;
-    bottom: 8vmin;
+    bottom: 9.4vmin;
     font-size: 3.4vmin;
     writing-mode: vertical-rl;
+    text-orientation: upright;
+    color: white;
     opacity: .15;
 }
 
@@ -29,12 +31,13 @@ body.init {
 
 .addresses {
     position: absolute;
-    top: 1.4vmin;
+    top: 9.4vmin;
     right: 1.4vmin;
-    bottom: 8vmin;
+    bottom: 9.4vmin;
     text-align: right;
     font-size: 1.8vmin;
     writing-mode: vertical-rl;
+    text-orientation: upright;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -46,7 +49,6 @@ body.init {
 
 .addresses__address {
     margin-bottom: 3vmin;
-    transform: rotate(0deg);
     text-align: center;
 }
 

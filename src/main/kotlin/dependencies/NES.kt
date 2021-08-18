@@ -6,6 +6,7 @@ import kotlinext.js.require
 import kotlinx.css.Display.none
 import kotlinx.css.TextAlign.right
 import kotlinx.css.display
+import kotlinx.css.fontFamily
 import kotlinx.css.margin
 import kotlinx.css.padding
 import kotlinx.css.pct
@@ -31,6 +32,10 @@ fun Document.appendNEScss() {
 
         ".nes-dialog" {
             padding(2.vh, 2.vw)
+        }
+
+        "select option" {
+            fontFamily = "monospace, monospace"
         }
 
         // extra small devices (phones, 600px and down)

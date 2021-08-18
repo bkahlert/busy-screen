@@ -51,7 +51,6 @@ tasks.withType<Kotlin2JsCompile> {
     }
 }
 
-
 tasks.withType<Test> {
     useJUnitPlatform()
 }

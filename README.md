@@ -1,7 +1,4 @@
-![Two Kaomoji shouting "Busy?!"](docs/banner.svg)
-
-TODO: document discovery self   
-TODO: document discovery others
+![Two Kaomoji shouting "Busy?!"](docs/banner.png)
 
 # Busy Screen
 
@@ -63,11 +60,36 @@ curl -X PUT --location "http://192.168.168.168:1880/status" \
 
 ![Busy screen on Raspberry Pi](docs/raspberry-busy.jpg)
 
+The following properties are supported:
+
+```json
+{
+  "name": "status name that is displayed in the speech bubble",
+  "task": "task title used as the headline on the top border",
+  "duration": "60000",
+  "email": "john.joe@example.com",
+  "on": {
+    "finish": {
+      "method": "post",
+      "url": "http://my-talking-robot/say",
+      "payload": "finished working"
+    }
+  }
+}
+```
+
+The only required field is `name`. All other fields are optional.
+
+The `duration` can be specified in
+
+- number of milliseconds (`60000`ms = 1min) or
+- in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format (`PT1M` / `PT60S` = 1min)
+
 You can find further examples in [busy-screen.status.http](busy-screen.status.http).
 
 #### Connectivity
 
-You can either connect your device via:
+You can either connect to your device via:
 
 - Ethernet
 - Wifi
@@ -80,12 +102,23 @@ You can either connect your device via:
 
 #### Discovery
 
+If you start your device with a connected screen, you see the following information that help you finding your device:
+
+- Your device **name** is written on the left border.
+- Your device **IP** is written on the right border.
+- Your **username** is written below the avatar.
+- **Nearby devices** are listed in a dropdown that opens when you click your username.
+    - The device currently connected to is always on top.
+    - Using the "Switch" button you can connect to the selected device.
+
+![Discovery Options](docs/discovery.png)
+
 Avahi is installed on your Raspberry Pi with all relevant services advertised in your network. You can use any zeroconf / mDNS / Bonjour client to discover your
 device.
 
 ![iNet Network Scanner](docs/bonjour.png)
 
-Alternatively you can login to your router and find out what new devices received a dynamic IP addresss from it.
+Alternatively you can log in to your router and find out what new devices received a dynamic IP address from it.
 
 ### Install Manually / Locally
 
@@ -97,7 +130,7 @@ The manual installation consists of the following steps:
 4) Set up an HTTP server to publish the [just built frontend](build/distributions), e.g. using `npx http-server -c -p 80`
 5) open the published frontend  
    (automatically opened if you use the `npx` command above)
-6) change the `location` query parameter in the URL to the one of your Node RED installation
+6) change the `address` query parameter in the URL to the one of your Node RED installation
 
 ## Customization
 
@@ -128,11 +161,9 @@ Busy Screen can be customized / extended in three ways:
 ![loading screen with error](docs/loading-error.gif)  
 **Loading screen with error message**
 
-## To-Dos
-
-- [ ] Use https://github.com/nostalgic-css/NES.css directly (embed, no CDN)
-
 ## Copyright
 
 Nintendo owns the copyright to Mario, Samus, the heart container, the coin and the controller. Please comply with the Nintendo guidelines and laws of the
 applicable jurisdiction.
+
+South Park characters have been designed with the amazing [SP-Studio](https://www.sp-studio.de/).

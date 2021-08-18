@@ -16,11 +16,22 @@
 </head>
 <body class="init" style="margin-bottom: 0 !important;">
 <div class="status nes-container is-centered">
-    <h1>
-        <span class="status__task">${task}</span>
-    </h1>
-    <div class="status__avatar_name">
-        <img alt="${email}" class="status__avatar">
+    <div class="status__header">
+        <h1 class="status__task">${task}</h1>
+    </div>
+    <div class="status__body">
+        <div class="status__identity">
+            <figure class="status__avatar">
+                <img alt="${email}" src="">
+                <figcaption>${username}</figcaption>
+            </figure>
+            <form class="nearby nearby--disabled">
+                <div class="nes-select">
+                    <select></select>
+                </div>
+                <button type="submit" class="nes-btn">Switch</button>
+            </form>
+        </div>
         <div class="status__name nes-balloon from-left">
             <span class="nes-text">${name}</span>
         </div>
@@ -46,7 +57,7 @@
     <a href="#" onclick="document.getElementById('help-dialog').showModal(); return false;">Help</a>
     <dialog class="nes-dialog is-rounded" id="help-dialog">
         <form method="dialog">
-            <h1 class="title">Update status.Status</h1>
+            <h1 class="title">Update Status</h1>
             <pre>
                 <code>
 curl -X PUT --location "http://192.168.168.168:1880/status" \

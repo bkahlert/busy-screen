@@ -4,6 +4,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.Url
 import io.ktor.util.toMap
+import koodies.text.withPrefix
 import org.w3c.dom.Location
 
 private fun CharSequence.deserialize(): Parameters =
@@ -69,7 +70,9 @@ val Url.allParameters: Parameters
 var Location.parameters: Parameters
     get() = url.parameters
     set(value) {
-        search = value.serialize()
+        value.serialize()
+            .takeIf { it != search.removePrefix("?") }
+            ?.also { search = it.withPrefix("?") }
     }
 
 /**
@@ -79,7 +82,9 @@ var Location.parameters: Parameters
 var Location.hashParameters: Parameters
     get() = url.hashParameters
     set(value) {
-        hash = value.serialize()
+        value.serialize()
+            .takeIf { it != hash.removePrefix("#") }
+            ?.also { hash = it.withPrefix("#") }
     }
 
 /**
