@@ -6,6 +6,9 @@ timeout 3m node-red-pi --max-old-space-size=256 -u "/home/$1/busy-screen"
 # monaco editor
 sed -i 's/\(.*lib: \).*/\1"monaco",/' "/home/$1/busy-screen/settings.js"
 
+# add moment dependency now while we are online
+sed -i 's#// os:require('"'"'os'"'"'),#moment:require('"'"'moment'"'"')#' "/home/$1/busy-screen/settings.js"
+
 # external dependencies in node's setup tab
 sed -i 's/\(.*functionExternalModules: \).*/\1true,/' "/home/$1/busy-screen/settings.js"
 
