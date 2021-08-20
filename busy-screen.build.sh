@@ -6,12 +6,8 @@ env ORG_GRADLE_PROJECT_isProduction=true ./gradlew build -x test
 BUILD_DIR="build/image"
 
 mkdir -p "${BUILD_DIR}" \
- && cp busy-screen.conf "${BUILD_DIR}" \
- && cp .env "${BUILD_DIR}" \
- && cp -r build/distributions/ "${BUILD_DIR}/public_html"
-
-mkdir -p "${BUILD_DIR}/node-red" \
- && cp busy-screen.flow "${BUILD_DIR}/node-red/flows.json"
+ && cp -r kustomize/ "${BUILD_DIR}" \
+ && cp -r build/distributions/ "${BUILD_DIR}/home/busy-screen/public_html"
 
 cd "${BUILD_DIR}" || exit 1
 

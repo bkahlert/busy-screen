@@ -1030,53 +1030,6 @@
     ]
   },
   {
-    "id": "34891022.13219",
-    "type": "pi-gpiod out",
-    "z": "86cf6ae1.86e16",
-    "name": "",
-    "host": "gpiod",
-    "port": 8888,
-    "pin": "17",
-    "set": true,
-    "level": "0",
-    "out": "out",
-    "sermin": "1000",
-    "sermax": "2000",
-    "freq": "800",
-    "x": 800,
-    "y": 960,
-    "wires": []
-  },
-  {
-    "id": "ccc3b149.e73cd",
-    "type": "inject",
-    "z": "86cf6ae1.86e16",
-    "name": "",
-    "props": [
-      {
-        "p": "payload"
-      },
-      {
-        "p": "topic",
-        "vt": "str"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": false,
-    "onceDelay": 0.1,
-    "topic": "",
-    "payload": "",
-    "payloadType": "date",
-    "x": 470,
-    "y": 960,
-    "wires": [
-      [
-        "34891022.13219"
-      ]
-    ]
-  },
-  {
     "id": "99674449.7690e8",
     "type": "http request",
     "z": "d3d3a738.50ff6",

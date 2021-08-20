@@ -54,15 +54,6 @@ data class Status(
     @Serializable(UrlSerializer::class)
     val avatar: Url? = null,
 ) {
-    companion object {
-        private val format = Json {
-            isLenient = true
-            ignoreUnknownKeys = true
-        }
-
-        fun fromJson(json: String): Status = format.decodeFromString(json)
-    }
-
     val passed: Duration? get() = timestamp?.let { Now - it }
 
     val remaining: Duration?
@@ -151,5 +142,20 @@ data class Status(
         result = 31 * result + timestamp?.getTime().hashCode()
         result = 31 * result + email.hashCode()
         return result
+    }
+
+    companion object {
+        private val format = Json {
+            isLenient = true
+            ignoreUnknownKeys = true
+        }
+
+        fun fromJson(json: String): Status = format.decodeFromString(json)
+
+        val DEFAULT_STATUS: Status = Status(
+            name = "installation finished",
+            duration = 5.minutes,
+            timestamp = Now - 5.minutes,
+        )
     }
 }

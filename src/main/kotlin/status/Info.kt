@@ -168,7 +168,7 @@ data class Info(
         element.addClass("online")
 
         element.forEachInstance<HTMLElement>(".status") {
-            status?.update(it)
+            (status ?: Status.DEFAULT_STATUS).update(it)
             it.forEach("figcaption") {
                 it.clear()
                 it.append {

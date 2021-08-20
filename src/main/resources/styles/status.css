@@ -72,6 +72,7 @@
 
 .status__avatar figcaption {
     margin-top: 1vh;
+    margin-bottom: 3vmin;
 }
 
 .status__avatar + * {
@@ -80,7 +81,7 @@
 
 .status__name {
     margin-left: 4vw;
-    margin-bottom: 12vmin;
+    margin-bottom: 20vmin;
     font-size: 6vmin;
     color: #e86e55;
     transition-property: color;

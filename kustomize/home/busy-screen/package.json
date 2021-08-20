@@ -1,0 +1,8 @@
+{
+  "name": "busy-screen",
+  "description": "Turns your Raspberry Pi into a status screen to show your colleagues, family, friends, or whoever might disturb you if you're busy or not.",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+  }
+}

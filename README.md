@@ -25,7 +25,7 @@ Content-Type: application/json; charset=utf-8
 
 ## Installation
 
-This application consists of a backend implemented as a [Node RED flow](busy-screen.flow) and a frontend implemented with Kotlin JS.
+This application consists of a backend implemented as a [Node RED flow](kustomize/home/busy-screen/flows.json) and a frontend implemented with Kotlin JS.
 
 Consequently, you'll need a Node RED installation and a webserver to provide access to the frontend.
 
@@ -85,7 +85,7 @@ The `duration` can be specified in
 - number of milliseconds (`60000`ms = 1min) or
 - in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) format (`PT1M` / `PT60S` = 1min)
 
-You can find further examples in [busy-screen.status.http](busy-screen.status.http).
+You can find further examples in [http-client.http](http-client.http).
 
 #### Connectivity
 
@@ -93,9 +93,9 @@ You can either connect to your device via:
 
 - Ethernet
 - Wifi
-    - You can provide the corresponding WPA supplicant file with [busy-screen.conf](busy-screen.conf).
+    - You can provide the corresponding WPA supplicant file with [busy-screen.conf](kustomize/busy-screen.conf).
 - USB
-    - [busy-screen.conf](busy-screen.conf) configures the Raspberry Pi to provide ethernet access.
+    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access.
     - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen of {{username}}` with
       IP `192.168.168.167/28`.
     - The IP of your Raspberry Pi is `192.168.168.168`.
@@ -125,7 +125,7 @@ Alternatively you can log in to your router and find out what new devices receiv
 The manual installation consists of the following steps:
 
 1) [Install Node RED](https://nodered.org/docs/getting-started/)
-2) Import [busy-screen.flow](busy-screen.flow) to Node RED
+2) Import [busy-screen.flow](kustomize/home/busy-screen/flows.json) to Node RED
 3) Build the frontend with `./gradlew build -x test`
 4) Set up an HTTP server to publish the [just built frontend](build/distributions), e.g. using `npx http-server -c -p 80`
 5) open the published frontend  
@@ -140,7 +140,7 @@ Busy Screen can be customized / extended in three ways:
 2) The Node RED flow can be freely changed as you like. In order to customize it, just edit it inside of Node RED. If you followed
    the [installation](#installation) steps above, you already have a running installation.
 3) You can customize the way your Raspberry Pi image is created. The image creation is done with the image customization
-   tool [Kustomize](https://github.com/bkahlert/kustomize). The actual configuration is stored in [busy-screen.conf](busy-screen.conf).
+   tool [Kustomize](https://github.com/bkahlert/kustomize). The actual configuration is stored in [busy-screen.conf](kustomize/busy-screen.conf).
 
 ## Responsive Design
 
@@ -160,6 +160,13 @@ Busy Screen can be customized / extended in three ways:
 
 ![loading screen with error](docs/loading-error.gif)  
 **Loading screen with error message**
+
+## TODO
+
+- [ ] get network connection to Raspberry Pi booted with dockerpi
+    - [ ] check for SSH
+    - [ ] check for HTTP
+    - [ ] change status and check if page changed
 
 ## Copyright
 
