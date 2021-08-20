@@ -16,9 +16,6 @@ apt-get -qq install apache2
 sed -i "s/\(.*DocumentRoot \).*/\1\/home\/$1\/busy-screen\/public_html/g" /etc/apache2/sites-enabled/000-default.conf
 sed -i "s/^.*DocumentRoot.*/&\n        <Directory \/home\/$1\/busy-screen\/public_html>\n          Options Indexes\n          Require all granted\n        <\/Directory>/" /etc/apache2/sites-enabled/000-default.conf
 
-# replace ${APACHE_LOG_DIR} to not log to apache sub directory of /var/log since that's deleted because of tmpfs
-find /etc/apache2 \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i 's/${APACHE_LOG_DIR}\//\/var\/log\/apache-/'
-
 mkdir -p "/home/$1/busy-screen/public_html"
 chown -R "$1:$1" "/home/$1"
 chmod -R a+x "/home/$1/busy-screen"

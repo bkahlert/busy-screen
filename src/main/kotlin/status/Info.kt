@@ -70,7 +70,7 @@ data class Info(
         val Url.infoEndpoint: Url get() = URLBuilder(this).apply { path("info") }.build()
 
         suspend fun poll(
-            url: Url = Url("http://localhost:1880"),
+            url: Url,
             pauseBetweenAttempts: Duration = 5.seconds,
             callback: (Throwable) -> Unit = {},
         ): Info = coroutineScope {

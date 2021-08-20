@@ -10,7 +10,7 @@ apt-get -qq install ttf-mscorefonts-installer fonts-dejavu fonts-dejavu-extra
 gpasswd -a "$1" tty
 
 # set permissions of /dev/tty to defined state
-sed -i '/^exit 0/c\chmod g+rw /dev/tty?\nexit 0' /etc/rc.local
+sed -i 's#^\(\s*exit .*\)#chmod g+rw /dev/tty?\n\1#g' /etc/rc.local
 
 # autostart
 cat <<EOF >>"/home/$1/.bashrc"

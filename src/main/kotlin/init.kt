@@ -30,8 +30,7 @@ fun initParameters(
     defaultAddress: Url,
     defaultRefreshRate: Duration,
 ): Pair<Url, Duration> {
-//    console.log(window.location.allParameters.toString())
-//    TODO("x")
+
     window.location.parameters = window.location.allParameters.copy {
         address = address ?: defaultAddress
         refreshRate = refreshRate ?: defaultRefreshRate
