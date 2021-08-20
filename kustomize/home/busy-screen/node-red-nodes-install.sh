@@ -15,8 +15,7 @@ npm install --unsafe-perm --save --no-update-notifier --no-audit --no-fund --pro
   node-red-node-smooth \
   node-red-node-ui-iframe \
   node-red-node-ui-webcam \
-  moment \
-  url
+  moment
 
 #npm install --unsafe-perm --save --no-update-notifier --no-audit --no-fund --production \
 #  node-red-node-pi-gpio \

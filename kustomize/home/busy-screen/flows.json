@@ -800,17 +800,12 @@
     "type": "function",
     "z": "cf98990a23245750",
     "name": "addresses > global",
-    "func": "const URL = url.URL\nconst req = msg.req || {}\nconst headers = req.headers || {}\nconst address = headers.origin || `http://${headers.host || \"localhost:1880\"}`\nnode.status({fill:\"yellow\",shape:\"dot\",text:address})\nconst origin = new URL(address)\n\nconst addresses = []\nif(msg.payload.internalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.internalIPv4}:${origin.port}`)\n}\nif(msg.payload.globalIPv4) {\n    addresses.push(`${origin.protocol}//${msg.payload.globalIPv4}:${origin.port}`)\n}\nif(msg.payload.internalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.internalIPv6}]:${origin.port}`)\n}\nif(msg.payload.globalIPv6) {\n    addresses.push(`${origin.protocol}//[${msg.payload.globalIPv6}]:${origin.port}`)\n}\n\nglobal.set(\"addresses\", addresses)\nnode.status({fill:\"green\",shape:\"dot\",text:global.get(\"addresses\")})\n\nreturn msg;",
+    "func": "const req = msg.req || {}\nconst headers = req.headers || {}\nconst address = headers.origin || `http://${headers.host || \"localhost:1880\"}`\nnode.status({fill:\"yellow\",shape:\"dot\",text:address})\n\nconst originMatch = address.match(/(\\w+):\\/\\/((\\w+\\.)*\\w+)(:(\\d+))?.*/)\nconst originProtocol = originMatch[1] || \"http\"\nconst originPort = originMatch[5] || \"1880\"\n\nconst addresses = []\nif(msg.payload.internalIPv4) {\n    addresses.push(`${originProtocol}://${msg.payload.internalIPv4}:${originPort}`)\n}\nif(msg.payload.globalIPv4) {\n    addresses.push(`${originProtocol}://${msg.payload.globalIPv4}:${originPort}`)\n}\nif(msg.payload.internalIPv6) {\n    addresses.push(`${originProtocol}://[${msg.payload.internalIPv6}]:${originPort}`)\n}\nif(msg.payload.globalIPv6) {\n    addresses.push(`${originProtocol}://[${msg.payload.globalIPv6}]:${originPort}`)\n}\n\nglobal.set(\"addresses\", addresses)\nnode.status({fill:\"green\",shape:\"dot\",text:global.get(\"addresses\")})\n\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "global.set(\"addresses\", [])",
     "finalize": "",
-    "libs": [
-      {
-        "var": "url",
-        "module": "url"
-      }
-    ],
+    "libs": [],
     "x": 770,
     "y": 400,
     "wires": [
@@ -1125,13 +1120,13 @@
     "type": "file in",
     "z": "44cf99770533579a",
     "name": "",
-    "filename": "busy-screen/status.json",
+    "filename": "status.json",
     "format": "utf8",
     "chunk": false,
     "sendError": false,
     "encoding": "none",
     "allProps": false,
-    "x": 610,
+    "x": 570,
     "y": 440,
     "wires": [
       [
@@ -1187,17 +1182,12 @@
     "type": "function",
     "z": "6a822a9c1319811c",
     "name": "",
-    "func": "msg.payload.timestamp = msg.payload.timestamp ? moment(msg.payload.timestamp) : moment()\nreturn msg;",
+    "func": "const moment = global.get(\"moment\")\nmsg.payload.timestamp = msg.payload.timestamp ? moment(msg.payload.timestamp) : moment()\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "libs": [
-      {
-        "var": "moment",
-        "module": "moment"
-      }
-    ],
+    "libs": [],
     "x": 340,
     "y": 120,
     "wires": [
@@ -1341,12 +1331,12 @@
     "type": "file",
     "z": "44cf99770533579a",
     "name": "",
-    "filename": "busy-screen/status.json",
+    "filename": "status.json",
     "appendNewline": true,
     "createDir": true,
     "overwriteFile": "true",
     "encoding": "utf8",
-    "x": 610,
+    "x": 570,
     "y": 500,
     "wires": [
       [
@@ -1418,17 +1408,12 @@
     "type": "function",
     "z": "2280cc9c3efeb2e2",
     "name": "",
-    "func": "msg.payload.duration = msg.payload.duration ? moment.duration(msg.payload.duration).asMilliseconds() : null\nreturn msg;",
+    "func": "const moment = global.get(\"moment\")\nmsg.payload.duration = msg.payload.duration ? moment.duration(msg.payload.duration).asMilliseconds() : null\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
     "finalize": "",
-    "libs": [
-      {
-        "var": "moment",
-        "module": "moment"
-      }
-    ],
+    "libs": [],
     "x": 440,
     "y": 220,
     "wires": [
@@ -1523,6 +1508,39 @@
     "voice": "10",
     "x": 1750,
     "y": 300,
+    "wires": []
+  },
+  {
+    "id": "8be9645c13a7983e",
+    "type": "catch",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "scope": [
+      "99674449.7690e8"
+    ],
+    "uncaught": false,
+    "x": 1330,
+    "y": 220,
+    "wires": [
+      [
+        "521e2f91fec52fa3"
+      ]
+    ]
+  },
+  {
+    "id": "521e2f91fec52fa3",
+    "type": "debug",
+    "z": "d3d3a738.50ff6",
+    "name": "",
+    "active": false,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "false",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1470,
+    "y": 220,
     "wires": []
   }
 ]
