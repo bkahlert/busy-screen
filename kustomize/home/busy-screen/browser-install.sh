@@ -4,7 +4,7 @@
 # https://www.matteomattei.com/web-kiosk-with-raspberry-pi-and-read-only-sd/
 
 apt-get -qq install midori matchbox-window-manager xserver-xorg x11-xserver-utils unclutter xinit
-apt-get -qq install ttf-mscorefonts-installer fonts -qq-dejavu fonts-dejavqq-extra-qq
+apt-get -qq install ttf-mscorefonts-installer fonts-dejavu fonts-dejavu-extra
 
 # user needs to handle /dev/tty devices
 gpasswd -a "$1" tty
