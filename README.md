@@ -161,7 +161,10 @@ Busy Screen can be customized / extended in three ways:
 ![loading screen with error](docs/loading-error.gif)  
 **Loading screen with error message**
 
-## TODO
+## Known Issues / TODO
+
+- [ ] on Raspberry Pi B+ the Plymouth based loading screen only works  
+  after `raspi-config` → Advanced Options → G1 Fake KMS was selected
 
 - [ ] get network connection to Raspberry Pi booted with dockerpi
     - [ ] check for SSH
