@@ -1,15 +1,44 @@
 #!/bin/bash
+# source: https://github.com/futurice/chilipie-kiosk/blob/master/home/.xsession
 
-echo "Hit Ctrl+Alt+F1 to quit"
-# disable DPMS (Energy Star) features
-xset -dpms
-# disable screen saver
-xset s off
-# don't blank the video device
-xset s noblank
-# disable mouse pointer
-# unclutter &
-# run window manager
-matchbox-window-manager -use_cursor no -use_titlebar no  &
-# run browser
-midori -e Fullscreen -e Navigationbar -a http://localhost/
+export DISPLAY=:0.0
+
+# Start cursor at the top-left corner, as opposed to the default of dead-center
+# (so it doesn't accidentally trigger hover styles on elements on the page)
+xdotool mousemove 0 0
+
+# Set some useful X preferences
+xset s off # don't activate screensaver
+xset -dpms # disable DPMS (Energy Star) features.
+xset s noblank # don't blank the video device
+
+# Set X screen background
+sudo nitrogen --set-zoom /usr/share/plymouth/themes/busy-screen/splash.png
+
+# Hide cursor afer 5 seconds of inactivity
+unclutter -idle 5 -root &
+
+# Make sure Chromium profile is marked clean, even if it crashed
+if [ -f .config/chromium/Default/Preferences ]; then
+    cat .config/chromium/Default/Preferences \
+        | jq '.profile.exit_type = "SessionEnded" | .profile.exited_cleanly = true' \
+        > .config/chromium/Default/Preferences-clean
+    mv .config/chromium/Default/Preferences{-clean,}
+fi
+
+# Remove notes of previous sessions, if any
+find .config/chromium/ -name "Last *" | xargs rm
+
+# Start and detach Chromium
+# http://peter.sh/experiments/chromium-command-line-switches/
+# Note that under matchbox, starting in full-screen without a window size doesn't behave well when you try to exit full screen (see https://unix.stackexchange.com/q/273989)
+chromium-browser --start-fullscreen --disable-infobars --noerrdialogs --kiosk http://localhost --incognito --disable-translate &
+
+# Hide Chromium while it's starting/loading the page
+wid=`xdotool search --sync --onlyvisible --class chromium`
+xdotool windowunmap $wid
+sleep 60 # give the web page time to load
+xdotool windowmap $wid
+
+# Finally, switch process to our window manager
+exec matchbox-window-manager -use_titlebar no

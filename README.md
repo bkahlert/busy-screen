@@ -164,7 +164,7 @@ Busy Screen can be customized / extended in three ways:
 ## Known Issues / TODO
 
 - [ ] on Raspberry Pi B+ the Plymouth based loading screen only works  
-  after `raspi-config` → Advanced Options → G1 Fake KMS was selected
+  after `raspi-config` → Advanced Options → G1 Fake KMS was selected.
 
 - [ ] get network connection to Raspberry Pi booted with dockerpi
     - [ ] check for SSH
@@ -177,3 +177,8 @@ Nintendo owns the copyright to Mario, Samus, the heart container, the coin and t
 applicable jurisdiction.
 
 South Park characters have been designed with the amazing [SP-Studio](https://www.sp-studio.de/).
+
+## References
+
+- [Adventures with SPI TFT screens for the Raspberry Pi](https://www.willprice.dev/2017/09/16/adventures-with-tft-screens-for-raspberry-pi.html)
+- [SPI TFT LCD](https://blog.gc2.at/post/spi-tft-lcd2/)

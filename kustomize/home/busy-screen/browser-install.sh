@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# https://maker-tutorials.com/autostart-midori-browser-vollbild-kiosk-mode-via-konsole-ohne-desktop/
-# https://www.matteomattei.com/web-kiosk-with-raspberry-pi-and-read-only-sd/
-
-apt-get -qq install midori matchbox-window-manager xserver-xorg x11-xserver-utils unclutter xinit
+apt-get -qq install matchbox-window-manager unclutter nitrogen chromium-browser xserver-xorg xinit xdotool jq
 apt-get -qq install ttf-mscorefonts-installer fonts-dejavu fonts-dejavu-extra
 
 # user needs to handle /dev/tty devices

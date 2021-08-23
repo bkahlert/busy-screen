@@ -61,6 +61,10 @@
     justify-content: center;
 }
 
+.status__avatar {
+    margin: 0;
+}
+
 /*noinspection CssBrowserCompatibilityForProperties*/
 .status__avatar img {
     /*noinspection LongLine*/
@@ -164,12 +168,12 @@
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-    .status__identity {
+    figcaption {
         display: none;
     }
 
     .status__name {
-        margin: 0;
+        margin-bottom: 10vmin;
     }
 
     .status__passed {
