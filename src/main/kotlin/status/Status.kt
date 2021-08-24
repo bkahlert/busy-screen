@@ -153,7 +153,7 @@ data class Status(
         fun fromJson(json: String): Status = format.decodeFromString(json)
 
         val DEFAULT_STATUS: Status = Status(
-            name = "installation finished",
+            name = "installation completed",
             duration = 5.minutes,
             timestamp = Now - 5.minutes,
         )

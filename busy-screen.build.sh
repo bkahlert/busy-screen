@@ -2,12 +2,13 @@
 
 set -e
 
-env ORG_GRADLE_PROJECT_isProduction=true ./gradlew build -x test
+ORG_GRADLE_PROJECT_isProduction=true ./gradlew build -x test
 BUILD_DIR="build/image"
 
-mkdir -p "${BUILD_DIR}" \
- && cp -r kustomize/ "${BUILD_DIR}" \
- && cp -r build/distributions/ "${BUILD_DIR}/home/busy-screen/public_html"
+rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+cp -r kustomize/ "${BUILD_DIR}"
+cp -r build/distributions/ "${BUILD_DIR}/home/busy-screen/public_html"
 
 cd "${BUILD_DIR}" || exit 1
 

@@ -26,8 +26,8 @@ Content-Type: application/json; charset=utf-8
 {
   "name": "working",
   "task": "TICKET-123",
-  "duration": "PT10S",
-  "email": "john.joe@example.com",
+  "duration": "PT10M",
+  "email": "mail@bkahlert.com",
   "on": {
     "finish": {
       "method": "post",
