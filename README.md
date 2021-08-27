@@ -39,10 +39,26 @@ The Raspberry Pi is the recommended way to run Busy Screen which has been succes
 
 The installation consists of the following steps:
 
-1) Create an image using `./busy-screen.build.sh`  
+1) Create an `.env` file at `kustomize/.env` like the following one:
+   ```dotenv
+   BUSY_SCREEN__WPA_SUPPLICANT="""ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+   update_config=1
+   country=DE
+   
+   network={
+   ssid="My WiFi name"
+   psk="My WiFi password"
+   }
+   """
+   BUSY_SCREEN__PRETTY_NAME="My Busy Screen"
+   BUSY_SCREEN__USERNAME="my-username"
+   BUSY_SCREEN__PASSWORD="my-password"
+   BUSY_SCREEN__AUTHORIZED_KEY="ssh-rsa ..."
+   ```
+2) Create an image using `./busy-screen.build.sh`  
    ![Creation of the image](docs/installation.png)
-2) Flash your memory card with the just created image
-3) Boot your Raspberry Pi with the memory card
+3) Flash your memory card with the just created image
+4) Boot your Raspberry Pi with the memory card
 
 After 1-2 automatic reboots the loading screen shows up.
 ![Loading screen on Raspberry Pi](docs/raspberry-loading.jpg)
@@ -91,14 +107,20 @@ You can find further examples in [http-client.http](http-client.http).
 
 You can either connect to your device via:
 
-- Ethernet
-- Wifi
+- Ethernet: **IP can be found on the screen**
+    - Just plug in a cable.
+- Wifi: **IP can be found on the screen**
     - You can provide the corresponding WPA supplicant file with [busy-screen.conf](kustomize/busy-screen.conf).
-- USB
-    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access.
-    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen of {{username}}` with
-      IP `192.168.168.167/28`.
-    - The IP of your Raspberry Pi is `192.168.168.168`.
+- USB: **IP `10.10.10.10`**
+    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access via USB.
+    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen` with
+      IP `10.10.10.11/29` (`255.255.255.248`).
+- Bluetooth: **IP `10.10.10.20`**
+  ![Bluetooth Manager showing device](docs/bt-pan.png)
+  ![Bluetooth Manager showing connected device](docs/bt-pan-connected.png)
+    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access via Bluetooth PAN.
+    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen` with
+      IP `10.10.10.21/29` (`255.255.255.248`).
 
 #### Discovery
 
