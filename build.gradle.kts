@@ -34,7 +34,7 @@ dependencies {
     implementation("com.bkahlert.kommons:kommons:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3") { because("HTML builder") }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1") { because("backend polling") }
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") { because("Status deserialization") }
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3") { because("Status deserialization") }
     implementation("com.soywiz.korlibs.krypto:krypto:2.3.1") { because("MD5") }
 
     implementation(npm("nes.css", ">= 2.3.0")) { because("retro CSS") }
