@@ -21,7 +21,7 @@ dependencies {
 //    testImplementation("io.kotest:kotest-assertions-core-js:4.6.1")
 
     implementation("io.ktor:ktor-client-core:1.6.2") { because("websocket") }
-    implementation("io.ktor:ktor-client-js:1.6.2") { because("websocket") }
+    implementation("io.ktor:ktor-client-js:2.2.4") { because("websocket") }
     implementation("io.ktor:ktor-client-websockets:1.6.2") { because("websocket") }
 
     // https://github.com/JetBrains/kotlin-wrappers
