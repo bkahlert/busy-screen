@@ -8,22 +8,22 @@ export DISPLAY=:0.0
 xdotool mousemove 0 0
 
 # Set some useful X preferences
-xset s off # don't activate screensaver
-xset -dpms # disable DPMS (Energy Star) features.
+xset s off     # don't activate screensaver
+xset -dpms     # disable DPMS (Energy Star) features.
 xset s noblank # don't blank the video device
 
 # Set X screen background
 sudo nitrogen --set-zoom /usr/share/plymouth/themes/busy-screen/splash.png
 
-# Hide cursor afer 5 seconds of inactivity
+# Hide cursor after 5 seconds of inactivity
 unclutter -idle 5 -root &
 
 # Make sure Chromium profile is marked clean, even if it crashed
 if [ -f .config/chromium/Default/Preferences ]; then
-    cat .config/chromium/Default/Preferences \
-        | jq '.profile.exit_type = "SessionEnded" | .profile.exited_cleanly = true' \
-        > .config/chromium/Default/Preferences-clean
-    mv .config/chromium/Default/Preferences{-clean,}
+  cat .config/chromium/Default/Preferences |
+    jq '.profile.exit_type = "SessionEnded" | .profile.exited_cleanly = true' \
+      >.config/chromium/Default/Preferences-clean
+  mv .config/chromium/Default/Preferences{-clean,}
 fi
 
 # Remove notes of previous sessions, if any
@@ -35,7 +35,7 @@ find .config/chromium/ -name "Last *" | xargs rm
 chromium-browser --start-fullscreen --disable-infobars --noerrdialogs --kiosk http://localhost --incognito --disable-translate &
 
 # Hide Chromium while it's starting/loading the page
-wid=`xdotool search --sync --onlyvisible --class chromium`
+wid=$(xdotool search --sync --onlyvisible --class chromium)
 xdotool windowunmap $wid
 sleep 60 # give the web page time to load
 xdotool windowmap $wid

@@ -12,6 +12,6 @@ docker run --rm -it \
            -v /tmp/kommons:/tmp/kommons \
            -v "$(pwd)":"$(pwd)" \
            -w "$(pwd)" \
-           bkahlert/kustomize \
+           bkahlert/kustomize:edge \
            --config-file demo.conf \
            --jaeger-hostname host.docker.internal

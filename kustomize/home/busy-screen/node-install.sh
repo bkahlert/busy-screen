@@ -10,13 +10,13 @@ apt-get -qq install nodejs npm
 ## any attempt to do so (su -u; settings env vars) corrupts permissions of sudo command
 #if [[ "$(uname -m)" =~ "i686" ]]; then
 #  echo "Using i686" | sudo tee -a /var/log/nodered-install.log >>/dev/null
-#  curl -sSL -o /tmp/node.tgz https://unofficial-builds.nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x86.tar.gz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
+#  curl -LfsSo /tmp/node.tgz https://unofficial-builds.nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x86.tar.gz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  # unpack it into the correct places
 #  hd=$(head -c 9 /tmp/node.tgz)
 #  if [ "$hd" == "<!DOCTYPE" ]; then
-#      CHAR="\033[1;31m\u2718\033[0m File not downloaded";
+#      CHAR="\e[1;31m\u2718\e[0m File not downloaded";
 #  else
-#      if sudo tar -zxf /tmp/node.tgz --strip-components=1 -C /usr 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\033[1;32m\u2714\033[0m'; else CHAR='\033[1;31m\u2718\033[0m'; fi
+#      if sudo tar -zxf /tmp/node.tgz --strip-components=1 -C /usr 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\e[1;32m\u2714\e[0m'; else CHAR='\e[1;31m\u2718\e[0m'; fi
 #  fi
 #  rm /tmp/node.tgz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  echo -ne "Install Node.js for i686            $CHAR"
@@ -25,15 +25,15 @@ apt-get -qq install nodejs npm
 #  sudo apt remove -y nodejs nodejs-legacy npm 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  sudo rm -rf /etc/apt/sources.d/nodesource.list /usr/lib/node_modules/npm*
 #  echo -ne "Install Node.js for Armv6           \r\n"
-#  # f=$(curl -sL https://nodejs.org/download/release/latest-dubnium/ | grep "armv6l.tar.gz" | cut -d '"' -f 2)
-#  # curl -sL -o node.tgz https://nodejs.org/download/release/latest-dubnium/$f 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
-#  curl -sSL -o /tmp/node.tgz https://unofficial-builds.nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv6l.tar.gz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
+#  # f=$(curl -LfsS https://nodejs.org/download/release/latest-dubnium/ | grep "armv6l.tar.gz" | cut -d '"' -f 2)
+#  # curl -LfsSo node.tgz https://nodejs.org/download/release/latest-dubnium/$f 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
+#  curl -LfsSo /tmp/node.tgz https://unofficial-builds.nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv6l.tar.gz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  # unpack it into the correct places
 #  hd=$(head -c 9 /tmp/node.tgz)
 #  if [ "$hd" == "<!DOCTYPE" ]; then
-#      CHAR="\033[1;31m\u2718\033[0m File not downloaded";
+#      CHAR="\e[1;31m\u2718\e[0m File not downloaded";
 #  else
-#      if sudo tar -zxf /tmp/node.tgz --strip-components=1 -C /usr 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\033[1;32m\u2714\033[0m'; else CHAR='\033[1;31m\u2718\033[0m'; fi
+#      if sudo tar -zxf /tmp/node.tgz --strip-components=1 -C /usr 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\e[1;32m\u2714\e[0m'; else CHAR='\e[1;31m\u2718\e[0m'; fi
 #  fi
 #  # remove the tgz file to save space
 #  rm /tmp/node.tgz 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
@@ -54,13 +54,13 @@ apt-get -qq install nodejs npm
 #      sudo rm -rf /usr/local/lib/node_modules/node-red* /usr/lib/node_modules/node-red* 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  fi
 #  sudo apt -y autoremove 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
-#  echo -ne "  Remove old version of Node.js       \033[1;32m\u2714\033[0m\r\n"
+#  echo -ne "  Remove old version of Node.js       \e[1;32m\u2714\e[0m\r\n"
 #  echo "Grab the LTS bundle" | sudo tee -a /var/log/nodered-install.log >>/dev/null
 #  echo -ne "Install Node.js $NODE_VERSION LTS              \r\n"
 #  # use the official script to install for other debian platforms
 #  sudo apt install -y curl 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
-#  curl -sSL https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash - 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
-#  if sudo apt install -y nodejs 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\033[1;32m\u2714\033[0m'; else CHAR='\033[1;31m\u2718\033[0m'; fi
+#  curl -LfsS https://deb.nodesource.com/setup_$NODE_VERSION.x | sudo -E bash - 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null
+#  if sudo apt install -y nodejs 2>&1 | sudo tee -a /var/log/nodered-install.log >>/dev/null; then CHAR='\e[1;32m\u2714\e[0m'; else CHAR='\e[1;31m\u2718\e[0m'; fi
 #  echo -ne "Install Node.js $NODE_VERSION LTS              $CHAR"
 #  echo ""
 #fi
