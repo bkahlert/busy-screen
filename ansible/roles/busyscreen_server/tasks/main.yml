@@ -1,0 +1,133 @@
+---
+- name: stop busy-screen-server service
+  ansible.builtin.service:
+    name: busy-screen-server.service
+    state: stopped
+  failed_when: false
+  become: true
+
+- name: copy bash files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ package_dir }}/{{ item | basename }}"
+    force: true
+  with_fileglob:
+    - files/*.bash
+  become: true
+
+- name: gather distribution_release
+  ansible.builtin.setup: { gather_subset: [ "!all", "!min", "distribution_release" ] }
+
+- name: install dependencies
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - git
+      - curl
+      - nodejs
+      - npm
+      - libavahi-compat-libdnssd-dev
+      - libudev-dev
+    state: present
+  become: true
+
+- name: check if node-red is installed
+  ansible.builtin.shell: |
+    command -v node-red-pi >/dev/null 2>&1
+  register: node_red_installed
+  changed_when: false
+  failed_when: false
+
+- name: copy package.json
+  ansible.builtin.copy:
+    src: files/nodered-package.json
+    dest: "{{ package_dir }}/server/package.json"
+    force: true
+  become: true
+  when: node_red_installed.rc != 0
+
+- name: install node-red
+  ansible.builtin.shell: |
+    cd {{ package_dir }}/server || exit 1
+    npm install --unsafe-perm --no-update-notifier --no-audit --no-fund --production
+  become: true
+  when: node_red_installed.rc != 0
+
+- name: symlink node-red-pi
+  ansible.builtin.file:
+    src: "{{ package_dir }}/server/node_modules/node-red/bin/node-red-pi"
+    dest: /usr/local/bin/node-red-pi
+    state: link
+  become: true
+  when: node_red_installed.rc != 0
+
+- name: compute busyscreen_server_service defaults
+  set_fact:
+    busyscreen_server_service: >
+      {{
+      busyscreen_server_service | default({})
+      | combine({'user': ansible_facts.user_id})
+      | combine({'working_directory': ansible_facts.user_dir ~ '/busy-screen'})
+      }}
+  when: busyscreen_server_service is undefined
+
+- name: copy settings and flows
+  block:
+    - name: create working directory
+      ansible.builtin.file:
+        path: "{{ busyscreen_server_service.working_directory }}"
+        state: directory
+        owner: "{{ busyscreen_server_service.user }}"
+      become: true
+
+    - name: copy flows.json
+      ansible.builtin.copy:
+        src: files/flows.json
+        dest: "{{ busyscreen_server_service.working_directory }}/flows.json"
+        owner: "{{ busyscreen_server_service.user }}"
+        force: true
+      become: true
+
+    - name: copy package.json
+      ansible.builtin.copy:
+        src: files/project-package.json
+        dest: "{{ busyscreen_server_service.working_directory }}/package.json"
+        owner: "{{ busyscreen_server_service.user }}"
+        force: true
+      become: true
+
+    - name: copy settings.js
+      ansible.builtin.copy:
+        src: files/settings.js
+        dest: "{{ busyscreen_server_service.working_directory }}/settings.js"
+        owner: "{{ busyscreen_server_service.user }}"
+        force: true
+      become: true
+
+    - name: install dependencies
+      ansible.builtin.shell: |
+        cd {{ busyscreen_server_service.working_directory }} || exit 1
+        npm install --unsafe-perm --no-update-notifier --no-audit --no-fund --production
+        chown -R {{ busyscreen_server_service.user }} node_modules
+      become: true
+
+- name: copy service
+  ansible.builtin.template:
+    src: templates/busy-screen-server.service.j2
+    dest: /etc/systemd/system/busy-screen-server.service
+    mode: "0644"
+    force: true
+  become: true
+
+- name: enable busy-screen-server service
+  ansible.builtin.systemd:
+    name: busy-screen-server.service
+    daemon_reload: true
+    enabled: true
+  become: true
+
+- name: restart busy-screen-server service
+  ansible.builtin.systemd:
+    name: busy-screen-server.service
+    state: restarted
+  become: true

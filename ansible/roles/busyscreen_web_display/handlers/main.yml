@@ -1,0 +1,17 @@
+---
+- name: restart lighttpd
+  ansible.builtin.service:
+    name: lighttpd
+    state: restarted
+  become: true
+
+- name: restart display-manager
+  ansible.builtin.service:
+    name: display-manager
+    state: restarted
+  become: true
+
+- name: reboot
+  ansible.builtin.reboot:
+    msg: "Rebooting system to finalize busyscreen web display setup."
+  become: true

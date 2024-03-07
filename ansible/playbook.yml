@@ -1,0 +1,44 @@
+---
+- hosts: "{{ inventory if inventory is defined else 'all' }}"
+  gather_facts: false
+  tasks: [ set_fact: { local_plymouth_themes_dir: "{{ playbook_dir }}/plymouth-themes/" } ]
+  tags: [ never, pihero ]
+
+- name: run Pi Hero playbook, if --tags pihero is specified
+  ansible.builtin.import_playbook: ../../pihero/playbook.yml
+  tags: [ never, pihero ]
+
+- hosts: "{{ inventory if inventory is defined else 'all' }}"
+  gather_facts: false
+  max_fail_percentage: 0
+  tags: [ busy-screen ]
+
+  pre_tasks:
+    - name: gather user facts
+      ansible.builtin.setup: { gather_subset: [ "!all", "!min", "user_dir", "user_id" ] }
+    - name: update apt packages and allow release info changes
+      import_tasks: tasks/apt-update.yml
+
+  roles:
+    # installs the CLI component
+    - role: busyscreen
+      tags: [ busy-screen-cli ]
+    # installs the server component
+    - role: busyscreen_server
+      tags: [ busy-screen-server ]
+    # configures X11-based kiosk mode
+    - role: busyscreen_kiosk
+      tags: [ busy-screen-kiosk ]
+    # optionally installs the fbcp-ili9341 display driver for the Waveshare 3.5inch RPi LCD
+    - role: fbcp-ili9341
+      tags: [ never, fbcp-ili9341 ]
+    # increases swap for Chromium
+    - role: geerlingguy.swap
+      become: true
+      tags: [ swap ]
+    # installs the HTML-based display component
+    - role: busyscreen_web_display
+      tags: [ busy-screen-web-display ]
+    # sets a success status
+    - role: busyscreen_success_status
+      tags: [ busy-screen-success-status ]

@@ -29,38 +29,9 @@ This application consists of a backend implemented as a [Node RED flow](kustomiz
 
 Consequently, you'll need a Node RED installation and a webserver to provide access to the frontend.
 
-### Install on a Raspberry Pi
+[Install on a Raspberry Pi](ansible/README.md)
 
-The Raspberry Pi is the recommended way to run Busy Screen which has been successfully tested on a:
-
-- Raspberry Pi 1 Model B+
-- Raspberry Pi Zero / W / WH
-- Raspberry Pi 4
-
-The installation consists of the following steps:
-
-1) Create an `.env` file at `kustomize/.env` like the following one:
-   ```dotenv
-   BUSY_SCREEN__WPA_SUPPLICANT="""ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-   update_config=1
-   country=DE
-   
-   network={
-   ssid="My WiFi name"
-   psk="My WiFi password"
-   }
-   """
-   BUSY_SCREEN__PRETTY_NAME="My Busy Screen"
-   BUSY_SCREEN__USERNAME="my-username"
-   BUSY_SCREEN__PASSWORD="my-password"
-   BUSY_SCREEN__AUTHORIZED_KEY="ssh-rsa ..."
-   ```
-2) Create an image using `./busy-screen.build.sh`  
-   ![Creation of the image](docs/installation.png)
-3) Flash your memory card with the just created image
-4) Boot your Raspberry Pi with the memory card
-
-After 1-2 automatic reboots the loading screen shows up.
+When successfully installed, the loading screen shows up.
 ![Loading screen on Raspberry Pi](docs/raspberry-loading.jpg)
 
 A few moments later the backend can receive status updates, like this one:
@@ -80,17 +51,17 @@ The following properties are supported:
 
 ```json
 {
-  "name": "status name that is displayed in the speech bubble",
-  "task": "task title used as the headline on the top border",
-  "duration": "60000",
-  "email": "john.joe@example.com",
-  "on": {
-    "finish": {
-      "method": "post",
-      "url": "http://my-talking-robot/say",
-      "payload": "finished working"
+    "name": "status name that is displayed in the speech bubble",
+    "task": "task title used as the headline on the top border",
+    "duration": "60000",
+    "email": "john.joe@example.com",
+    "on": {
+        "finish": {
+            "method": "post",
+            "url": "http://my-talking-robot/say",
+            "payload": "finished working"
+        }
     }
-  }
 }
 ```
 
@@ -105,22 +76,7 @@ You can find further examples in [http-client.http](http-client.http).
 
 #### Connectivity
 
-You can either connect to your device via:
-
-- Ethernet: **IP can be found on the screen**
-    - Just plug in a cable.
-- Wifi: **IP can be found on the screen**
-    - You can provide the corresponding WPA supplicant file with [busy-screen.conf](kustomize/busy-screen.conf).
-- USB: **IP `10.10.10.10`**
-    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access via USB.
-    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen` with
-      IP `10.10.10.11/29` (`255.255.255.248`).
-- Bluetooth: **IP `10.10.10.20`**
-  ![Bluetooth Manager showing device](docs/bt-pan.png)
-  ![Bluetooth Manager showing connected device](docs/bt-pan-connected.png)
-    - [busy-screen.conf](kustomize/busy-screen.conf) configures the Raspberry Pi to provide ethernet access via Bluetooth PAN.
-    - Ideally that includes configuring your computer with DHCP. If that doesn't work, please configure the network device `Busy Screen` with
-      IP `10.10.10.21/29` (`255.255.255.248`).
+The connectivity options depend on your [Pi Hero configuration](https://github.com/bkahlert/pihero#accessible).
 
 #### Discovery
 
@@ -158,7 +114,8 @@ The manual installation consists of the following steps:
 
 Busy Screen can be customized / extended in three ways:
 
-1) The frontend is located at [src/main/kotlin](src/main/kotlin). You can make any changes you like to it and run the [installation](#installation) afterwards.
+1) The frontend is located at [src/main/kotlin](src/jsMain/kotlin). You can make any changes you like to it and run the [installation](#installation)
+   afterwards.
 2) The Node RED flow can be freely changed as you like. In order to customize it, just edit it inside of Node RED. If you followed
    the [installation](#installation) steps above, you already have a running installation.
 3) You can customize the way your Raspberry Pi image is created. The image creation is done with the image customization

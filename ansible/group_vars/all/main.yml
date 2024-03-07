@@ -1,0 +1,9 @@
+swap_file_size_mb: '1024'
+
+package_dir: /opt/busy-screen
+project_dir: "{{ playbook_dir }}/.."
+build_dir: "{{ playbook_dir }}/../build"
+
+ws:
+  host: localhost
+  port: 1880

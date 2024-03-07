@@ -1,0 +1,43 @@
+---
+# see https://github.com/juj/fbcp-ili9341
+
+- name: check if fbcp-ili9341 is installed
+  ansible.builtin.shell: |
+    systemctl -q is-enabled "fbcp-ili9341.service"
+  register: fbcp_ili9341_installed
+  changed_when: false
+  failed_when: false
+
+- name: install dependencies
+  ansible.builtin.apt:
+    name: [ git, cmake ]
+    state: present
+  become: true
+  when: fbcp_ili9341_installed.rc != 0
+
+- name: install fbcp-ili9341
+  ansible.builtin.shell: |
+    set -e
+    [ ! -e fbcp-ili9341 ] || rm -rf fbcp-ili9341
+    git clone --depth 1 https://github.com/juj/fbcp-ili9341.git
+    cd fbcp-ili9341
+    mkdir build
+    cd build
+    cmake \
+      -Wno-dev \
+      -DWAVESHARE35B_ILI9486=ON \
+      -DSPI_BUS_CLOCK_DIVISOR=30 \
+      -DSTATISTICS=0 \
+      ..
+    make -j
+    cd ..
+
+    install -m 0755 -t /usr/local/sbin build/fbcp-ili9341
+    install -m 0644 -t /etc fbcp-ili9341.conf
+    install -m 0644 -t /etc/systemd/system fbcp-ili9341.service
+    systemctl daemon-reload
+    systemctl enable fbcp-ili9341
+    systemctl start fbcp-ili9341
+    rm -rf fbcp-ili9341
+  become: true
+  when: fbcp_ili9341_installed.rc != 0

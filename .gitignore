@@ -1,5 +1,5 @@
-/.idea
-/*.iml
-/.gradle
-/build
-.env
+.idea
+*.iml
+/.cache
+.gradle
+build

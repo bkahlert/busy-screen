@@ -1,0 +1,5 @@
+---
+busyscreen_web_display_build_artifact: "{{ build_dir }}/dist/js/productionExecutable"
+busyscreen_web_display_args:
+  ws.host: "{{ ws.host }}"
+  ws.port: "{{ ws.port }}"
