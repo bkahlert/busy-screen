@@ -39,8 +39,9 @@ to your SD card.
       echo 'deb http://archive.raspberrypi.org/debian/ buster main' | sudo tee /etc/apt/sources.list.d/buster.list
       sudo apt update
       apt list -a chromium-browser
-      sudo apt-get install -y chromium-codecs-ffmpeg-extra=92.0.4515.98~buster-rpt2
-      sudo apt-get install -y chromium-codecs-ffmpeg=92.0.4515.98~buster-rpt2
+      sudo apt-get remove -y --allow-change-held-packages chromium-browser
+      sudo apt-get install -y --allow-downgrades chromium-codecs-ffmpeg-extra=92.0.4515.98~buster-rpt2
+      sudo apt-get install -y --allow-downgrades chromium-codecs-ffmpeg=92.0.4515.98~buster-rpt2
       sudo apt-get install -y chromium-browser=92.0.4515.98~buster-rpt2
       sudo apt-mark hold chromium-browser
       ```

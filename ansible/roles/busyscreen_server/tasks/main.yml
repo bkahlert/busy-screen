@@ -62,7 +62,7 @@
   when: node_red_installed.rc != 0
 
 - name: compute busyscreen_server_service defaults
-  set_fact:
+  ansible.builtin.set_fact:
     busyscreen_server_service: >
       {{
       busyscreen_server_service | default({})
@@ -111,7 +111,7 @@
         chown -R {{ busyscreen_server_service.user }} node_modules
       become: true
 
-- name: copy service
+- name: copy busy-screen-server service
   ansible.builtin.template:
     src: templates/busy-screen-server.service.j2
     dest: /etc/systemd/system/busy-screen-server.service
@@ -120,14 +120,14 @@
   become: true
 
 - name: enable busy-screen-server service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: busy-screen-server.service
     daemon_reload: true
     enabled: true
   become: true
 
 - name: restart busy-screen-server service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: busy-screen-server.service
     state: restarted
   become: true
