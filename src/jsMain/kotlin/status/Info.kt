@@ -53,7 +53,7 @@ data class Info(
     val hostname: String?,
     val username: String?,
     val addresses: List<@Serializable(UrlSerializer::class) Url>?,
-    val nearby: Map<@Serializable(UrlSerializer::class) Url, String>?,
+    val nearby: Map<@Serializable(UrlSerializer::class) Url, String>? = null,
     val status: Status?,
 ) {
 
