@@ -15,12 +15,21 @@ host it was loaded from; `?address=http://other-host:1880` overrides that).
 
 ## The display
 
-Three `runcmd` lines are specific to the display and the board. `dtoverlay=piscreen,drm,rotate=90` is the Waveshare 3.5-inch RPi
-LCD (A) on SPI: the upstream `piscreen` overlay's `drm` parameter selects the mainline ILI9486 KMS driver, whose pins are this panel's;
-`rotate` turns the 320×480 panel to landscape. `gpu_mem=16` leaves the firmware the minimum, since KMS takes its memory from CMA.
-`cgroup_enable=memory` turns on the memory controller Raspberry Pi OS boots without, so the units' `MemoryMax=` binds.
+The sample drives the Waveshare 3.5-inch RPi LCD (A) on SPI as the only display; four `runcmd` lines and one drop-in make that
+work on a board that also has HDMI:
 
-For an HDMI display drop the `dtoverlay` line; a panel that reports no EDID needs
+- `dtoverlay=piscreen,drm,rotate=90`: the upstream `piscreen` overlay's `drm` parameter selects the mainline ILI9486 KMS
+  driver, whose pins are this panel's; `rotate` turns the 320×480 panel to landscape. Mesa drives it with its `kmsro`
+  driver, rendering on vc4's render node and scanning out on the SPI device.
+- `gpu_mem=16` leaves the firmware the minimum, since KMS takes its memory from CMA.
+- `fbcon=map:1` puts the console on the panel's framebuffer (`fb1`; `fb0` is vc4's): cog needs the panel's CRTC lit before
+  it starts, and only the console lights it. `video=HDMI-A-1:d` switches the HDMI scanout off, since nothing shows there.
+- `/etc/systemd/system/pihero-kiosk.service.d/panel.conf` hides vc4's card from the kiosk unit (`DevicePolicy=closed` plus
+  `DeviceAllow=` for the panel's card, the render node and the input devices): cog takes the first DRM card it may open and
+  never falls back to another.
+- `cgroup_enable=memory` turns on the memory controller Raspberry Pi OS boots without, so the units' `MemoryMax=` binds.
+
+For an HDMI display drop the `dtoverlay`, `fbcon` and `video` lines and the drop-in; a panel that reports no EDID needs
 `bootconfig add cmdline video=HDMI-A-1:<width>x<height>M@60e` instead, and `COG_PLATFORM_DRM_VIDEO_MODE=<width>x<height>` in
 `kiosk.conf` when the connector offers several modes.
 

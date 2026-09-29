@@ -82,15 +82,28 @@ write_files:
   - path: /etc/pihero/kiosk.conf
     content: |
       URL=http://localhost/
+  # The LCD is the display. cog takes the first DRM card it may open and never falls back, so vc4 (the HDMI card) is hidden
+  # from the kiosk unit; WPE still renders on vc4 through its render node, and the panel's kmsro Mesa driver scans out.
+  - path: /etc/systemd/system/pihero-kiosk.service.d/panel.conf
+    content: |
+      [Service]
+      DevicePolicy=closed
+      DeviceAllow=/dev/dri/by-path/platform-20204000.spi-cs-0-card rw
+      DeviceAllow=/dev/dri/by-path/platform-soc:gpu-render rw
+      DeviceAllow=char-input rw
 runcmd:
   - hostnamectl set-hostname --pretty "Busy Screen"
   - systemctl restart pihero-avahi-render.service
   # The Waveshare 3.5-inch RPi LCD (A) on SPI: the upstream piscreen overlay's `drm` parameter selects the mainline ILI9486
   # KMS driver (compatible waveshare,rpi-lcd-35), whose pins are this panel's; rotate turns the 320x480 panel to landscape.
   # The firmware keeps 16 MB, the minimum, because KMS takes its memory from CMA. MemoryMax= in the units binds only with
-  # the memory controller, which Raspberry Pi OS boots without. All three flag the reboot power_state takes.
+  # the memory controller, which Raspberry Pi OS boots without. Every bootconfig line flags the reboot power_state takes.
   - /usr/lib/pihero/bootconfig set config dtoverlay piscreen,drm,rotate=90 --package busy-screen-display
   - /usr/lib/pihero/bootconfig set config gpu_mem 16 --package busy-screen-display
+  # cog needs the panel's CRTC lit before it starts, and only the console lights it: fbcon goes to the panel's framebuffer
+  # (fb1; fb0 is vc4's) instead of HDMI, whose 1080p scanout is switched off since nothing shows there.
+  - /usr/lib/pihero/bootconfig add cmdline fbcon=map:1 --package busy-screen-display
+  - /usr/lib/pihero/bootconfig add cmdline video=HDMI-A-1:d --package busy-screen-display
   - /usr/lib/pihero/bootconfig add cmdline cgroup_enable=memory --package busy-screen-server
 power_state:
   mode: reboot
