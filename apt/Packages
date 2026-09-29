@@ -1,0 +1,38 @@
+Package: busy-screen-display
+Architecture: all
+Version: 2.0.0
+Priority: optional
+Section: web
+Maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+Installed-Size: 3087
+Depends: lighttpd, pihero-kiosk
+Filename: ./busy-screen-display_2.0.0_all.deb
+Size: 845486
+MD5sum: 4e5855241b9d02f3da51aeb2d2cae31d
+SHA1: 92c4d60255e8576374b242622d5fdd045724218e
+SHA256: 7fda2272ccdd92433a8cc0e823d79b1bcf650e869947de4c92a29a47e2322c6f
+SHA512: a70d4dee4fdfdb4151b6b99803904af05698487f8b32b89ca8e502c7a28742599a26bb7593a85dfa82fcd99c65bdc275ee4440bc9e76c81bd99f15bdc1e65e15
+Homepage: https://github.com/bkahlert/busy-screen
+Description: Busy Screen: the web display, served by lighttpd and shown by the Pi Hero kiosk.
+ The Kotlin/JS front end talks to the backend (busy-screen-server) on port 1880 of the host it was loaded from;
+ pihero-kiosk shows it full screen with URL=http://localhost/ in /etc/pihero/kiosk.conf.
+
+Package: busy-screen-server
+Architecture: all
+Version: 2.0.0
+Priority: optional
+Section: web
+Maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+Installed-Size: 96161
+Depends: nodejs (>= 18.5), adduser
+Filename: ./busy-screen-server_2.0.0_all.deb
+Size: 24572162
+MD5sum: ec509d17b9ee8357a6f18fb171344652
+SHA1: 271a61b1d3130e91a461313577ee16210dc21a36
+SHA256: 012e69612a93e3bdcc4a8f350ed1a0eac676204085d41a118c58abb32f6e3c72
+SHA512: e33f76a3df02e56613f1319bc492df8ee10df78c434bf0e011489a21c4e43b9dd2086efddb393636eb8f83000fd3f475222d56db9e7980bb7209859fa154572c
+Homepage: https://github.com/bkahlert/busy-screen
+Description: Busy Screen: the backend that takes status updates.
+ Node-RED with the Busy Screen flow, vendored with its nodes: PUT /status and GET /info on port 1880, and a
+ websocket at /info that pushes every change to the web display (busy-screen-display). The editor is on the same port.
+
