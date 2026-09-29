@@ -77,7 +77,7 @@ write_files:
        -----END PGP PUBLIC KEY BLOCK-----
   # MODEL selects the icon Finder shows; the choices are pictured in pihero's devices/README.md.
   - path: /etc/pihero/device-info.conf
-    content: MODEL=Macmini9,1
+    content: MODEL=Mac15,4@ECOLOR=4
   # pihero-kiosk shows the web display; the page talks to the backend on port 1880 of the host it was loaded from. cog's
   # default "modeset" renderer scans out WPE's ARGB8888 buffer, which the panel's driver refuses (it takes XRGB8888 and
   # RGB565 only), so the console would stay on the panel; the "gles" renderer draws into a buffer in a format the panel
@@ -98,6 +98,16 @@ write_files:
 runcmd:
   - hostnamectl set-hostname --pretty "Busy Screen"
   - systemctl restart pihero-avahi-render.service
+  # The screen says what is going on: once Node-RED answers (about three minutes after its unit starts on a Model B), the
+  # status "setting up" is posted for ten minutes, which covers Tailscale and the reboot below; the flow keeps it in
+  # status.json, so the panel shows it after the reboot until it runs out.
+  - |
+    for i in $(seq 1 60); do
+      curl -fsS -o /dev/null -X PUT -H 'Content-Type: application/json' \
+        -d '{"name":"setting up","task":"busy-screen on Pi Hero 2","duration":"PT10M"}' \
+        http://localhost:1880/status && break
+      sleep 5
+    done
   # The Waveshare 3.5-inch RPi LCD (A) on SPI: the upstream piscreen overlay's `drm` parameter selects the mainline ILI9486
   # KMS driver (compatible waveshare,rpi-lcd-35), whose pins are this panel's; the driver's native mode is 480x320 landscape, rotate=180 turns it upright for the way the panel sits (90 or 270 for portrait).
   # The firmware keeps 16 MB, the minimum, because KMS takes its memory from CMA. MemoryMax= in the units binds only with

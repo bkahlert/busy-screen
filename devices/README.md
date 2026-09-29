@@ -31,6 +31,8 @@ work on a board that also has HDMI:
   buffer unchanged, and the panel's `mipi-dbi` driver accepts only XRGB8888 and RGB565, so every frame is refused and the
   console stays on the panel while cog logs `Loaded successfully`. The "gles" renderer draws into a buffer in a format the
   panel's plane lists.
+- A `runcmd` step posts the status "setting up" (ten minutes) to `http://localhost:1880/status` once Node-RED answers, so
+  the panel says what is going on through the rest of the setup and the reboot; the flow persists the status.
 - `cgroup_enable=memory` turns on the memory controller Raspberry Pi OS boots without, so the units' `MemoryMax=` binds.
 
 For an HDMI display drop the `dtoverlay`, `fbcon` and `video` lines, the drop-in and `COG_ARGS`; a panel that reports no EDID needs
