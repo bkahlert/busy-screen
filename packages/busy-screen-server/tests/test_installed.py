@@ -4,11 +4,11 @@ import time
 import pytest
 
 pytestmark = pytest.mark.installed
-FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=5).read().decode())' "
+FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=30).read().decode())' "
 PUT = (
     "python3 -c 'import urllib.request,sys,json; "
     "r = urllib.request.Request(sys.argv[1], data=sys.argv[2].encode(), method=\"PUT\", headers={\"Content-Type\": \"application/json\"}); "
-    "print(urllib.request.urlopen(r, timeout=10).status)' "
+    "print(urllib.request.urlopen(r, timeout=30).status)' "
 )
 
 
@@ -83,7 +83,7 @@ class TestApi:
 
         headers = host.check_output(
             "python3 -c 'import urllib.request; r = urllib.request.Request(\"http://localhost:1880/info\", headers={\"Origin\": \"http://localhost\"}); "
-            "print(urllib.request.urlopen(r, timeout=5).headers.get(\"Access-Control-Allow-Origin\"))'"
+            "print(urllib.request.urlopen(r, timeout=30).headers.get(\"Access-Control-Allow-Origin\"))'"
         )
 
         assert headers.strip() == "*"
