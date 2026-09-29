@@ -78,10 +78,14 @@ write_files:
   # MODEL selects the icon Finder shows; the choices are pictured in pihero's devices/README.md.
   - path: /etc/pihero/device-info.conf
     content: MODEL=Macmini9,1
-  # pihero-kiosk shows the web display; the page talks to the backend on port 1880 of the host it was loaded from.
+  # pihero-kiosk shows the web display; the page talks to the backend on port 1880 of the host it was loaded from. cog's
+  # default "modeset" renderer scans out WPE's ARGB8888 buffer, which the panel's driver refuses (it takes XRGB8888 and
+  # RGB565 only), so the console would stay on the panel; the "gles" renderer draws into a buffer in a format the panel
+  # accepts.
   - path: /etc/pihero/kiosk.conf
     content: |
       URL=http://localhost/
+      COG_ARGS=--platform-params=renderer=gles
   # The LCD is the display. cog takes the first DRM card it may open and never falls back, so vc4 (the HDMI card) is hidden
   # from the kiosk unit; WPE still renders on vc4 through its render node, and the panel's kmsro Mesa driver scans out.
   - path: /etc/systemd/system/pihero-kiosk.service.d/panel.conf

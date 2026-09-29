@@ -27,9 +27,13 @@ work on a board that also has HDMI:
 - `/etc/systemd/system/pihero-kiosk.service.d/panel.conf` hides vc4's card from the kiosk unit (`DevicePolicy=closed` plus
   `DeviceAllow=` for the panel's card, the render node and the input devices): cog takes the first DRM card it may open and
   never falls back to another.
+- `COG_ARGS=--platform-params=renderer=gles` in `kiosk.conf`: cog's default "modeset" renderer scans out WPE's ARGB8888
+  buffer unchanged, and the panel's `mipi-dbi` driver accepts only XRGB8888 and RGB565, so every frame is refused and the
+  console stays on the panel while cog logs `Loaded successfully`. The "gles" renderer draws into a buffer in a format the
+  panel's plane lists.
 - `cgroup_enable=memory` turns on the memory controller Raspberry Pi OS boots without, so the units' `MemoryMax=` binds.
 
-For an HDMI display drop the `dtoverlay`, `fbcon` and `video` lines and the drop-in; a panel that reports no EDID needs
+For an HDMI display drop the `dtoverlay`, `fbcon` and `video` lines, the drop-in and `COG_ARGS`; a panel that reports no EDID needs
 `bootconfig add cmdline video=HDMI-A-1:<width>x<height>M@60e` instead, and `COG_PLATFORM_DRM_VIDEO_MODE=<width>x<height>` in
 `kiosk.conf` when the connector offers several modes.
 
