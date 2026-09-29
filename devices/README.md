@@ -18,7 +18,7 @@ host it was loaded from; `?address=http://other-host:1880` overrides that).
 The sample drives the Waveshare 3.5-inch RPi LCD (A) on SPI as the only display; four `runcmd` lines and one drop-in make that
 work on a board that also has HDMI:
 
-- `dtoverlay=piscreen,drm,rotate=90`: the upstream `piscreen` overlay's `drm` parameter selects the mainline ILI9486 KMS
+- `dtoverlay=piscreen,drm,rotate=270`: the upstream `piscreen` overlay's `drm` parameter selects the mainline ILI9486 KMS
   driver, whose pins are this panel's; `rotate` turns the 320×480 panel to landscape. Mesa drives it with its `kmsro`
   driver, rendering on vc4's render node and scanning out on the SPI device.
 - `gpu_mem=16` leaves the firmware the minimum, since KMS takes its memory from CMA.

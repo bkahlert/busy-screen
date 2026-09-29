@@ -98,7 +98,7 @@ runcmd:
   # KMS driver (compatible waveshare,rpi-lcd-35), whose pins are this panel's; rotate turns the 320x480 panel to landscape.
   # The firmware keeps 16 MB, the minimum, because KMS takes its memory from CMA. MemoryMax= in the units binds only with
   # the memory controller, which Raspberry Pi OS boots without. Every bootconfig line flags the reboot power_state takes.
-  - /usr/lib/pihero/bootconfig set config dtoverlay piscreen,drm,rotate=90 --package busy-screen-display
+  - /usr/lib/pihero/bootconfig set config dtoverlay piscreen,drm,rotate=270 --package busy-screen-display
   - /usr/lib/pihero/bootconfig set config gpu_mem 16 --package busy-screen-display
   # cog needs the panel's CRTC lit before it starts, and only the console lights it: fbcon goes to the panel's framebuffer
   # (fb1; fb0 is vc4's) instead of HDMI, whose 1080p scanout is switched off since nothing shows there.
