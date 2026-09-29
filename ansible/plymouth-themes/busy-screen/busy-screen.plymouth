@@ -1,8 +1,0 @@
-[Plymouth Theme]
-Name=busy-screen
-Description=Busy Screen Splash
-ModuleName=script
-
-[script]
-ImageDir=/usr/share/plymouth/themes/busy-screen
-ScriptFile=/usr/share/plymouth/themes/busy-screen/busy-screen.script
