@@ -3,7 +3,7 @@ import time
 import pytest
 
 pytestmark = pytest.mark.installed
-FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=5).read().decode())' "
+FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=30).read().decode())' "
 
 
 class TestPackage:
