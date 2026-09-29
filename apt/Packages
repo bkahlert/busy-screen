@@ -17,6 +17,25 @@ Description: Busy Screen: the web display, served by lighttpd and shown by the P
  The Kotlin/JS front end talks to the backend (busy-screen-server) on port 1880 of the host it was loaded from;
  pihero-kiosk shows it full screen with URL=http://localhost/ in /etc/pihero/kiosk.conf.
 
+Package: busy-screen-display
+Architecture: all
+Version: 2.0.1
+Priority: optional
+Section: web
+Maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+Installed-Size: 3087
+Depends: lighttpd, pihero-kiosk
+Filename: ./busy-screen-display_2.0.1_all.deb
+Size: 845508
+MD5sum: e17238b89494c76a3b044d9af32010f5
+SHA1: 1044d5273c5910c96e7549877d784c8d557d83e1
+SHA256: 9926e26d6fc6acc8d5b37f49189f2ce0ba883be5f3327bb25c8c347b3032db86
+SHA512: 0ef4d068944bb3a1e92024fc8e59cb1f0c2efdfc12cac3abc1ecdb48723aab9f4aff5269723c7a31561974782186e277e9c7f6367f85409b9b4598cbea0cd8fc
+Homepage: https://github.com/bkahlert/busy-screen
+Description: Busy Screen: the web display, served by lighttpd and shown by the Pi Hero kiosk.
+ The Kotlin/JS front end talks to the backend (busy-screen-server) on port 1880 of the host it was loaded from;
+ pihero-kiosk shows it full screen with URL=http://localhost/ in /etc/pihero/kiosk.conf.
+
 Package: busy-screen-server
 Architecture: all
 Version: 2.0.0
@@ -31,6 +50,25 @@ MD5sum: ec509d17b9ee8357a6f18fb171344652
 SHA1: 271a61b1d3130e91a461313577ee16210dc21a36
 SHA256: 012e69612a93e3bdcc4a8f350ed1a0eac676204085d41a118c58abb32f6e3c72
 SHA512: e33f76a3df02e56613f1319bc492df8ee10df78c434bf0e011489a21c4e43b9dd2086efddb393636eb8f83000fd3f475222d56db9e7980bb7209859fa154572c
+Homepage: https://github.com/bkahlert/busy-screen
+Description: Busy Screen: the backend that takes status updates.
+ Node-RED with the Busy Screen flow, vendored with its nodes: PUT /status and GET /info on port 1880, and a
+ websocket at /info that pushes every change to the web display (busy-screen-display). The editor is on the same port.
+
+Package: busy-screen-server
+Architecture: all
+Version: 2.0.1
+Priority: optional
+Section: web
+Maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+Installed-Size: 96161
+Depends: nodejs (>= 18.5), adduser
+Filename: ./busy-screen-server_2.0.1_all.deb
+Size: 24572802
+MD5sum: 38ff946af0a74d6c087700052bebc1eb
+SHA1: 357a19413aed70e295051b0d4416b0f287f5e72b
+SHA256: fac57233cae77b106dc1a6910474dd61c83ed7d0a9bc155b27621ef5a762ff8d
+SHA512: 47ab31791026ac55e5c381c2ebc67a9ff24dc3418fdf4a130a306bc1ed71a11d3b9677d3c8ce305ee1426b8d737d9a27d0c06223e9bd06a89d027975437dfef2
 Homepage: https://github.com/bkahlert/busy-screen
 Description: Busy Screen: the backend that takes status updates.
  Node-RED with the Busy Screen flow, vendored with its nodes: PUT /status and GET /info on port 1880, and a

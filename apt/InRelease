@@ -2,31 +2,31 @@
 Hash: SHA512
 
 Architectures: all
-Date: Tue, 29 Sep 2026 19:12:40 +0000
+Date: Tue, 29 Sep 2026 21:37:30 +0000
 Description: Busy Screen packages
 Label: busy-screen
 Origin: busy-screen
 Suite: stable
 MD5Sum:
- 138686b6c3998f2116690011effa5f8e             1827 Packages
- 1e0029410f882a644bd06791e14c8c65              988 Packages.gz
- 774123a11a109c24494ccec27c67742e              144 Release
+ 73c5e11fb6b49c9a5e71201d9bf2b70a             3654 Packages
+ 5565cb58aa8762ca2f15d96c9315795a             1375 Packages.gz
+ ef7d017459baf40a8a3bde2e24cb1e59              144 Release
 SHA1:
- 71a19898cfb3f4cd05a53a15efd503998935cc3d             1827 Packages
- 58b07bc7b642a51ead2cba3c8d5a1f95f7887286              988 Packages.gz
- f63b73eafd7a6375b5c42d6e5d3158fcd184b736              144 Release
+ 451897fda3c61adec166ecf5542b3dcbb96e0116             3654 Packages
+ 9dde5e09c55073d682aa45f46d1dc8b6eaec3dd4             1375 Packages.gz
+ 0cdc231fbcb39fa90c7e31bf3fe76a56ea3a3951              144 Release
 SHA256:
- a88f89d5077fa13465cb55374948219ce168fbef55a2cff012a640f8b05e3dbb             1827 Packages
- a58389852358d64485501685f0b03946d1407c2129ec4deb0642ef7509bf52b7              988 Packages.gz
- 68401b6b744f3ba6adc0e4df95f5475b1c17f106822d14f83f6dd3f122100eb8              144 Release
+ 51de203fec4c9b99bf8d3e30d6e6875119f48803b5a9904ba916078588a0d434             3654 Packages
+ 3959323eb82cea96f62c0a9583881e5d84109dc85fc13a3824424e4d1e37d34b             1375 Packages.gz
+ 389428aac8cfc594d11327a7599bca24f1a2b19fbae580eb0d717bb0e03c6bef              144 Release
 SHA512:
- 2a207406f08686f8eed12a72066301622906103bcd30fcd54dd21ce2b01adae4422d44692118bb4d8c13ecac3952a35a3464aaa50a4d3e0fa02b727ac1563ef4             1827 Packages
- e0e9ea3006a741efec11084b9a15a7aeb19e60e203d9161e424016c96c845eec1cf2210c1006e81e81b0800a41f2e5a1bf6d2f7b4a83ef49885d591dc4657d91              988 Packages.gz
- c93cf6d99282377012e315a059f43c53e128bec261c656edf2d172fae347abc0d05067f1eaa24d8951d69b7bca53c5a3c75777c17ed1d0c0f4cbae70bc3f893b              144 Release
+ b7683bb93168f0283ebca30e87914e6407e6c69b469caea6abd631b15c8b54008b3b68d2732c18976c2013780e6a051bedef2f28b10813fb41d20ae647d63e18             3654 Packages
+ 9d51b4988040690feef96244692080d2dc012950501ae7bc2a26bee2063f53a4fe2bdf276d3e6d382ccd946f7c06a57128b3c35326ef4694bb544fe31c40054c             1375 Packages.gz
+ c44b48817a906015a9cc4a025b2d078df57e2e2d6477bc09be03e5a65c2e76d1c908d41b8025bb35f3d69d24e5d190f03a94cdcfe86627cfbea04a1157e0ec1e              144 Release
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQ6XeS5HKhxmcQt/JCcKDUxybBltgUCarwNqAAKCRCcKDUxybBl
-ttKNAQDt9sucGhsUcgpYY+rrLHccF+JKEXHUyz4fdCEerqyKQQEAnVX0BE0z6wM4
-LVMZix4+qpk4lg8NEZKvdHzMJaoXIgE=
-=EAKQ
+iHUEARYKAB0WIQQ6XeS5HKhxmcQt/JCcKDUxybBltgUCarwvmwAKCRCcKDUxybBl
+tn2LAQCeXnBv01TbTcL1LGlthDHDjRcKJopscJkLIxF/uJh8YAEAoxncRdtvhOPX
+aUB0VpbwChZcubpiOVTGJydNZQy/vQQ=
+=vFNT
 -----END PGP SIGNATURE-----
