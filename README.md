@@ -23,21 +23,23 @@ Content-Type: application/json; charset=utf-8
 ![no more being busy](docs/done.gif)  
 **No more being busy**
 
-## Installation
+## Install on a Raspberry Pi
 
-This application consists of a backend implemented as a [Node RED flow](kustomize/home/busy-screen/flows.json) and a frontend implemented with Kotlin JS.
+Busy Screen runs on [Pi Hero 2](https://github.com/bkahlert/pihero): copy [devices/sample/user-data](devices/sample/user-data),
+set the hostname and your SSH key, flash a card with pihero's `make flash`, and the board installs `busy-screen-server` (Node-RED
+with the Busy Screen flow, port 1880) and `busy-screen-display` (the web display behind lighttpd, shown full screen by
+`pihero-kiosk`). [devices/README.md](devices/README.md) has the details, including the lines for the Waveshare 3.5-inch LCD and
+what to change for an HDMI display. Any browser on the LAN shows the same page at `http://<host>.local/`. Updates are
+`sudo apt upgrade`. Pi Hero 1's Ansible installer is frozen at the tag
+[`busy-screen-ansible`](https://github.com/bkahlert/busy-screen/tree/busy-screen-ansible).
 
-Consequently, you'll need a Node RED installation and a webserver to provide access to the frontend.
-
-[Install on a Raspberry Pi](ansible/README.md)
-
-When successfully installed, the loading screen shows up.
+When the installation is complete, the loading screen shows up.
 ![Loading screen on Raspberry Pi](docs/raspberry-loading.jpg)
 
 A few moments later the backend can receive status updates, like this one:
 
 ```shell
-curl -X PUT --location "http://192.168.168.168:1880/status" \
+curl -X PUT --location "http://busy-screen.local:1880/status" \
      -H "Content-Type: application/json; charset=utf-8" \
      -d "{
            \"name\": \"finishing soon\",
@@ -74,52 +76,37 @@ The `duration` can be specified in
 
 You can find further examples in [http-client.http](http-client.http).
 
-#### Connectivity
-
-The connectivity options depend on your [Pi Hero configuration](https://github.com/bkahlert/pihero#accessible).
-
-#### Discovery
+### Discovery
 
 If you start your device with a connected screen, you see the following information that help you finding your device:
 
 - Your device **name** is written on the left border.
 - Your device **IP** is written on the right border.
-- Your **username** is written below the avatar.
-- **Nearby devices** are listed in a dropdown that opens when you click your username.
-    - The device currently connected to is always on top.
-    - Using the "Switch" button you can connect to the selected device.
 
-![Discovery Options](docs/discovery.png)
-
-Avahi is installed on your Raspberry Pi with all relevant services advertised in your network. You can use any zeroconf / mDNS / Bonjour client to discover your
-device.
+`pihero-avahi` advertises the device and its services in your network, so any zeroconf / mDNS / Bonjour client finds it, as does
+`http://<host>.local/`.
 
 ![iNet Network Scanner](docs/bonjour.png)
 
-Alternatively you can log in to your router and find out what new devices received a dynamic IP address from it.
+### Run it anywhere
 
-### Install Manually / Locally
+The backend is a [Node-RED flow](packages/busy-screen-server/flows.json), the frontend a Kotlin/JS bundle:
 
-The manual installation consists of the following steps:
-
-1) [Install Node RED](https://nodered.org/docs/getting-started/)
-2) Import [busy-screen.flow](kustomize/home/busy-screen/flows.json) to Node RED
-3) Build the frontend with `./gradlew build -x test`
-4) Set up an HTTP server to publish the [just built frontend](build/distributions), e.g. using `npx http-server -c -p 80`
-5) open the published frontend  
-   (automatically opened if you use the `npx` command above)
-6) change the `address` query parameter in the URL to the one of your Node RED installation
+1) [Install Node-RED](https://nodered.org/docs/getting-started/) and `node-red-contrib-ip`, import the flow, and give
+   `functionGlobalContext` a `moment` (see [settings.js](packages/busy-screen-server/server/settings.js))
+2) Build the frontend with `./gradlew jsBrowserProductionWebpack`
+3) Serve [build/dist/js/productionExecutable](build/dist/js/productionExecutable) with any web server, e.g. `npx http-server -c -p 80`
+4) Open the page; it talks to port 1880 of the host it was loaded from. `?address=http://other-host:1880` points it elsewhere.
 
 ## Customization
 
-Busy Screen can be customized / extended in three ways:
+Busy Screen can be customized / extended in two ways:
 
-1) The frontend is located at [src/main/kotlin](src/jsMain/kotlin). You can make any changes you like to it and run the [installation](#installation)
-   afterwards.
-2) The Node RED flow can be freely changed as you like. In order to customize it, just edit it inside of Node RED. If you followed
-   the [installation](#installation) steps above, you already have a running installation.
-3) You can customize the way your Raspberry Pi image is created. The image creation is done with the image customization
-   tool [Kustomize](https://github.com/bkahlert/kustomize). The actual configuration is stored in [busy-screen.conf](kustomize/busy-screen.conf).
+1) The frontend is located at [src/jsMain/kotlin](src/jsMain/kotlin). You can make any changes you like to it and rebuild
+   `busy-screen-display` (`make build`).
+2) The Node-RED flow can be freely changed as you like: the editor is at `http://<host>.local:1880/`. On a device the flow runs
+   from `/var/lib/busy-screen/flows.json`, which the editor saves to and package upgrades leave alone; delete the file to get the
+   shipped flow back on the next start. The palette is fixed to what the package vendors.
 
 ## Responsive Design
 
@@ -140,16 +127,6 @@ Busy Screen can be customized / extended in three ways:
 ![loading screen with error](docs/loading-error.gif)  
 **Loading screen with error message**
 
-## Known Issues / TODO
-
-- [ ] on Raspberry Pi B+ the Plymouth based loading screen only works  
-  after `raspi-config` → Advanced Options → G1 Fake KMS was selected.
-
-- [ ] get network connection to Raspberry Pi booted with dockerpi
-    - [ ] check for SSH
-    - [ ] check for HTTP
-    - [ ] change status and check if page changed
-
 ## Copyright
 
 Nintendo owns the copyright to Mario, Samus, the heart container, the coin and the controller. Please comply with the Nintendo guidelines and laws of the
@@ -161,6 +138,7 @@ South Park characters have been designed with the amazing [SP-Studio](https://ww
 
 - [Adventures with SPI TFT screens for the Raspberry Pi](https://www.willprice.dev/2017/09/16/adventures-with-tft-screens-for-raspberry-pi.html)
 - [SPI TFT LCD](https://blog.gc2.at/post/spi-tft-lcd2/)
+- [Ilitek ILI9486 DRM driver](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/tiny/ili9486.c), what the `piscreen,drm` overlay loads for the Waveshare 3.5-inch LCD (A)
 
 ## Contributing
 

@@ -1,0 +1,31 @@
+[Unit]
+Description=Busy Screen: the Node-RED backend, status updates on port 1880
+Documentation=https://github.com/bkahlert/busy-screen
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=busy-screen
+Group=busy-screen
+Environment=PORT=1880 HOME=/var/lib/busy-screen
+# The heap cap keeps Node on a 512 MB board honest; MemoryMax= below is the hard line.
+Environment=NODE_OPTIONS=--max-old-space-size=128
+EnvironmentFile=-/etc/busy-screen/server.conf
+StateDirectory=busy-screen
+WorkingDirectory=/var/lib/busy-screen
+# The package ships the flow; the copy in the state directory is the one Node-RED runs and the editor saves to, so
+# edits survive upgrades. Deleting /var/lib/busy-screen/flows.json brings the shipped flow back on the next start.
+ExecStartPre=/bin/sh -c 'test -e /var/lib/busy-screen/flows.json || cp /usr/share/busy-screen/flows.json /var/lib/busy-screen/flows.json'
+ExecStart=/usr/bin/node /usr/lib/busy-screen/server/node_modules/node-red/red.js --userDir /var/lib/busy-screen --settings /usr/lib/busy-screen/server/settings.js flows.json
+# Node-RED stops its flows cleanly on SIGINT.
+KillSignal=SIGINT
+Restart=always
+RestartSec=10
+MemoryMax=224M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

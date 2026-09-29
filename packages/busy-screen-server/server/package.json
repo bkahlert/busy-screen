@@ -1,0 +1,10 @@
+{
+  "name": "busy-screen-server",
+  "private": true,
+  "description": "Node-RED with the nodes the Busy Screen flow uses; vendored into the busy-screen-server package",
+  "dependencies": {
+    "moment": "^2.30.1",
+    "node-red": "^4.1.15",
+    "node-red-contrib-ip": "^1.0.2"
+  }
+}

@@ -1,0 +1,27 @@
+name: busy-screen-display
+arch: all
+platform: linux
+version: ${VERSION}
+section: web
+priority: optional
+maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+description: |
+  Busy Screen: the web display, served by lighttpd and shown by the Pi Hero kiosk.
+  The Kotlin/JS front end talks to the backend (busy-screen-server) on port 1880 of the host it was loaded from;
+  pihero-kiosk shows it full screen with URL=http://localhost/ in /etc/pihero/kiosk.conf.
+homepage: https://github.com/bkahlert/busy-screen
+license: MIT
+depends:
+  - lighttpd
+  - pihero-kiosk
+contents:
+  - src: ../../build/dist/js/productionExecutable/
+    dst: /usr/share/busy-screen/web/
+    type: tree
+  - src: conf/lighttpd-busy-screen.conf
+    dst: /etc/lighttpd/conf-available/90-busy-screen.conf
+    type: config
+scripts:
+  postinstall: .build/postinst
+  preremove: .build/prerm
+  postremove: .build/postrm
