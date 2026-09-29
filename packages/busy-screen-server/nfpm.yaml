@@ -1,0 +1,28 @@
+name: busy-screen-server
+arch: all
+platform: linux
+version: ${VERSION}
+section: web
+priority: optional
+maintainer: Björn Kahlert <bkahlert@users.noreply.github.com>
+description: |
+  Busy Screen: the backend that takes status updates.
+  Node-RED with the Busy Screen flow, vendored with its nodes: PUT /status and GET /info on port 1880, and a
+  websocket at /info that pushes every change to the web display (busy-screen-display). The editor is on the same port.
+homepage: https://github.com/bkahlert/busy-screen
+license: MIT
+depends:
+  - nodejs (>= 18.5)
+contents:
+  - src: root/
+    dst: /
+    type: tree
+  - src: server/
+    dst: /usr/lib/busy-screen/server/
+    type: tree
+  - src: flows.json
+    dst: /usr/share/busy-screen/flows.json
+scripts:
+  postinstall: .build/postinst
+  preremove: .build/prerm
+  postremove: .build/postrm
