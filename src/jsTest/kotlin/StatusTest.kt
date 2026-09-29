@@ -19,7 +19,7 @@ class StatusTest {
             {
               name: "busy",
               task: "ABC-123",
-              duration: "PT50M",
+              duration: 3000000,
               timestamp: "${timestamp.toISOString()}",
               email: "john.doe@example.com",
               on: {
