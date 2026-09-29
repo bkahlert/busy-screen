@@ -1,0 +1,97 @@
+#cloud-config
+# board: Raspberry Pi Model B Rev 2
+# image: raspios_lite_armhf
+# Busy Screen on Pi Hero 2: pihero's sample device plus the busy-screen apt source, the two busy-screen packages, the kiosk URL and
+# the Waveshare 3.5-inch LCD. A board with Wi-Fi takes pihero's network-config next to this file; this one has Ethernet only.
+hostname: busy-screen
+manage_etc_hosts: true
+timezone: Europe/Berlin
+enable_ssh: true
+ssh_pwauth: false
+users:
+  - name: pi
+    groups: users,adm,dialout,audio,netdev,video,plugdev,input,gpio,spi,i2c,render,sudo
+    shell: /bin/bash
+    lock_passwd: true
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExampleExampleExampleExampleExampleExampleEx you@example.com
+rpi:
+  interfaces:
+    spi: true
+    i2c: false
+    serial: true
+# cloud-final installs the packages. A fresh card's clock is at the image build date until NTP has synced, and apt rejects every
+# repository signature before that as "not live yet". systemd-time-wait-sync reaches time-sync.target on sync; cloud-final waits for
+# it, five minutes at most. bootcmd runs before the network here and is the only step early enough for the current boot to pick it up.
+bootcmd:
+  - |
+    test -e /etc/systemd/system/cloud-final.service.d/time-sync.conf && exit 0
+    mkdir -p /etc/systemd/system/cloud-final.service.d /etc/systemd/system/systemd-time-wait-sync.service.d
+    printf '[Unit]\nAfter=time-sync.target\nWants=time-sync.target\n' > /etc/systemd/system/cloud-final.service.d/time-sync.conf
+    printf '[Service]\nTimeoutStartSec=5min\n' > /etc/systemd/system/systemd-time-wait-sync.service.d/timeout.conf
+    systemctl daemon-reload
+    systemctl enable systemd-time-wait-sync.service
+    systemctl start --no-block systemd-time-wait-sync.service
+package_update: true
+packages:
+  - pihero
+  - pihero-avahi
+  - busy-screen-server
+  - busy-screen-display
+write_files:
+  - path: /etc/apt/sources.list.d/pihero.sources
+    content: |
+      Types: deb
+      URIs: https://bkahlert.github.io/pihero/apt
+      Suites: ./
+      Signed-By:
+       -----BEGIN PGP PUBLIC KEY BLOCK-----
+       .
+       mDMEarmLMBYJKwYBBAHaRw8BAQdAYH5NN70CgNV7X5ac7oOSclZ8KndwP0u1L01s
+       D3uvpfi0OlBpIEhlcm8gYXB0IHJlcG9zaXRvcnkgPGJrYWhsZXJ0QHVzZXJzLm5v
+       cmVwbHkuZ2l0aHViLmNvbT6IrwQTFgoAVxYhBN5gnX/1vkMNrIzIBwgfcOagd996
+       BQJquYswGxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDAsMwIbAwULCQgHAgIiAgYV
+       CgkICwIEFgIDAQIeBwIXgAAKCRAIH3DmoHffetE/AP4yQu33ESTuvzbxshkd5vN3
+       zfxERhiv662PLKEMET2WdgEA9bzTYYeziFUuok1oSkF7Q3IkOXHyf71EhXbbixdO
+       Zwc=
+       =dnaq
+       -----END PGP PUBLIC KEY BLOCK-----
+  # Busy Screen's own repository (bkahlert.github.io/busy-screen), signed with the key published at https://bkahlert.github.io/busy-screen/.
+  - path: /etc/apt/sources.list.d/busy-screen.sources
+    content: |
+      Types: deb
+      URIs: https://bkahlert.github.io/busy-screen/apt
+      Suites: ./
+      Signed-By:
+       -----BEGIN PGP PUBLIC KEY BLOCK-----
+       .
+       mDMEarvylxYJKwYBBAHaRw8BAQdAl0va5Ezuri2lADeISOaDdB6G4VySBaIe3znC
+       jKhsUci0PkJ1c3kgU2NyZWVuIGFwdCByZXBvc2l0b3J5IDxia2FobGVydEB1c2Vy
+       cy5ub3JlcGx5LmdpdGh1Yi5jb20+iK8EExYKAFcWIQQ6XeS5HKhxmcQt/JCcKDUx
+       ybBltgUCarvylxsUgAAAAAAEAA5tYW51MiwyLjUrMS4xMiwwLDMCGwMFCwkIBwIC
+       IgIGFQoJCAsCBBYCAwECHgcCF4AACgkQnCg1McmwZbZR2gD/TWhGiKG4eaLolLne
+       LtXkMlmqip/+UsUPBS5Xi3zabM4BAMfc7/z7TWVz/zzI0UYv6lwko3XhXZmMf3lL
+       Tpo/kd0C
+       =Xkkd
+       -----END PGP PUBLIC KEY BLOCK-----
+  # MODEL selects the icon Finder shows; the choices are pictured in pihero's devices/README.md.
+  - path: /etc/pihero/device-info.conf
+    content: MODEL=Macmini9,1
+  # pihero-kiosk shows the web display; the page talks to the backend on port 1880 of the host it was loaded from.
+  - path: /etc/pihero/kiosk.conf
+    content: |
+      URL=http://localhost/
+runcmd:
+  - hostnamectl set-hostname --pretty "Busy Screen"
+  - systemctl restart pihero-avahi-render.service
+  # The Waveshare 3.5-inch RPi LCD (A) on SPI: the upstream piscreen overlay's `drm` parameter selects the mainline ILI9486
+  # KMS driver (compatible waveshare,rpi-lcd-35), whose pins are this panel's; rotate turns the 320x480 panel to landscape.
+  # The firmware keeps 16 MB, the minimum, because KMS takes its memory from CMA. MemoryMax= in the units binds only with
+  # the memory controller, which Raspberry Pi OS boots without. All three flag the reboot power_state takes.
+  - /usr/lib/pihero/bootconfig set config dtoverlay piscreen,drm,rotate=90 --package busy-screen-display
+  - /usr/lib/pihero/bootconfig set config gpu_mem 16 --package busy-screen-display
+  - /usr/lib/pihero/bootconfig add cmdline cgroup_enable=memory --package busy-screen-server
+power_state:
+  mode: reboot
+  condition: test -f /run/reboot-required
