@@ -13,6 +13,8 @@ homepage: https://github.com/bkahlert/busy-screen
 license: MIT
 depends:
   - nodejs (>= 18.5)
+  # postinst creates the system user with adduser, which Trixie's minimal images no longer carry.
+  - adduser
 contents:
   - src: root/
     dst: /
