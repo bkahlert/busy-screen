@@ -1,12 +1,6 @@
-import org.gradle.kotlin.dsl.support.listFilesOrdered
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
-
 plugins {
-    kotlin("multiplatform") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.22"
+    kotlin("multiplatform") version "2.4.20"
+    kotlin("plugin.serialization") version "2.4.20"
 }
 
 group = "com.bkahlert.busy-screen"
@@ -17,92 +11,53 @@ repositories {
 }
 
 kotlin {
-    js(IR) {
-        moduleName = "busy-screen"
+    js {
+        outputModuleName = "busy-screen"
+        compilerOptions {
+            target = "es2015"
+        }
         browser {
-            commonWebpackConfig(Action<KotlinWebpackConfig> {
+            commonWebpackConfig {
                 devServer = devServer?.copy(open = false)
-            })
+            }
         }
-        yarn.apply {
-            ignoreScripts = false // suppress "warning Ignored scripts due to flag." warning
-            yarnLockMismatchReport = YarnLockMismatchReport.NONE
-            reportNewYarnLock = true // true
-            yarnLockAutoReplace = true // true
-        }
-    }.binaries.executable()
+        binaries.executable()
+    }
 
     sourceSets {
-
-        val commonMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-            }
+        commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
         }
+        jsMain.dependencies {
+            val ktorVersion = "3.6.0"
+            implementation("io.ktor:ktor-client-core:$ktorVersion")
+            implementation("io.ktor:ktor-client-js:$ktorVersion")
+            implementation("io.ktor:ktor-client-websockets:$ktorVersion")
 
-        val jsMain by getting {
-            dependencies {
-                val ktorVersion = "2.2.3"
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-js:$ktorVersion")
-                implementation("io.ktor:ktor-client-websockets:$ktorVersion")
+            implementation("org.jetbrains.kotlinx:kotlinx-html:0.12.0") { because("HTML builder") }
+            implementation("com.soywiz:korlibs-crypto:6.0.1") { because("MD5 for Gravatar") }
 
-                implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3") { because("HTML builder") }
-                implementation("com.soywiz.korlibs.krypto:krypto:2.3.1") { because("MD5 for Gravatar") }
+            implementation(npm("nes.css", "^2.3.0")) { because("retro CSS") }
+            implementation(npm("dialog-polyfill", "^0.5.6")) { because("help dialog") }
 
-                implementation(npm("nes.css", ">= 2.3.0")) { because("retro CSS") }
-                implementation(npm("dialog-polyfill", ">= 0.5.6")) { because("help dialog") }
-
-                // webpack
-                implementation(devNpm("postcss", "^8.4.17")) { because("CSS post transformation, e.g. auto-prefixing") }
-                implementation(devNpm("postcss-loader", "^7.0.1")) { because("Loader to process CSS with PostCSS") }
-                implementation(devNpm("autoprefixer", "10.4.12")) { because("auto-prefixing by PostCSS") }
-                implementation(devNpm("css-loader", "6.7.1"))
-                implementation(devNpm("style-loader", "3.3.1"))
-                implementation(devNpm("cssnano", "5.1.13")) { because("CSS minification by PostCSS") }
-            }
-        }
-        all {
-            languageSettings.optIn("kotlin.RequiresOptIn")
-            languageSettings.optIn("kotlin.ExperimentalStdlibApi")
-            languageSettings.optIn("kotlin.ExperimentalUnsignedTypes")
-            languageSettings.optIn("kotlin.io.encoding.ExperimentalEncodingApi")
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            languageSettings.optIn("kotlinx.coroutines.FlowPreview")
-            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
+            // webpack
+            implementation(devNpm("postcss", "^8.5.6"))
+            implementation(devNpm("postcss-loader", "^8.2.1"))
+            implementation(devNpm("autoprefixer", "^10.6.1"))
+            implementation(devNpm("css-loader", "^7.1.5"))
+            implementation(devNpm("style-loader", "^4.0.0"))
+            implementation(devNpm("cssnano", "^9.1.2"))
         }
     }
 }
 
-tasks {
-    val removalPattern = listOf(
-        Regex("\\.(json)\$"),
-        Regex("\\.(jpe?g|png|gif|svg)\$"),
-        Regex("\\.(woff|woff2|eot|ttf|otf)\$"),
-        Regex("mqtt(\\.min)?\\.js\$"),
-        Regex("\\.(css)\$"),
-    )
-
-    val removalFilter: (File) -> Boolean = { file ->
-        removalPattern.any { it.containsMatchIn(file.name) }
-    }
-
-    val productionBuilds = withType<KotlinWebpack>().matching { it.name.endsWith("ProductionWebpack") }
-    val cleanUpProductionBuild by registering(Delete::class) {
-        mustRunAfter(productionBuilds)
-        doLast {
-            productionBuilds
-                .flatMap { task -> task.outputs.files.filter { it.isDirectory } }
-                .forEach { distDir -> distDir.listFilesOrdered(removalFilter).forEach { it.delete() } }
-        }
-    }
-    productionBuilds.configureEach { finalizedBy(cleanUpProductionBuild) }
+tasks.named<Sync>("jsBrowserDistribution") {
+    // webpack bundles the stylesheets and emits the fonts they reference; the copies among the resources are redundant.
+    exclude("*.css")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

@@ -13,7 +13,7 @@ help: ## list targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  %-14s %s\n", $$1, $$2}'
 
 gradle: ## build the web bundle
-	./gradlew $(GRADLE_ARGS) jsBrowserProductionWebpack
+	./gradlew $(GRADLE_ARGS) jsBrowserDistribution
 
 npm: ## vendor Node-RED and the flow's nodes from the lock file
 	cd $(SERVER) && npm ci --omit=dev --no-audit --no-fund

@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="jsBrowserProductionWebpack" />
+          <option value="jsBrowserDistribution" />
         </list>
       </option>
       <option name="vmOptions" />

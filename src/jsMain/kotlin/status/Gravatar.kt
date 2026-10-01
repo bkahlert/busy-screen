@@ -1,6 +1,6 @@
 package status
 
-import com.soywiz.krypto.md5
+import korlibs.crypto.md5
 import io.ktor.http.Url
 
 data class Gravatar(

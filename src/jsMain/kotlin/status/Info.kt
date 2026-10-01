@@ -20,7 +20,6 @@ import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import io.ktor.http.path
-import io.ktor.utils.io.core.use
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.coroutineScope
