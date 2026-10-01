@@ -2,31 +2,31 @@
 Hash: SHA512
 
 Architectures: all
-Date: Tue, 29 Sep 2026 23:46:16 +0000
+Date: Thu, 01 Oct 2026 22:11:28 +0000
 Description: Busy Screen packages
 Label: busy-screen
 Origin: busy-screen
 Suite: stable
 MD5Sum:
- 3406b6172c50571447b41b31720a3b64             5481 Packages
- f561ee6f9d26662396c1ae64bc55d46a             1759 Packages.gz
- de8f5432d187552407cb8a27a30ff0d0              144 Release
+ 3e42490c9dbce2dfc7168facbe498f7c             7308 Packages
+ 4767fe504aec0d467d974267f0568815             2138 Packages.gz
+ e2689b3a69cab100349bf9705f0a2465              144 Release
 SHA1:
- 49e8909ccefe3d6733ff0645dd3a62b023930c2e             5481 Packages
- 13a7f56a98e09ffed486f507e6e0ccd06c73170a             1759 Packages.gz
- cea7c94e7348d6707921c9f95e91293ff1f8830b              144 Release
+ ba1ca8deac9d4cc8a1b9f51e9f6722905b9d0182             7308 Packages
+ 5157b5557eb737f58ca0f41594838b463c582008             2138 Packages.gz
+ bc7628e5375f79d264a4e29510386c5a0019c984              144 Release
 SHA256:
- a1ab29e803a9475fa6cf4c53b12f83b8f6dfdd5e59007630a867032dba6a2fde             5481 Packages
- eff2d62b3305214a3ceba6c494208504bd9906ce95db2d460fe5e4baf92d4100             1759 Packages.gz
- 52a52504dce7a0fa4801d60026827f09da9f37db9614f389567282fa0ba75598              144 Release
+ fbb66e8b0ba30bc9cc837d4f1c258ae46a1ae9251d8fdc04109da04f35772353             7308 Packages
+ 6130177d1dae7d722953abe95575d9a1e3bdcf43637bda0ee723e532366328d4             2138 Packages.gz
+ f41841f648e44ec5f8d2e6099e9e378b627f252b13828e8e174e0d7427aaca06              144 Release
 SHA512:
- 1997a2afbb6c9e01149883698caf86e058b170e3488b55cc7ec630a618d8d348383b69c9110e4ca8a1271250caafedee8c029fa080dcfcdb2006b02a23b6ac0f             5481 Packages
- d1abe40d3878e2a36e98c2b9f648cbddbccc6a7cdc2c01b24d8951b6bbd8b3c6eda95d61467070f234d1e3fbd389c7c6ffdf8fda51f8ef87fa23e525244e1ba1             1759 Packages.gz
- b7e18ddee4bbe1a7a255d323ca795299e56292a8ce7d37a78cb65213e4940426689ef226e2f63cf016492a631b64f8532eb324fa58cf99e98b41f5f6ec919988              144 Release
+ 731c8ec0835758ed8a64458e8f68c6e66268a2f2566845c696e8536965fe4f5aedfbf77ee672b29f051cf0270f87b4c9b793b90155e91ca435fde0b842d43adc             7308 Packages
+ 587218cb164d0b07253bfb0d870d70c14f4b5c93919a8d3c7267a5fff5bcb0ea9dffa756768ed486a272c395b2d9b016679f0c0174d7abd9d7e2850c079292b8             2138 Packages.gz
+ b220e7ad2f9611d02f9db12e02a2e931d497ad44d50c5bfe2275c4c5c29b481d534fb7e55c069be136d1edc46b1079ceabc93b7bd5b34b5fd12826a9e747505e              144 Release
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQ6XeS5HKhxmcQt/JCcKDUxybBltgUCarxNyAAKCRCcKDUxybBl
-treTAQCHE230E2imbqDhIyuTbOAMv6Uh8NSCq5LQUBWwl6yp/QD/Sovvq0XCLr4v
-08OIqcGQgT5OTX7/S0u3QFtVBn2cpQw=
-=rfIW
+iHUEARYKAB0WIQQ6XeS5HKhxmcQt/JCcKDUxybBltgUCar7akAAKCRCcKDUxybBl
+tvBiAP4su78nClwH9PR81nyrgD9cyINvaY98MJfNWE0vixwc/wEAzWrRjF2gGnJy
+Pr4lCxXBVzlcAZQd40eZ0de8fpbaIAk=
+=S5BS
 -----END PGP SIGNATURE-----
