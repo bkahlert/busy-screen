@@ -19,7 +19,8 @@ const mainCssFile = 'styles.css'
     use: [
       { loader: 'style-loader' },
       // css-loader resolves the @imports, including the vendored packages; importLoaders runs PostCSS on them too.
-      { loader: 'css-loader', options: { importLoaders: 1 } },
+      // url() stays untouched: the fonts are resources the browser loads from the page's directory.
+      { loader: 'css-loader', options: { importLoaders: 1, url: false } },
       {
         loader: 'postcss-loader',
         options: {

@@ -57,7 +57,6 @@ kotlin {
 }
 
 tasks.named<Sync>("jsBrowserDistribution") {
-    // webpack bundles the stylesheets and emits the fonts they reference; the copies among the resources are redundant.
+    // webpack has bundled the stylesheets; only the resources they reference are served as files.
     exclude("*.css")
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
