@@ -69,6 +69,12 @@ class TestRender:
         with pytest.raises(ValueError, match="ssh_authorized_keys"):
             vm_device.render(keyless, key=KEY)
 
+    def test_on_a_users_block_without_a_name_line_raises(self):
+        indented = SAMPLE.replace("  - name: pi\n", "    - name: pi\n")
+
+        with pytest.raises(ValueError, match="name"):
+            vm_device.render(indented, key=KEY)
+
     def test_on_a_kiosk_conf_without_cog_args_raises(self):
         without = SAMPLE.replace("      COG_ARGS=--platform-params=renderer=gles\n", "")
 

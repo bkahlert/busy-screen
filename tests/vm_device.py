@@ -43,7 +43,9 @@ def with_user(text: str, user: str, key: str) -> str:
     users = block(text, "users:")
     if users.count("  - name: ") != 1:
         raise ValueError("expected one user in the sample device file")
-    renamed = re.sub(r"^(?P<prefix>  - name: ).*$", lambda m: m["prefix"] + user, users, count=1, flags=re.M)
+    renamed, names = re.subn(r"^(?P<prefix>  - name: ).*$", lambda m: m["prefix"] + user, users, count=1, flags=re.M)
+    if names == 0:
+        raise ValueError("expected a '  - name:' line in the sample's users block")
     rekeyed, keys = re.subn(r"^(?P<prefix>    ssh_authorized_keys:\n      - ).*$", lambda m: m["prefix"] + key, renamed, count=1, flags=re.M)
     if keys == 0:
         raise ValueError("expected an ssh_authorized_keys entry in the sample device file")
