@@ -67,9 +67,9 @@ kotlin {
                 implementation("com.bkahlert.kommons:kommons-uri")
 
 
-                implementation("io.ktor:ktor-client-core:1.6.2") { because("websocket") }
-                implementation("io.ktor:ktor-client-js:1.6.2") { because("websocket") }
-                implementation("io.ktor:ktor-client-websockets:1.6.2") { because("websocket") }
+                implementation("io.ktor:ktor-client-core:3.6.0") { because("websocket") }
+                implementation("io.ktor:ktor-client-js:3.6.0") { because("websocket") }
+                implementation("io.ktor:ktor-client-websockets:3.6.0") { because("websocket") }
 
                 // https://github.com/JetBrains/kotlin-wrappers
                 fun kotlinWrapper(target: String): String = "org.jetbrains.kotlin-wrappers:kotlin-$target"
