@@ -94,7 +94,8 @@ The backend is a [Node-RED flow](packages/busy-screen-server/flows.json), the fr
 
 1) [Install Node-RED](https://nodered.org/docs/getting-started/) and `node-red-contrib-ip`, import the flow, and give
    `functionGlobalContext` a `moment` (see [settings.js](packages/busy-screen-server/server/settings.js))
-2) Build the frontend with `./gradlew jsBrowserProductionWebpack`
+2) Build the frontend with `./gradlew jsBrowserDistribution`; Gradle picks a JDK 17 from the installed ones, as
+   [gradle/gradle-daemon-jvm.properties](gradle/gradle-daemon-jvm.properties) asks
 3) Serve [build/dist/js/productionExecutable](build/dist/js/productionExecutable) with any web server, e.g. `npx http-server -c -p 80`
 4) Open the page; it talks to port 1880 of the host it was loaded from. `?address=http://other-host:1880` points it elsewhere.
 
