@@ -1,6 +1,7 @@
 package com.bkahlert.kommons.serialization
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind.STRING
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -17,6 +18,8 @@ class DateSerializer : KSerializer<Date> {
     }
 
     override fun deserialize(decoder: Decoder): Date {
-        return Date(decoder.decodeString())
+        val text = decoder.decodeString()
+        return Date(text).takeUnless { it.getTime().isNaN() }
+            ?: throw SerializationException("'$text' is not a date")
     }
 }
