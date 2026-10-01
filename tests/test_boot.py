@@ -30,8 +30,11 @@ class TestProvisioning:
         if request.config.getoption("--target") == "ssh":
             pytest.skip("a board's status is whatever was posted last")
 
-        info = json.loads(info_until(host, "setting up"))
+        answer = info_until(host, "setting up")
 
+        assert answer, "Node-RED did not answer"
+        info = json.loads(answer)
+        assert info.get("status"), f"Node-RED reports no status: {info}"
         assert info["status"]["name"] == "setting up"
         assert info["status"]["task"] == "busy-screen on Pi Hero 2"
         assert info["status"]["duration"] == 600_000

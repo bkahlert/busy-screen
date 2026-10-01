@@ -1,21 +1,22 @@
 import json
-import urllib.request
 from pathlib import Path
 
 import pytest
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import expect, sync_playwright
 
-from booted import Tunnel
+from booted import Tunnel, info_until
 
 pytestmark = pytest.mark.boot
 PANEL = {"width": 480, "height": 320}
 
 
 class TestDisplay:
-    def test_shows_the_status_the_backend_reports(self, page, tunnel, screenshot):
-        info = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{tunnel.backend}/info", timeout=30).read())
-        assert info["status"], info
+    def test_shows_the_status_the_backend_reports(self, host, page, tunnel, screenshot):
+        answer = info_until(host, "hostname")
+        assert answer, "Node-RED did not answer"
+        info = json.loads(answer)
+        assert info.get("status"), f"Node-RED reports no status: {info}"
 
         page.goto(f"http://127.0.0.1:{tunnel.http}/?address=http://127.0.0.1:{tunnel.backend}")
         expect(page.locator(".status__name .nes-text")).to_have_text(info["status"]["name"], timeout=60_000)
