@@ -1,0 +1,70 @@
+"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, and an SSH tunnel to the page and the backend."""
+import socket
+import subprocess
+import time
+
+from pihero_testkit.ssh import SshTarget
+from pihero_testkit.vm import SSH_OPTS
+
+KNOWN_CLOUD_INIT_WARNING = "cc_netplan_nm_patch"
+INFO = "http://localhost:1880/info"
+FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=30).read().decode())' "
+
+
+def unexpected_recoverable_errors(status: dict) -> list[str]:
+    """Return cloud-init's recoverable errors except Raspberry Pi OS's own warning about a module it names but does not ship."""
+    return [message for messages in status.get("recoverable_errors", {}).values() for message in messages if KNOWN_CLOUD_INIT_WARNING not in message]
+
+
+def info_until(host, needle: str, attempts: int = 60) -> str:
+    """Return Node-RED's /info once it contains `needle`, or the last answer after `attempts` tries two seconds apart."""
+    out = ""
+    for _ in range(attempts):
+        out = host.run(FETCH + INFO).stdout
+        if needle in out:
+            return out
+        time.sleep(2)
+    return out
+
+
+def tunnel_command(target, http: int, backend: int) -> list[str]:
+    """Return the `ssh -N -L` command forwarding the local ports `http` and `backend` to the target's 80 and 1880."""
+    forwards = ["-L", f"127.0.0.1:{http}:127.0.0.1:80", "-L", f"127.0.0.1:{backend}:127.0.0.1:1880"]
+    # A multiplexed client hands the forwards to the master and exits at once; the tunnel has to be its own connection.
+    unshared = ["-o", "ControlMaster=no", "-o", "ControlPath=none"]
+    if isinstance(target, SshTarget):
+        user_host, _, port = target.uri.partition(":")
+        return ["ssh", "-N", *forwards, *(["-p", port] if port else []), *unshared, "-o", "BatchMode=yes", user_host]
+    return ["ssh", "-N", *forwards, "-i", str(target.key), "-p", str(target.port), *unshared, *SSH_OPTS, f"{target.user}@127.0.0.1"]
+
+
+class Tunnel:
+    """Forwards two free local ports to the target's 80 and 1880 with `ssh -N -L` until closed."""
+
+    def __init__(self, target):
+        self.http = free_port()
+        self.backend = free_port()
+        self.process = subprocess.Popen(tunnel_command(target, self.http, self.backend), stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+        self._wait_listening()
+
+    def _wait_listening(self, timeout: float = 30) -> None:
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+                raise RuntimeError(f"the ssh tunnel exited with {self.process.returncode}: {self.process.stderr.read()}")
+            try:
+                with socket.create_connection(("127.0.0.1", self.http), timeout=1):
+                    return
+            except OSError:
+                time.sleep(0.5)
+        raise TimeoutError("the ssh tunnel did not come up")
+
+    def close(self) -> None:
+        self.process.terminate()
+        self.process.wait(10)
+
+
+def free_port() -> int:
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
