@@ -41,7 +41,7 @@ kotlin {
                 implementation(platform("com.bkahlert.kommons:kommons-bom:2.8.0"))
                 implementation("com.bkahlert.kommons:kommons-time")
 
-                implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1"))
+                implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.11.0"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
                 implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.1"))
