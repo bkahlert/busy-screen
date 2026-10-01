@@ -4,7 +4,14 @@ import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.Url
 import io.ktor.util.toMap
+import kotlinx.coroutines.suspendCancellableCoroutine
+import org.w3c.dom.AddEventListenerOptions
+import org.w3c.dom.COMPLETE
+import org.w3c.dom.DocumentReadyState
 import org.w3c.dom.Location
+import org.w3c.dom.Window
+import org.w3c.dom.events.Event
+import kotlin.coroutines.resume
 
 private fun CharSequence.deserialize(): Parameters =
     Parameters.build {
@@ -78,3 +85,14 @@ var Location.hashParameters: Parameters
 val Location.allParameters: Parameters
     get() = url.parameters
 
+/**
+ * Suspends until this window has fired its `load` event; returns at once if the document is already complete.
+ */
+suspend fun Window.awaitLoad() {
+    if (document.readyState == DocumentReadyState.COMPLETE) return
+    suspendCancellableCoroutine { continuation ->
+        val listener: (Event) -> Unit = { continuation.resume(Unit) }
+        addEventListener("load", listener, AddEventListenerOptions(once = true))
+        continuation.invokeOnCancellation { removeEventListener("load", listener) }
+    }
+}

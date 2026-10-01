@@ -1,3 +1,4 @@
+import com.bkahlert.kommons.dom.awaitLoad
 import com.bkahlert.kommons.dom.body
 import com.bkahlert.kommons.dom.replaceChildren
 import com.bkahlert.kommons.dom.url
@@ -6,7 +7,6 @@ import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
-import kotlinx.coroutines.delay
 import kotlinx.dom.addClass
 import kotlinx.html.a
 import kotlinx.html.div
@@ -30,7 +30,8 @@ suspend fun main() {
     )
 
     document.registerDialogs()
-    waitUntilReady()
+    window.awaitLoad()
+    document.documentElement?.addClass("ready")
 
     val body = document.body()
 
@@ -39,17 +40,6 @@ suspend fun main() {
     Updater(address, refreshRate, body) { error ->
         body.updateConnectionStatus(address, error)
     }.start()
-}
-
-private suspend fun waitUntilReady() {
-    var ready = false
-    window.onload = {
-        ready = true
-        document.documentElement?.addClass("ready")
-        null
-    }
-
-    while (!ready) delay(3000)
 }
 
 fun HTMLElement.updateConnectionStatus(url: Url, error: Throwable? = null) {
