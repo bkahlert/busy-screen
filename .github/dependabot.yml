@@ -3,8 +3,25 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    groups:
+      gradle:
+        patterns: ["*"]
+  - package-ecosystem: "npm"
+    directory: "/packages/busy-screen-server/server"
+    schedule:
+      interval: "weekly"
+    groups:
+      node-red:
+        patterns: ["*"]
+    ignore:
+      # Node-RED 5 needs Node.js 22.9; Raspberry Pi OS trixie ships 20.
+      - dependency-name: "node-red"
+        update-types: ["version-update:semver-major"]

@@ -3,7 +3,6 @@
 .DS_Store
 .gradle
 build
-kotlin-js-store/.yarn*
 dist/
 packages/*/.build/
 packages/busy-screen-server/server/node_modules/

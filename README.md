@@ -1,6 +1,6 @@
 ![Two Kaomoji shouting "Busy?!"](docs/banner.png)
 
-# Busy Screen [![Build Status](https://img.shields.io/github/actions/workflow/status/bkahlert/busy-screen/build.yml?label=Build&logo=github&logoColor=fff)](https://github.com/bkahlert/busy-screen/actions/workflows/build.yml) [![License](https://img.shields.io/github/license/bkahlert/busy-screen?color=29ABE2&label=License&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1OTAgNTkwIiAgeG1sbnM6dj0iaHR0cHM6Ly92ZWN0YS5pby9uYW5vIj48cGF0aCBkPSJNMzI4LjcgMzk1LjhjNDAuMy0xNSA2MS40LTQzLjggNjEuNC05My40UzM0OC4zIDIwOSAyOTYgMjA4LjljLTU1LjEtLjEtOTYuOCA0My42LTk2LjEgOTMuNXMyNC40IDgzIDYyLjQgOTQuOUwxOTUgNTYzQzEwNC44IDUzOS43IDEzLjIgNDMzLjMgMTMuMiAzMDIuNCAxMy4yIDE0Ny4zIDEzNy44IDIxLjUgMjk0IDIxLjVzMjgyLjggMTI1LjcgMjgyLjggMjgwLjhjMCAxMzMtOTAuOCAyMzcuOS0xODIuOSAyNjEuMWwtNjUuMi0xNjcuNnoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxOS4yMTIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4%3D)](https://github.com/bkahlert/busy-screen/blob/master/LICENSE) [![Buy Me A Coffee](https://img.shields.io/static/v1?label=&message=%E2%98%95%20Buy%20Me%20A%20Coffee&color=FFDD00)](https://www.buymeacoffee.com/bkahlert)
+# Busy Screen [![Build Status](https://img.shields.io/github/actions/workflow/status/bkahlert/busy-screen/ci.yml?label=Build&logo=github&logoColor=fff)](https://github.com/bkahlert/busy-screen/actions/workflows/ci.yml) [![License](https://img.shields.io/github/license/bkahlert/busy-screen?color=29ABE2&label=License&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1OTAgNTkwIiAgeG1sbnM6dj0iaHR0cHM6Ly92ZWN0YS5pby9uYW5vIj48cGF0aCBkPSJNMzI4LjcgMzk1LjhjNDAuMy0xNSA2MS40LTQzLjggNjEuNC05My40UzM0OC4zIDIwOSAyOTYgMjA4LjljLTU1LjEtLjEtOTYuOCA0My42LTk2LjEgOTMuNXMyNC40IDgzIDYyLjQgOTQuOUwxOTUgNTYzQzEwNC44IDUzOS43IDEzLjIgNDMzLjMgMTMuMiAzMDIuNCAxMy4yIDE0Ny4zIDEzNy44IDIxLjUgMjk0IDIxLjVzMjgyLjggMTI1LjcgMjgyLjggMjgwLjhjMCAxMzMtOTAuOCAyMzcuOS0xODIuOSAyNjEuMWwtNjUuMi0xNjcuNnoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxOS4yMTIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4%3D)](https://github.com/bkahlert/busy-screen/blob/master/LICENSE) [![Buy Me A Coffee](https://img.shields.io/static/v1?label=&message=%E2%98%95%20Buy%20Me%20A%20Coffee&color=FFDD00)](https://www.buymeacoffee.com/bkahlert)
 
 Turns your Raspberry Pi into a status screen to show your colleagues, family, friends, or whoever might disturb you if you're busy or not.
 
@@ -94,7 +94,8 @@ The backend is a [Node-RED flow](packages/busy-screen-server/flows.json), the fr
 
 1) [Install Node-RED](https://nodered.org/docs/getting-started/) and `node-red-contrib-ip`, import the flow, and give
    `functionGlobalContext` a `moment` (see [settings.js](packages/busy-screen-server/server/settings.js))
-2) Build the frontend with `./gradlew jsBrowserProductionWebpack`
+2) Build the frontend with `./gradlew jsBrowserDistribution`; Gradle picks a JDK 17 from the installed ones, as
+   [gradle/gradle-daemon-jvm.properties](gradle/gradle-daemon-jvm.properties) asks
 3) Serve [build/dist/js/productionExecutable](build/dist/js/productionExecutable) with any web server, e.g. `npx http-server -c -p 80`
 4) Open the page; it talks to port 1880 of the host it was loaded from. `?address=http://other-host:1880` points it elsewhere.
 
