@@ -1,0 +1,15 @@
+dialog {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+/* native */
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* polyfill */
+dialog + .backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+}

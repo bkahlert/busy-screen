@@ -1,0 +1,15 @@
+.dialog-menu {
+    text-align: right;
+}
+
+.nes-balloon {
+    padding: 2vh 3vw;
+}
+
+.nes-dialog {
+    padding: 2vh 2vw;
+}
+
+select option {
+    font-family: monospace, monospace;
+}

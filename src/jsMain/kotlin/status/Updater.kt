@@ -80,7 +80,7 @@ class Updater(
         } catch (error: Throwable) {
             console.error("Error while status updates", error)
             lastError = error
-            Info.update(element, error)
+            Info.markOffline(element)
             callback(lastError)
         }
     }

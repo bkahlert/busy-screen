@@ -109,7 +109,7 @@ data class Info(
             }.fold({ true }, { false })
         }
 
-        suspend fun update(element: HTMLElement, error: Throwable) {
+        fun markOffline(element: HTMLElement) {
             element.addClass("offline")
             element.removeClass("online")
         }

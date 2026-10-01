@@ -1,15 +1,9 @@
 package com.bkahlert.kommons.dom
 
 import io.ktor.http.Url
-import kotlinx.css.CSSBuilder
-import kotlinx.css.body
-import kotlinx.css.head
 import kotlinx.dom.addClass
 import kotlinx.dom.hasClass
 import kotlinx.dom.removeClass
-import kotlinx.html.dom.append
-import kotlinx.html.head
-import kotlinx.html.js.style
 import kotlinx.html.link
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -38,16 +32,6 @@ var Document.favicon: Url?
  */
 fun Document.head(): HTMLHeadElement = getOrCreate({ head }) {
     createElement("head").also { prepend(it) }
-}
-
-/**
- * Appends the CSS built with the given [block] to this [head] element.
- */
-fun HTMLHeadElement.appendCss(block: CSSBuilder.() -> Unit) {
-    val css = CSSBuilder().apply(block).toString()
-    append {
-        style { +css }
-    }
 }
 
 /**

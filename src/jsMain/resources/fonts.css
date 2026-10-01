@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/press-start-2p-v9-latin-ext_latin_greek_cyrillic-ext_cyrillic-regular.woff2') format('woff2'),
+    url('./fonts/press-start-2p-v9-latin-ext_latin_greek_cyrillic-ext_cyrillic-regular.woff') format('woff');
+}

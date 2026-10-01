@@ -1,21 +1,18 @@
 import com.bkahlert.kommons.dom.body
 import com.bkahlert.kommons.dom.replaceChildren
 import com.bkahlert.kommons.dom.url
-import com.bkahlert.kommons.time.Now
-import dependencies.appendNEScss
-import dependencies.appendPressStart2P
-import dependencies.dialog.appendDialogPolyfill
+import dependencies.dialog.registerDialogs
 import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.delay
-import kotlinx.datetime.toJSDate
 import kotlinx.dom.addClass
 import kotlinx.html.a
 import kotlinx.html.div
 import org.w3c.dom.HTMLElement
 import status.Updater
+import kotlin.js.Date
 import kotlin.time.Duration.Companion.seconds
 
 suspend fun main() {
@@ -30,10 +27,10 @@ suspend fun main() {
             }.build()
         },
         defaultRefreshRate = 1.seconds,
-    ).also {
-        loadAssets()
-        waitUntilReady()
-    }
+    )
+
+    document.registerDialogs()
+    waitUntilReady()
 
     val body = document.body()
 
@@ -42,13 +39,6 @@ suspend fun main() {
     Updater(address, refreshRate, body) { error ->
         body.updateConnectionStatus(address, error)
     }.start()
-}
-
-
-private fun loadAssets() {
-    document.appendPressStart2P()
-    document.appendNEScss()
-    document.appendDialogPolyfill()
 }
 
 private suspend fun waitUntilReady() {
@@ -71,7 +61,7 @@ fun HTMLElement.updateConnectionStatus(url: Url, error: Throwable? = null) {
 private fun HTMLElement.loadingLog(url: Url, error: Throwable? = null) {
     replaceChildren(".loading__log") {
         div("nes-text") {
-            +Now.toJSDate().toLocaleTimeString()
+            +Date().toLocaleTimeString()
             +"..."
             +" "
             a(url.toString()) { +url.toString() }

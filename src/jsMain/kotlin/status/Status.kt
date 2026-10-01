@@ -2,14 +2,12 @@ package status
 
 import com.bkahlert.kommons.dom.forEach
 import com.bkahlert.kommons.dom.forEachInstance
+import com.bkahlert.kommons.minus
+import com.bkahlert.kommons.plus
 import com.bkahlert.kommons.serialization.DateSerializer
+import com.bkahlert.kommons.serialization.DurationAsMillisecondsSerializer
 import com.bkahlert.kommons.serialization.UrlSerializer
-import com.bkahlert.kommons.time.DurationAsMillisecondsSerializer
-import com.bkahlert.kommons.time.Now
-import com.bkahlert.kommons.time.minus
-import com.bkahlert.kommons.time.plus
 import io.ktor.http.Url
-import kotlinx.datetime.toJSDate
 import kotlinx.dom.addClass
 import kotlinx.dom.removeClass
 import kotlinx.serialization.Serializable
@@ -54,11 +52,11 @@ data class Status(
     @Serializable(UrlSerializer::class)
     val avatar: Url? = null,
 ) {
-    val passed: Duration? get() = timestamp?.let { Now.toJSDate() - it }
+    val passed: Duration? get() = timestamp?.let { Date() - it }
 
     val remaining: Duration?
         get() = if (duration != null && timestamp != null) {
-            timestamp + duration - Now.toJSDate()
+            timestamp + duration - Date()
         } else {
             null
         }
@@ -133,6 +131,7 @@ data class Status(
         if (duration != other.duration) return false
         if (timestamp?.getTime() != other.timestamp?.getTime()) return false
         if (email != other.email) return false
+        if (avatar != other.avatar) return false
 
         return true
     }
@@ -143,6 +142,7 @@ data class Status(
         result = 31 * result + duration.hashCode()
         result = 31 * result + timestamp?.getTime().hashCode()
         result = 31 * result + email.hashCode()
+        result = 31 * result + avatar.hashCode()
         return result
     }
 
@@ -157,7 +157,7 @@ data class Status(
         val DEFAULT_STATUS: Status = Status(
             name = "installation completed",
             duration = 5.minutes,
-            timestamp = Now.toJSDate() - 5.minutes,
+            timestamp = Date() - 5.minutes,
         )
     }
 }

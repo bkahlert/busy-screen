@@ -1,4 +1,3 @@
-
 import org.gradle.kotlin.dsl.support.listFilesOrdered
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -15,7 +14,6 @@ version = "1.1"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven") }
 }
 
 kotlin {
@@ -38,66 +36,33 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(platform("com.bkahlert.kommons:kommons-bom:2.8.0"))
-                implementation("com.bkahlert.kommons:kommons-time")
-
-                implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.7.1"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-
-                implementation(platform("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.5.1"))
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-
-                implementation(platform("io.kotest:kotest-bom:5.6.2"))
-                implementation("io.kotest:kotest-common")
-                implementation("io.kotest:kotest-assertions-core")
-
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation("com.bkahlert.kommons:kommons-text")
-                implementation("com.bkahlert.kommons:kommons-uri")
-
-
-                implementation("io.ktor:ktor-client-core:1.6.2") { because("websocket") }
-                implementation("io.ktor:ktor-client-js:1.6.2") { because("websocket") }
-                implementation("io.ktor:ktor-client-websockets:1.6.2") { because("websocket") }
-
-                // https://github.com/JetBrains/kotlin-wrappers
-                fun kotlinWrapper(target: String): String = "org.jetbrains.kotlin-wrappers:kotlin-$target"
-                val kotlinWrappersVersion = "0.0.1-pre.222-kotlin-1.5.21"
-                implementation(enforcedPlatform(kotlinWrapper("wrappers-bom:${kotlinWrappersVersion}")))
-                implementation(kotlinWrapper("extensions")) { because("require") }
-                implementation(kotlinWrapper("css")) { because("CSSBuilder") }
+                val ktorVersion = "2.2.3"
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+                implementation("io.ktor:ktor-client-websockets:$ktorVersion")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3") { because("HTML builder") }
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1") { because("backend polling") }
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2") { because("Status deserialization") }
-                implementation("com.soywiz.korlibs.krypto:krypto:2.3.1") { because("MD5") }
+                implementation("com.soywiz.korlibs.krypto:krypto:2.3.1") { because("MD5 for Gravatar") }
 
                 implementation(npm("nes.css", ">= 2.3.0")) { because("retro CSS") }
                 implementation(npm("dialog-polyfill", ">= 0.5.6")) { because("help dialog") }
 
-
-                // tailwind
-                implementation(npm("tailwindcss", "^3.3.3")) { because("low-level CSS classes") }
-
-                // optional tailwind plugins
-                implementation(devNpm("@tailwindcss/typography", "^0.5")) { because("prose classes to format arbitrary text") }
-                implementation(devNpm("tailwind-heropatterns", "^0.0.8")) { because("hero-pattern like striped backgrounds") }
-
                 // webpack
                 implementation(devNpm("postcss", "^8.4.17")) { because("CSS post transformation, e.g. auto-prefixing") }
                 implementation(devNpm("postcss-loader", "^7.0.1")) { because("Loader to process CSS with PostCSS") }
-                implementation(devNpm("postcss-import", "^15.1")) { because("@import support") }
                 implementation(devNpm("autoprefixer", "10.4.12")) { because("auto-prefixing by PostCSS") }
                 implementation(devNpm("css-loader", "6.7.1"))
                 implementation(devNpm("style-loader", "3.3.1"))
@@ -115,10 +80,6 @@ kotlin {
             languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
         }
     }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
 
 tasks {
