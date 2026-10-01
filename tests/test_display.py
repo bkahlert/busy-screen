@@ -20,6 +20,7 @@ class TestDisplay:
         page.goto(f"http://127.0.0.1:{tunnel.http}/?address=http://127.0.0.1:{tunnel.backend}")
         expect(page.locator(".status__name .nes-text")).to_have_text(info["status"]["name"], timeout=60_000)
         expect(page).to_have_title(info["status"]["name"])
+        expect(page.locator(".status")).to_have_css("opacity", "1")
         page.screenshot(path=str(screenshot))
 
         assert screenshot.stat().st_size > 0
