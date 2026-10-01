@@ -15,7 +15,7 @@ dev = [
 [package.metadata]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pihero-testkit", git = "https://github.com/bkahlert/pihero?subdirectory=testkit&tag=v2.2.1" }]
+dev = [{ name = "pihero-testkit", git = "https://github.com/bkahlert/pihero?subdirectory=testkit&tag=v2.3.0" }]
 
 [[package]]
 name = "colorama"
@@ -47,7 +47,7 @@ wheels = [
 [[package]]
 name = "pihero-testkit"
 version = "2.0.0"
-source = { git = "https://github.com/bkahlert/pihero?subdirectory=testkit&tag=v2.2.1#8912cc0955a1059cd7386a7ef64b8023fb476027" }
+source = { git = "https://github.com/bkahlert/pihero?subdirectory=testkit&tag=v2.3.0#fe89bf773807feedea76fbec8f922978024bd5d1" }
 dependencies = [
     { name = "pytest" },
     { name = "pytest-testinfra" },
