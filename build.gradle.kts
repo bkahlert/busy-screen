@@ -53,7 +53,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
 
-                implementation(platform("io.kotest:kotest-bom:5.6.2"))
+                implementation(platform("io.kotest:kotest-bom:6.2.5"))
                 implementation("io.kotest:kotest-common")
                 implementation("io.kotest:kotest-assertions-core")
 
