@@ -1,22 +1,22 @@
 Architectures: all arm64
-Date: Fri, 02 Oct 2026 05:54:50 +0000
+Date: Fri, 02 Oct 2026 14:17:38 +0000
 Description: Busy Screen packages
 Label: busy-screen
 Origin: busy-screen
 Suite: stable
 MD5Sum:
- e9ec89c8d6efaf523335f7a8e1b7e511             9135 Packages
- 022aaa32fe1f06a157987daa51e65c98             2512 Packages.gz
- 09e63e66ba598df54dbaeecbd46c99fe              150 Release
+ 13bf1148ac999a9e690bd90baf125456            10962 Packages
+ 29e91f5dec9018ee0854d123456c5443             2886 Packages.gz
+ c46ce8d4ff2972d077954604d47e84c0              150 Release
 SHA1:
- 95ae475e2bbe77e5765d30b51e1e6f1f696a2377             9135 Packages
- 4298beb4cb94052e1abf573645120632ec2a9d2a             2512 Packages.gz
- 843292b33d5556a7bceb79daedb4e8dd599d041e              150 Release
+ ff0adda74dd4a9e97bbb4ff350db7d7a1b0c657f            10962 Packages
+ 7d2dd0828696da05ab6c74640005ac31ebcbd06f             2886 Packages.gz
+ a63f7c66c20640727267c4f99ea83d54d46eb14a              150 Release
 SHA256:
- ff01efa1e334499840bfab7a27c95ba596ed8418722ba3274b03075fa3db8e24             9135 Packages
- c9da75ebd4f7c4363fa2482535b5f54020791c905f02af5db7ef0966cccb8daf             2512 Packages.gz
- b996731fc97f9e36082155d0bc255cc0cf3cb9923547b88c03e0863cf6ee2d94              150 Release
+ db8db91ce4fe12e9bf92687b9a71ca8aee5acf3860f4def0c794d9ede694c82f            10962 Packages
+ dc5e6508a8d83ae9ffe7d05464fe5a320bd35c5c8178e70addacc7950a3dd95e             2886 Packages.gz
+ 25847233d7c19d6b48ca1ade7d40060156b6514d0c1ece82470b93ec214aaf2a              150 Release
 SHA512:
- 3cffe29e3e4ef2081be6835ced57dba22114ef78a4be4535654d90ce134496cd6d8293b55448efb2cf57db3866ab5f1f1f68ea6f4c89f9973de4e0d484fc9cfd             9135 Packages
- 317461a81885fe57b20dfc36af627ec58f1a203364a2a12a0ad536f243daa9dfe86292457f3fc5909a02a3ea2ca587b552eb58ac8b27533ee113c40e328d6eb6             2512 Packages.gz
- 8f22c44709d5eb072ae125b5831526be818b11fd91b4958bb31892aaf6ec49044ee0e6d7f61527a730fb606260292802fd2e68a62aebd77e8e60971463c5bca6              150 Release
+ 34c64a4a6b6ab7a37d29c4b5985b02d73f14975acd4ab94650d335829462196c06cba1c66b143d3649d373e579da5a42e3173a6a43674b97ceff5b7ff4e05bd8            10962 Packages
+ 003402947d399688b0bced61a2661f0860843df90ebc4fc797d25acb82e3a519e199f0727fbd2871687cb3c8dfe5f43e1a3c61819e2b208c2d86d15ffc07827b             2886 Packages.gz
+ 514514337ee8352e782671c7d9439d0d4803a56442297531634d59b50a5f2138203dd7d5ec1e8acb0eb65ebf9b8b67bc59d329d98c2d56b6dff125be145e4786              150 Release
