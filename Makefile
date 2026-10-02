@@ -6,7 +6,7 @@ SHELL := /bin/bash
 PLATFORM ?= linux/arm64
 TARGET ?=
 QEMU_ACCEL ?= hvf
-# The Waveshare 3.5-inch panel's size: the VM's virtual display, the display test's viewport and make display.
+# The Waveshare 3.5-inch panel's size for the VM's virtual display; the display test and make display hardcode the same 480x320.
 VM_DISPLAY ?= 480x320
 URL ?=
 UV := uv run --frozen
