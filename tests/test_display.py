@@ -35,13 +35,15 @@ class TestDisplay:
         held = []
         page.route(FONT_REQUESTS, lambda route: held.append(route))
         url = f"http://127.0.0.1:{tunnel.http}/?address=http://127.0.0.1:{tunnel.backend}/&refresh-rate=PT1S"
-        page.goto(url, wait_until="commit")
+        with page.expect_request(FONT_REQUESTS, timeout=60_000):
+            page.goto(url, wait_until="commit")
         assert page.url == url
 
         with pytest.raises(PlaywrightTimeoutError):
             page.wait_for_function("document.documentElement.classList.contains('ready')", timeout=5_000)
         for route in held:
             route.continue_()
+        page.unroute(FONT_REQUESTS)
 
         expect(page.locator("html")).to_have_class(READY)
         assert page.evaluate(f"document.fonts.check({json.dumps(FONT)})")
