@@ -120,7 +120,9 @@ boots the real Raspberry Pi OS root filesystem with [devices/sample/user-data](d
 WebKit at the panel's 480×320; the run leaves `dist/tier2/display.png`. The VM has a virtual display of that size
 (`VM_DISPLAY=480x320`), so `pihero-kiosk` runs cog on it as on the board; the run checks that the kiosk has not restarted and
 leaves QEMU's picture of it as `dist/tier2/kiosk.png`. `make vm` keeps the VM running for a look around, and `make display URL=…`
-opens any page, the VM's, the board's or a dev server's, in Playwright's WebKit at that size. `make release` runs tiers 0 to 2.
+opens any page, the VM's, the board's or a dev server's, in Playwright's WebKit at that size. `make release` runs tiers 0 to 2;
+CI runs tier 2 weekly under software emulation ([weekly.yml](.github/workflows/weekly.yml)), since GitHub's runners have no
+hardware virtualization.
 
 ## Customization
 
