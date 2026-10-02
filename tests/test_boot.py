@@ -58,10 +58,10 @@ class TestKiosk:
             pytest.skip("no virtual display")
 
         log = journal_until(host, "pihero-kiosk", "Loaded successfully")
-        states = host.check_output("systemctl show -p ActiveState -p NRestarts --value pihero-kiosk.service").split()
+        states = host.check_output("systemctl show -p ActiveState -p NRestarts pihero-kiosk.service").split()
 
         assert "Loaded successfully" in log, log
-        assert states == ["active", "0"], log
+        assert set(states) == {"ActiveState=active", "NRestarts=0"}, log
 
     def test_is_pictured_at_the_displays_size(self, host, target):
         if isinstance(target, SshTarget):
