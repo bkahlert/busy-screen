@@ -5,10 +5,12 @@ import kotlin.js.Promise
 /** The fonts the document's stylesheets declare, see [FontFaceSet](https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet). */
 external interface FontFaceSet {
     fun forEach(callback: (FontFace) -> Unit)
-    fun check(font: String): Boolean
+    fun add(face: FontFace): FontFaceSet
+    fun delete(face: FontFace): Boolean
 }
 
 external interface FontFace {
+    val status: String
     fun load(): Promise<FontFace>
 }
 
