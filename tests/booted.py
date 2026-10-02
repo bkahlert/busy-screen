@@ -1,4 +1,4 @@
-"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, and an SSH tunnel to the page and the backend."""
+"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, a unit's journal, and an SSH tunnel to the page and the backend."""
 import socket
 import subprocess
 import time
@@ -25,6 +25,17 @@ def info_until(host, needle: str, attempts: int = 60) -> str:
             return out
         time.sleep(2)
     return out
+
+
+def journal_until(host, unit: str, needle: str, attempts: int = 45) -> str:
+    """Return the unit's journal of this boot once it contains `needle`, or the last read after `attempts` tries two seconds apart."""
+    log = ""
+    for _ in range(attempts):
+        log = host.run(f"journalctl -u {unit} -b --no-pager -o cat").stdout
+        if needle in log:
+            return log
+        time.sleep(2)
+    return log
 
 
 def tunnel_command(target, http: int, backend: int) -> list[str]:
