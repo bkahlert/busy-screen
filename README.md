@@ -99,6 +99,29 @@ The backend is a [Node-RED flow](packages/busy-screen-server/flows.json), the fr
 3) Serve [build/dist/js/productionExecutable](build/dist/js/productionExecutable) with any web server, e.g. `npx http-server -c -p 80`
 4) Open the page; it talks to port 1880 of the host it was loaded from. `?address=http://other-host:1880` points it elsewhere.
 
+### Build and test the packages
+
+```shell
+uv sync --frozen                                    # the test harness, once
+make build                                          # Gradle and npm, then nfpm: dist/*.deb
+make test                                           # JS unit tests, tier 0 (static checks) and tier 1 (install into a systemd container)
+make test-tier2                                     # tier 2: boot a QEMU VM from devices/sample and show the page in WebKit
+make deploy TARGET=pi@busy-screen.local             # the built packages onto a device, no repository involved
+```
+
+The harness is [pihero-testkit](https://github.com/bkahlert/pihero/tree/main/testkit); `uv run pytest -m installed --target=ssh
+--target-uri=pi@busy-screen.local` checks a running device against the installed tests, and `-m boot` in its place runs the boot
+and display tests against the device, leaving `dist/ssh/display.png`. A release is `make release VERSION=X.Y.Z` and
+`git push origin vX.Y.Z`; the workflow builds, signs and publishes the repository.
+
+Tier 2 needs QEMU (`brew install qemu`) and Playwright's WebKit (`make browser`, downloaded once into Playwright's cache). It
+boots the real Raspberry Pi OS root filesystem with [devices/sample/user-data](devices/sample/user-data), rendered for the VM by
+[tests/vm_device.py](tests/vm_device.py), checks that the provisioning posted its "setting up" status, and loads the page in
+WebKit at the panel's 480×320; the run leaves `dist/tier2/display.png`. The VM has a virtual display of that size
+(`VM_DISPLAY=480x320`), so `pihero-kiosk` runs cog on it as on the board; the run checks that the kiosk has not restarted and
+leaves QEMU's picture of it as `dist/tier2/kiosk.png`. `make vm` keeps the VM running for a look around, and `make display URL=…`
+opens any page, the VM's, the board's or a dev server's, in Playwright's WebKit at that size. `make release` runs tiers 0 to 2.
+
 ## Customization
 
 Busy Screen can be customized / extended in two ways:

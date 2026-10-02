@@ -12,3 +12,5 @@ __pycache__/
 devices/*
 !devices/sample/
 !devices/README.md
+docs/superpowers/
+.superpowers/

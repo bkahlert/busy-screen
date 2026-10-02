@@ -8,12 +8,19 @@ requires-python = ">=3.13"
 package = false
 
 [tool.uv.sources]
-pihero-testkit = { git = "https://github.com/bkahlert/pihero", subdirectory = "testkit", tag = "v2.3.0" }
+pihero-testkit = { git = "https://github.com/bkahlert/pihero", subdirectory = "testkit", tag = "v2.4.0" }
 
 [dependency-groups]
-dev = ["pihero-testkit"]
+dev = [
+    "pihero-testkit",
+    "pillow>=12.3.0",
+    "playwright>=1.63.0",
+]
 
 [tool.pytest.ini_options]
-testpaths = ["packages", "tests"]
+# tests/ first: its boot and display tests read the status the provisioning posted, which the server's status test overwrites
+# and its purge test removes.
+testpaths = ["tests", "packages"]
+pythonpath = ["tests"]
 # testinfra's own plugin registers after the testkit's and its local-host `host` fixture would shadow the target's.
 addopts = "-p pihero_testkit.plugin -p no:pytest11.testinfra --import-mode=importlib -ra"

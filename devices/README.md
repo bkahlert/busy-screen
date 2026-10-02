@@ -4,7 +4,10 @@
 busy-screen apt source (its key inline, so the device trusts nothing else), the packages `busy-screen-server` and
 `busy-screen-display`, `/etc/pihero/kiosk.conf` with the page the kiosk shows, and the lines for the Waveshare 3.5-inch LCD. Every
 other key is explained in pihero's [devices/README.md](https://github.com/bkahlert/pihero/blob/main/devices/README.md). Directories
-other than `sample/` are gitignored: keep your own here or in a private repository.
+other than `sample/` are gitignored: keep your own here or in a private repository. `sample/` is also what tier 2 boots:
+`make test-tier2` renders it for the VM with the testkit's user and the local package repository, and without the panel
+(`COG_ARGS`, the `panel.conf` drop-in and the four `bootconfig` lines for the LCD), so the file users copy is the file that is
+tested.
 
 Copy `user-data`, set the hostname, your SSH public key and the pretty name; a board with Wi-Fi also takes pihero's
 `network-config` next to it. Then, in a pihero checkout, `make flash DEVICE=<path to your directory> DISK=diskN`. The sample names
