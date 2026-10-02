@@ -6,7 +6,7 @@ import pytest
 from PIL import Image
 from pihero_testkit.ssh import SshTarget
 
-from booted import BUSY, DONE, frame_colour, pixel_at, tunnel_command, unexpected_recoverable_errors
+from booted import BUSY, DONE, frame_colour, frame_pixels, pixel_at, tunnel_command, unexpected_recoverable_errors
 
 pytestmark = pytest.mark.tier0
 
@@ -84,3 +84,17 @@ class TestPixelAt:
         result = pixel_at(picture, (1, 1))
 
         assert result == "#92cc41"
+
+
+class TestFramePixels:
+    def test_reads_the_frame_at_both_sides_of_the_pictures_middle_row(self, tmp_path):
+        picture = tmp_path / "picture.png"
+        image = Image.new("RGB", (480, 320), "white")
+        for y in range(320):
+            image.putpixel((4, y), (0xE8, 0x6E, 0x55))
+            image.putpixel((475, y), (0x92, 0xCC, 0x41))
+        image.save(picture)
+
+        result = frame_pixels(picture)
+
+        assert result == ["#e86e55", "#92cc41"]

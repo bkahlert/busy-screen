@@ -1,14 +1,19 @@
 import json
+import re
 from pathlib import Path
 
 import pytest
 from playwright.sync_api import Error as PlaywrightError
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import expect, sync_playwright
 
 from booted import Tunnel, info_until
 
 pytestmark = pytest.mark.boot
 PANEL = {"width": 480, "height": 320}
+READY = re.compile(r"\bready\b")
+FONT_REQUESTS = re.compile(r"/fonts/")
+FONT = "1em 'Press Start 2P'"
 
 
 class TestDisplay:
@@ -25,6 +30,23 @@ class TestDisplay:
         page.screenshot(path=str(screenshot))
 
         assert screenshot.stat().st_size > 0
+
+    def test_is_shown_only_once_its_font_has_loaded(self, page, tunnel):
+        held = []
+        page.route(FONT_REQUESTS, lambda route: held.append(route))
+        url = f"http://127.0.0.1:{tunnel.http}/?address=http://127.0.0.1:{tunnel.backend}/&refresh-rate=PT1S"
+        with page.expect_request(FONT_REQUESTS, timeout=60_000):
+            page.goto(url, wait_until="commit")
+        assert page.url == url
+
+        with pytest.raises(PlaywrightTimeoutError):
+            page.wait_for_function("document.documentElement.classList.contains('ready')", timeout=5_000)
+        for route in held:
+            route.continue_()
+        page.unroute(FONT_REQUESTS)
+
+        expect(page.locator("html")).to_have_class(READY)
+        assert page.evaluate(f"document.fonts.check({json.dumps(FONT)})")
 
 
 @pytest.fixture(scope="module")

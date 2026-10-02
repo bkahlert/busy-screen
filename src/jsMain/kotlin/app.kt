@@ -31,6 +31,7 @@ suspend fun main() {
 
     document.registerDialogs()
     window.awaitLoad()
+    document.awaitFonts()
     document.documentElement?.addClass("ready")
 
     val body = document.body()
