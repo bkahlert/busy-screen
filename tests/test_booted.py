@@ -1,10 +1,12 @@
+from datetime import UTC, datetime
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from PIL import Image
 from pihero_testkit.ssh import SshTarget
 
-from booted import tunnel_command, unexpected_recoverable_errors
+from booted import BUSY, DONE, frame_colour, pixel_at, tunnel_command, unexpected_recoverable_errors
 
 pytestmark = pytest.mark.tier0
 
@@ -54,3 +56,31 @@ class TestUnexpectedRecoverableErrors:
         result = unexpected_recoverable_errors({"status": "done"})
 
         assert result == []
+
+
+class TestFrameColour:
+    def test_is_busy_while_the_duration_runs(self):
+        status = {"timestamp": "2026-10-02T00:20:00.000Z", "duration": 600_000}
+
+        result = frame_colour(status, now=datetime(2026, 10, 2, 0, 29, 59, tzinfo=UTC))
+
+        assert result == BUSY
+
+    def test_is_done_once_the_duration_has_run_out(self):
+        status = {"timestamp": "2026-10-02T00:20:00.000Z", "duration": 600_000}
+
+        result = frame_colour(status, now=datetime(2026, 10, 2, 0, 30, 0, tzinfo=UTC))
+
+        assert result == DONE
+
+
+class TestPixelAt:
+    def test_reads_a_pixel_as_a_css_colour(self, tmp_path):
+        picture = tmp_path / "picture.png"
+        image = Image.new("RGB", (2, 2), "#e86e55")
+        image.putpixel((1, 1), (0x92, 0xCC, 0x41))
+        image.save(picture)
+
+        result = pixel_at(picture, (1, 1))
+
+        assert result == "#92cc41"

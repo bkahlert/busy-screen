@@ -1,13 +1,20 @@
-"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, a unit's journal, and an SSH tunnel to the page and the backend."""
+"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, a unit's journal, the page's frame colour, and an SSH tunnel."""
 import socket
 import subprocess
 import time
+from datetime import datetime, timedelta
+from pathlib import Path
+
+from PIL import Image
 
 from pihero_testkit.ssh import SshTarget
 from pihero_testkit.vm import SSH_OPTS
 
 KNOWN_CLOUD_INIT_WARNING = "cc_netplan_nm_patch"
 INFO = "http://localhost:1880/info"
+# The border colours of .status--busy and .status--done in status.css.
+BUSY = "#e86e55"
+DONE = "#92cc41"
 FETCH = "python3 -c 'import urllib.request,sys; print(urllib.request.urlopen(sys.argv[1], timeout=30).read().decode())' "
 
 
@@ -36,6 +43,18 @@ def journal_until(host, unit: str, needle: str, attempts: int = 45) -> str:
             return log
         time.sleep(2)
     return log
+
+
+def frame_colour(status: dict, now: datetime) -> str:
+    """Return the colour of the page's frame for a status with a duration: busy while it runs, done once it has run out."""
+    ends = datetime.fromisoformat(status["timestamp"]) + timedelta(milliseconds=status["duration"])
+    return BUSY if ends > now else DONE
+
+
+def pixel_at(picture: Path, xy: tuple[int, int]) -> str:
+    """Return the picture's pixel at `xy` as a CSS colour."""
+    with Image.open(picture) as image:
+        return "#%02x%02x%02x" % image.convert("RGB").getpixel(xy)
 
 
 def tunnel_command(target, http: int, backend: int) -> list[str]:

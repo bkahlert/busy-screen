@@ -1,10 +1,11 @@
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 from pihero_testkit.ssh import SshTarget
 
-from booted import info_until, journal_until, unexpected_recoverable_errors
+from booted import frame_colour, info_until, journal_until, pixel_at, unexpected_recoverable_errors
 
 pytestmark = pytest.mark.boot
 
@@ -73,6 +74,20 @@ class TestKiosk:
         picture = target.screenshot(Path.cwd() / "dist" / "tier2" / "kiosk.png")
 
         assert png_size(picture) == target.display
+
+    def test_shows_the_frame_of_the_status_the_backend_reports(self, host, target):
+        if isinstance(target, SshTarget):
+            pytest.skip("no screendump of a board")
+        if target.display is None:
+            pytest.skip("no virtual display")
+        journal_until(host, "pihero-kiosk", "Loaded successfully")
+        status = json.loads(info_until(host, "hostname"))["status"]
+        width, height = target.display
+
+        picture = target.screenshot(Path.cwd() / "dist" / "tier2" / "kiosk.png")
+
+        colour = frame_colour(status, now=datetime.now(UTC))
+        assert [pixel_at(picture, (4, height // 2)), pixel_at(picture, (width - 5, height // 2))] == [colour, colour]
 
 
 class TestServer:
