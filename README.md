@@ -116,9 +116,10 @@ The harness is [pihero-testkit](https://github.com/bkahlert/pihero/tree/main/tes
 Tier 2 needs QEMU (`brew install qemu`) and Playwright's WebKit (`make browser`, downloaded once into Playwright's cache). It
 boots the real Raspberry Pi OS root filesystem with [devices/sample/user-data](devices/sample/user-data), rendered for the VM by
 [tests/vm_device.py](tests/vm_device.py), checks that the provisioning posted its "setting up" status, and loads the page in
-WebKit at the panel's 480×320; the run leaves `dist/tier2/display.png`. `make vm` keeps the VM running for a look around, and
-`make display URL=…` opens any page, the VM's, the board's or a dev server's, in that WebKit at that size. `make release` runs
-tiers 0 to 2.
+WebKit at the panel's 480×320; the run leaves `dist/tier2/display.png`. The VM has a virtual display of that size
+(`VM_DISPLAY=480x320`), so `pihero-kiosk` runs cog on it as on the board; the run checks that the kiosk has not restarted and
+leaves QEMU's picture of it as `dist/tier2/kiosk.png`. `make vm` keeps the VM running for a look around, and `make display URL=…`
+opens any page, the VM's, the board's or a dev server's, in Playwright's WebKit at that size. `make release` runs tiers 0 to 2.
 
 ## Customization
 
