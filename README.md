@@ -110,7 +110,8 @@ make deploy TARGET=pi@busy-screen.local             # the built packages onto a 
 ```
 
 The harness is [pihero-testkit](https://github.com/bkahlert/pihero/tree/main/testkit); `uv run pytest -m installed --target=ssh
---target-uri=pi@busy-screen.local` checks a running device against the tests. A release is `make release VERSION=X.Y.Z` and
+--target-uri=pi@busy-screen.local` checks a running device against the installed tests, and `-m boot` in its place runs the boot
+and display tests against the device, leaving `dist/ssh/display.png`. A release is `make release VERSION=X.Y.Z` and
 `git push origin vX.Y.Z`; the workflow builds, signs and publishes the repository.
 
 Tier 2 needs QEMU (`brew install qemu`) and Playwright's WebKit (`make browser`, downloaded once into Playwright's cache). It
