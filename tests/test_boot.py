@@ -5,9 +5,10 @@ from pathlib import Path
 import pytest
 from pihero_testkit.ssh import SshTarget
 
-from booted import frame_colour, info_until, journal_until, pixel_at, unexpected_recoverable_errors
+from booted import BUSY, DONE, frame_colour, frame_pixels, info_until, journal_until, screenshot_until, unexpected_recoverable_errors
 
 pytestmark = pytest.mark.boot
+FRAMES = ([BUSY, BUSY], [DONE, DONE])
 
 
 class TestProvisioning:
@@ -80,14 +81,12 @@ class TestKiosk:
             pytest.skip("no screendump of a board")
         if target.display is None:
             pytest.skip("no virtual display")
-        journal_until(host, "pihero-kiosk", "Loaded successfully")
         status = json.loads(info_until(host, "hostname"))["status"]
-        width, height = target.display
 
-        picture = target.screenshot(Path.cwd() / "dist" / "tier2" / "kiosk.png")
+        picture = screenshot_until(target, Path.cwd() / "dist" / "tier2" / "kiosk.png", lambda shot: frame_pixels(shot) in FRAMES)
 
         colour = frame_colour(status, now=datetime.now(UTC))
-        assert [pixel_at(picture, (4, height // 2)), pixel_at(picture, (width - 5, height // 2))] == [colour, colour]
+        assert frame_pixels(picture) == [colour, colour]
 
 
 class TestServer:

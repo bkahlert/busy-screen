@@ -1,7 +1,9 @@
-"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, a unit's journal, the page's frame colour, and an SSH tunnel."""
+"""Helpers for tests against a booted target: cloud-init's status, Node-RED's /info, a unit's journal, the page's frame colour, the VM's
+screen, and an SSH tunnel."""
 import socket
 import subprocess
 import time
+from collections.abc import Callable
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -56,6 +58,23 @@ def pixel_at(picture: Path, xy: tuple[int, int]) -> str:
     """Return the picture's pixel at `xy` as a CSS colour."""
     with Image.open(picture) as image:
         return "#%02x%02x%02x" % image.convert("RGB").getpixel(xy)
+
+
+def frame_pixels(picture: Path) -> list[str]:
+    """Return the colours where the page's frame, the .status container's border, crosses the picture's middle row, left and right."""
+    with Image.open(picture) as image:
+        width, height = image.size
+    return [pixel_at(picture, (4, height // 2)), pixel_at(picture, (width - 5, height // 2))]
+
+
+def screenshot_until(target, path: Path, settled: Callable[[Path], bool], attempts: int = 150) -> Path:
+    """Save the target's screen at `path` until `settled` accepts the picture, or `attempts` times two seconds apart, and return the path."""
+    for _ in range(attempts):
+        picture = target.screenshot(path)
+        if settled(picture):
+            return picture
+        time.sleep(2)
+    return picture
 
 
 def tunnel_command(target, http: int, backend: int) -> list[str]:
