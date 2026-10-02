@@ -23,8 +23,9 @@ def unexpected_recoverable_errors(status: dict) -> list[str]:
     return [message for messages in status.get("recoverable_errors", {}).values() for message in messages if KNOWN_CLOUD_INIT_WARNING not in message]
 
 
-def info_until(host, needle: str, attempts: int = 60) -> str:
+def info_until(host, needle: str, attempts: int = 150) -> str:
     """Return Node-RED's /info once it contains `needle`, or the last answer after `attempts` tries two seconds apart."""
+    # Five minutes: Node-RED and the kiosk start in seconds under HVF and in minutes under software emulation.
     out = ""
     for _ in range(attempts):
         out = host.run(FETCH + INFO).stdout
@@ -34,7 +35,7 @@ def info_until(host, needle: str, attempts: int = 60) -> str:
     return out
 
 
-def journal_until(host, unit: str, needle: str, attempts: int = 45) -> str:
+def journal_until(host, unit: str, needle: str, attempts: int = 150) -> str:
     """Return the unit's journal of this boot once it contains `needle`, or the last read after `attempts` tries two seconds apart."""
     log = ""
     for _ in range(attempts):
