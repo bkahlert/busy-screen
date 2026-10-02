@@ -41,6 +41,6 @@ jobs:
         with:
           name: tier2
           path: |
-            dist/tier2/*.png
+            dist/tier2/**
             dist/vm/*/serial.log
           if-no-files-found: ignore
