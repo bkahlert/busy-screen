@@ -6,6 +6,8 @@ SHELL := /bin/bash
 PLATFORM ?= linux/arm64
 TARGET ?=
 QEMU_ACCEL ?= hvf
+# The Waveshare 3.5-inch panel's size: the VM's virtual display, the display test's viewport and make display.
+VM_DISPLAY ?= 480x320
 URL ?=
 UV := uv run --frozen
 GRADLE_ARGS ?= --no-daemon --console=plain
@@ -35,8 +37,8 @@ test-tier0: ## unit tests and static checks
 test-tier1: ## install the packages into a systemd container and test
 	@$(UV) pytest -m installed --target=podman --platform=$(PLATFORM)
 
-test-tier2: ## boot a VM from the sample device file and run the installed and boot tests
-	@$(UV) pytest -m 'installed or boot' --target=vm --qemu-accel=$(QEMU_ACCEL)
+test-tier2: ## boot a VM with the panel's display from the sample device file and run the installed and boot tests
+	@$(UV) pytest -m 'installed or boot' --target=vm --qemu-accel=$(QEMU_ACCEL) --display=$(VM_DISPLAY)
 
 test: test-js test-tier0 test-tier1 ## JS unit tests, tiers 0 and 1, what CI runs
 
@@ -49,7 +51,7 @@ vm-prepare: ## build and cache the tier-2 base image under ~/.cache/pihero
 	@$(UV) python -m pihero_testkit.prepare
 
 vm: vm-device ## boot the tier-2 VM from the sample device file and keep it running
-	@$(UV) python -m pihero_testkit.vm --keep --qemu-accel=$(QEMU_ACCEL) --device=dist/vm-device
+	@$(UV) python -m pihero_testkit.vm --keep --qemu-accel=$(QEMU_ACCEL) --display=$(VM_DISPLAY) --device=dist/vm-device
 
 display: ## open URL in Playwright's WebKit at the panel's 480x320 (make display URL='http://busy-screen.local/?address=http://busy-screen.local:1880')
 	@test -n "$(URL)" || { echo "usage: make display URL='http://host/?address=http://host:1880'"; exit 2; }
