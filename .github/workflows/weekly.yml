@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "0 4 * * 1"
   workflow_dispatch:
+  # A change to this workflow proves itself before it is merged.
+  pull_request:
+    paths: [".github/workflows/weekly.yml"]
 
 permissions:
   contents: read
