@@ -17,7 +17,8 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-# tests/ first: its boot and display tests read the status the provisioning posted, which the server's purge test removes.
+# tests/ first: its boot and display tests read the status the provisioning posted, which the server's status test overwrites
+# and its purge test removes.
 testpaths = ["tests", "packages"]
 pythonpath = ["tests"]
 # testinfra's own plugin registers after the testkit's and its local-host `host` fixture would shadow the target's.

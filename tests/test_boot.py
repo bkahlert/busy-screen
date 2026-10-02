@@ -28,8 +28,8 @@ class TestProvisioning:
 
         assert "cgroup_enable=memory" in cmdline
 
-    def test_posted_the_setup_status(self, host, request):
-        if request.config.getoption("--target") == "ssh":
+    def test_posted_the_setup_status(self, host, target):
+        if isinstance(target, SshTarget):
             pytest.skip("a board's status is whatever was posted last")
 
         answer = info_until(host, "setting up")
