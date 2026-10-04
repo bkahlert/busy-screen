@@ -1,22 +1,14 @@
 """The device directory tier 2 boots: the sample with the testkit's user and the local apt repository, and without the panel."""
 import re
-from importlib.resources import files
 from pathlib import Path
+
+from pihero_testkit import device_file
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "devices" / "sample" / "user-data"
 OUT = ROOT / "dist" / "vm-device"
-PUBLIC_KEY = Path(str(files("pihero_testkit") / "keys" / "pihero-testkit.pub"))
-USER = "pihero"
-REPO_URL = "http://10.0.2.2:8000/"
-BUSY_SCREEN_SOURCES = "  - path: /etc/apt/sources.list.d/busy-screen.sources"
-BUSY_SCREEN_SOURCE = BUSY_SCREEN_SOURCES + """
-    content: |
-      Types: deb
-      URIs: {url}
-      Suites: ./
-      Trusted: yes
-"""
+SOURCE = "/etc/apt/sources.list.d/busy-screen.sources"
+BUSY_SCREEN_SOURCES = f"  - path: {SOURCE}"
 KIOSK_CONF = "  - path: /etc/pihero/kiosk.conf"
 PANEL_CONF = "  - path: /etc/systemd/system/pihero-kiosk.service.d/panel.conf"
 # The VM has neither the SPI panel nor HDMI: config.txt has no effect there, and the two console lines are the panel's.
@@ -28,28 +20,13 @@ PANEL_RUNCMD = (
 )
 
 
-def render(sample: str, key: str, user: str = USER, url: str = REPO_URL) -> str:
-    text = with_user(sample, user, key)
-    text = text.replace(block(text, BUSY_SCREEN_SOURCES), BUSY_SCREEN_SOURCE.format(url=url), 1)
-    kiosk_conf = block(text, KIOSK_CONF)
+def render(sample: str, key: str) -> str:
+    text = device_file.with_source(device_file.with_user(sample, key), SOURCE)
+    kiosk_conf = device_file.block(text, KIOSK_CONF)
     text = text.replace(kiosk_conf, without_cog_args(kiosk_conf), 1)
-    text = text.replace(block(text, PANEL_CONF), "", 1)
-    for line in PANEL_RUNCMD:
-        text = text.replace(block(text, line), "", 1)
+    for start in (PANEL_CONF, *PANEL_RUNCMD):
+        text = device_file.drop(text, start)
     return text
-
-
-def with_user(text: str, user: str, key: str) -> str:
-    users = block(text, "users:")
-    if users.count("  - name: ") != 1:
-        raise ValueError("expected one user in the sample device file")
-    renamed, names = re.subn(r"^(?P<prefix>  - name: ).*$", lambda m: m["prefix"] + user, users, count=1, flags=re.M)
-    if names == 0:
-        raise ValueError("expected a '  - name:' line in the sample's users block")
-    rekeyed, keys = re.subn(r"^(?P<prefix>    ssh_authorized_keys:\n      - ).*$", lambda m: m["prefix"] + key, renamed, count=1, flags=re.M)
-    if keys == 0:
-        raise ValueError("expected an ssh_authorized_keys entry in the sample device file")
-    return text.replace(users, rekeyed, 1)
 
 
 def without_cog_args(kiosk_conf: str) -> str:
@@ -59,24 +36,8 @@ def without_cog_args(kiosk_conf: str) -> str:
     return stripped
 
 
-def block(text: str, start: str) -> str:
-    """Return the line equal to `start` and every following line indented deeper than it."""
-    lines = text.splitlines(keepends=True)
-    try:
-        begin = next(i for i, line in enumerate(lines) if line.rstrip("\n") == start)
-    except StopIteration:
-        raise ValueError(f"the device file has no line {start!r}") from None
-    indent = len(start) - len(start.lstrip(" "))
-    end = begin + 1
-    while end < len(lines) and (not lines[end].strip() or len(lines[end]) - len(lines[end].lstrip(" ")) > indent):
-        end += 1
-    return "".join(lines[begin:end])
-
-
 def write(out: Path = OUT, sample: Path = SAMPLE) -> Path:
-    out.mkdir(parents=True, exist_ok=True)
-    (out / "user-data").write_text(render(sample.read_text(), key=PUBLIC_KEY.read_text().strip()))
-    return out
+    return device_file.write(out, render(sample.read_text(), device_file.PUBLIC_KEY.read_text().strip()))
 
 
 if __name__ == "__main__":

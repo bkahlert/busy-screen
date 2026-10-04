@@ -99,6 +99,74 @@ The backend is a [Node-RED flow](packages/busy-screen-server/flows.json), the fr
 3) Serve [build/dist/js/productionExecutable](build/dist/js/productionExecutable) with any web server, e.g. `npx http-server -c -p 80`
 4) Open the page; it talks to port 1880 of the host it was loaded from. `?address=http://other-host:1880` points it elsewhere.
 
+### Preview the page
+
+Three make targets show the page while you edit it. They read it from Gradle's dev server on port 8082 (netmon uses 8081, so
+both can preview side by side) and run a local copy of the backend next to it. The fake needs `node` and the vendored Node-RED.
+
+```shell
+make npm              # once: vendor Node-RED for the fake backend
+make preview-browser  # the page in a browser tab
+```
+
+The targets differ in where the page is shown:
+
+| Target                                           | Shows the page in                                                                       |
+|--------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `make preview-browser`                           | Any browser: the fastest, with that browser's rendering and its own developer tools     |
+| `make preview-vm` (also `make preview`)          | The kiosk's own WPE WebKit, 480×320, in a QEMU window: exact rendering, the Mac's speed |
+| `make preview-board TARGET=pi@busy-screen.local` | The kiosk of a real Pi: the panel's own CPU use, the slowest                            |
+
+`preview-vm` and `preview-board` also open the kiosk's Web Inspector. Their variables:
+
+| Variable  | Default | Meaning                                                                                                          |
+|-----------|---------|------------------------------------------------------------------------------------------------------------------|
+| `BACKEND` | `fake`  | `fake`, `board` or `HOST:PORT`, as listed below                                                                  |
+| `STATUS`  | see below | The status the fake starts with, as the JSON that `PUT /status` takes                                          |
+| `INSPECT` | `Safari` | The application that opens once the session is up: the page for `preview-browser`, the kiosk's Web Inspector for the others. `INSPECT=0` opens nothing; `INSPECT="Google Chrome"` picks another browser |
+| `TARGET`  |         | `preview-board` only, and required there: `user@host[:port]` of the Pi, which needs Pi Hero's `pihero-kiosk` and ssh access without a prompt |
+
+- `BACKEND=fake`: Node-RED with the repository's flow on port 1880 of the Mac, started and stopped by the command.
+- `BACKEND=board`: the Pi's own Node-RED (`preview-board` only).
+- `BACKEND=HOST:PORT`: a backend that already runs; nothing is started, and `localhost` is the Mac.
+
+`STATUS` defaults to `{"name":"preview","task":"busy-screen on the Mac","duration":"PT10M"}`. The wiring is in
+[tests/preview.py](tests/preview.py) and [tests/preview_backend.py](tests/preview_backend.py).
+
+While a preview runs, change the status it shows with the requests in [http-client.http](http-client.http) (environment
+`Localhost`) or with `curl`:
+
+```shell
+curl -X PUT http://localhost:1880/status -H 'Content-Type: application/json' \
+  -d '{"name":"in a call","task":"back at 3","duration":"PT5M"}'
+```
+
+#### In the IDE
+
+The run configurations in [.run](.run) start `backend`, `preview-browser`, `preview-vm` and `preview-board` (set its `TARGET`).
+To run the dev server from the IDE instead, start the fake first with `make backend` or the run configuration `backend`, then
+`busy-screen-web-display [jsBrowserDevelopmentRun --continuous]`. The page finds the fake on port 1880 of its own host.
+
+#### Stopping
+
+Ctrl-C in the terminal ends a preview and everything it started. Only one preview runs at a time, and Gradle allows one build
+per project directory, so stop it before `make test-js` or any other `./gradlew`.
+
+From another shell, send SIGINT to the `owner` pid in `dist/preview/session.json`. Do not use `pkill -f` on `preview.py` or
+`qemu-system`: it also ends netmon's preview.
+
+#### The VM and the board
+
+The first `make preview-vm` builds a base disk (about 2.5 minutes, cached under `~/.cache/pihero/preview`); later ones start
+faster. It needs QEMU, Podman and Accessibility permission for your terminal (to size the window).
+
+`make preview-board` changes nothing lasting on the Pi. One `ssh` connection carries the page, the fake backend and the
+inspector between the Mac and the Pi. The kiosk reads its session settings from a drop-in under `/run`, which Ctrl-C removes
+and a reboot wipes.
+
+The page is the development bundle, so its CPU and memory use is higher than what `make deploy` installs. On a Model B,
+compare flavors and edits with each other, not with production.
+
 ### Build and test the packages
 
 ```shell
@@ -106,6 +174,7 @@ uv sync --frozen                                    # the test harness, once
 make build                                          # Gradle and npm, then nfpm: dist/*.deb
 make test                                           # JS unit tests, tier 0 (static checks) and tier 1 (install into a systemd container)
 make test-tier2                                     # tier 2: boot a QEMU VM from devices/sample and show the page in WebKit
+make test-preview                                   # the preview's Node-RED fake (needs node, make npm)
 make deploy TARGET=pi@busy-screen.local             # the built packages onto a device, no repository involved
 ```
 

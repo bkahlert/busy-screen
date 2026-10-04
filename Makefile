@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 # Gradle's output directory is called build, so the targets are declared phony.
-.PHONY: help gradle npm build browser test-js test-tier0 test-tier1 test-tier2 test test-all vm-device vm-prepare vm display deploy clean release
+.PHONY: help gradle npm build browser test-js test-tier0 test-tier1 test-tier2 test test-all vm-device vm-prepare vm display backend preview preview-browser preview-vm preview-board test-preview deploy clean release
 
 PLATFORM ?= linux/arm64
 TARGET ?=
@@ -14,7 +14,7 @@ GRADLE_ARGS ?= --no-daemon --console=plain
 SERVER := packages/busy-screen-server/server
 
 help: ## list targets
-	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  %-14s %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  %-15s %s\n", $$1, $$2}'
 
 gradle: ## build the web bundle
 	./gradlew $(GRADLE_ARGS) jsBrowserDistribution
@@ -56,6 +56,23 @@ vm: vm-device ## boot the tier-2 VM from the sample device file and keep it runn
 display: ## open URL in Playwright's WebKit at the panel's 480x320 (make display URL='http://busy-screen.local/?address=http://busy-screen.local:1880')
 	@test -n "$(URL)" || { echo "usage: make display URL='http://host/?address=http://host:1880'"; exit 2; }
 	@$(UV) playwright open -b webkit --viewport-size=480,320 "$(URL)"
+
+test-preview: ## the preview's Node-RED fake on this Mac (needs node and make npm)
+	@$(UV) pytest -m preview
+
+backend: ## run the preview's Node-RED fake until Ctrl-C (STATUS='{...}' sets the status), for the IDE's dev-server run configuration
+	@$(UV) python tests/preview_backend.py
+
+preview-browser: ## the Node-RED fake, the dev server and the page in a browser tab (BACKEND=fake|HOST:PORT STATUS='{...}' INSPECT=Safari)
+	@$(UV) python tests/preview.py --on browser
+
+preview-vm: ## the fake, the dev server and the kiosk's WebKit in a VM window at 480x320, its inspector in Safari
+	@$(UV) python tests/preview.py --on vm
+
+preview-board: ## the fake, the dev server and the kiosk of a real Pi (TARGET=pi@host BACKEND=fake|board|HOST:PORT)
+	@$(UV) python tests/preview.py --on board
+
+preview: preview-vm ## the same as preview-vm
 
 deploy: build ## install the built packages on TARGET over SSH
 	@test -n "$(TARGET)" || { echo "usage: make deploy TARGET=pi@host"; exit 2; }
