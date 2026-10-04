@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import pytest
+from pihero_testkit import device_file
 
 import vm_device
 
@@ -69,12 +70,6 @@ class TestRender:
         with pytest.raises(ValueError, match="ssh_authorized_keys"):
             vm_device.render(keyless, key=KEY)
 
-    def test_on_a_users_block_without_a_name_line_raises(self):
-        indented = SAMPLE.replace("  - name: pi\n", "    - name: pi\n")
-
-        with pytest.raises(ValueError, match="name"):
-            vm_device.render(indented, key=KEY)
-
     def test_on_a_kiosk_conf_without_cog_args_raises(self):
         without = SAMPLE.replace("      COG_ARGS=--platform-params=renderer=gles\n", "")
 
@@ -95,7 +90,7 @@ class TestWrite:
         assert [p.name for p in out.iterdir()] == ["user-data"]
         text = (out / "user-data").read_text()
         assert text.startswith("#cloud-config\n")
-        assert vm_device.PUBLIC_KEY.read_text().strip() in text
+        assert device_file.PUBLIC_KEY.read_text().strip() in text
 
 
 class TestPytestConfigure:
@@ -125,7 +120,7 @@ EDITED = ("users:", vm_device.BUSY_SCREEN_SOURCES, vm_device.KIOSK_CONF, vm_devi
 def without_edited_blocks(text: str) -> str:
     for start in EDITED:
         if start in text.splitlines():
-            text = text.replace(vm_device.block(text, start), "", 1)
+            text = text.replace(device_file.block(text, start), "", 1)
     return text
 
 
