@@ -156,6 +156,22 @@ class TestNodeRedBackend:
             NodeRedBackend(preview_backend.parse_backend("fake"), DEFAULT_STATUS, tmp_path).start()
 
 
+@pytest.mark.tier0
+class TestMain:
+    def test_refuses_a_backend_it_does_not_manage(self, capsys):
+        status = preview_backend.main({"BACKEND": "busy-screen.local:1880"})
+
+        assert status == 2
+        assert "busy-screen.local:1880" in capsys.readouterr().err
+
+    @pytest.mark.parametrize("environ, message", [({"BACKEND": "nope"}, "BACKEND must be"), ({"STATUS": "nope"}, "STATUS must be")])
+    def test_names_a_malformed_variable(self, capsys, environ, message):
+        status = preview_backend.main(environ)
+
+        assert status == 2
+        assert message in capsys.readouterr().err
+
+
 @pytest.mark.preview
 @pytest.mark.skipif(not (preview_backend.SERVER / "node_modules" / "node-red").exists() or not shutil.which("node"), reason="needs node and make npm")
 class TestNodeRedFake:

@@ -4,6 +4,7 @@ import os
 import shutil
 import signal
 import subprocess
+import sys
 import time
 import urllib.error
 import urllib.request
@@ -153,3 +154,30 @@ def put_status(port: int, status: dict, attempts: int = 60) -> None:
                 return
         time.sleep(0.25)
     raise RuntimeError(f"the flow on port {port} did not show the status it accepted")
+
+
+def main(environ=os.environ) -> int:
+    """Run the fake until Ctrl-C, for the IDE's dev-server configuration; return 2 with a message when it cannot."""
+    try:
+        backend = NodeRedBackend(parse_backend(environ.get("BACKEND")), parse_status(environ.get("STATUS")))
+    except ValueError as error:
+        print(error, file=sys.stderr)
+        return 2
+    if not backend.managed:
+        print(f"BACKEND={environ['BACKEND']} is not the fake, so there is nothing to run", file=sys.stderr)
+        return 2
+    process.raise_on_sigterm()
+    try:
+        backend.start()
+        print(f"started the backend on {backend.describe().removeprefix('fake on ')}; Ctrl-C ends it", file=sys.stderr)
+        process.until_interrupted()
+    except (RuntimeError, TimeoutError) as error:
+        print(error, file=sys.stderr)
+        return 2
+    finally:
+        backend.stop()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
